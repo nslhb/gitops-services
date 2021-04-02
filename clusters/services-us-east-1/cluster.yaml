@@ -15,19 +15,19 @@ vpc:
     privateAccess: true
   subnets:
     private:
-      ap-south-1d:
-        id: "subnet-0df9cd915982e1d92"
-        cidr: "10.18.0.0/19"
       ap-south-1a:
         id: "subnet-047a38909122b2903"
         cidr: "10.18.64.0/19"
-    public:
       ap-south-1d:
-        id: "subnet-0df685203f1522e82"
-        cidr: "10.18.216.0/21"
+        id: "subnet-0df9cd915982e1d92"
+        cidr: "10.18.0.0/19"
+    public:
       ap-south-1a:
         id: "subnet-0949343196a07f6c1"
         cidr: "10.18.224.0/21"
+      ap-south-1d:
+        id: "subnet-0df685203f1522e82"
+        cidr: "10.18.216.0/21"
 
 iam:
   withOIDC: true
@@ -51,9 +51,9 @@ iam:
 nodeGroups:
   - name: edge
     instanceType: "m5a.large"
-    desiredCapacity: 4
+    desiredCapacity: 1
     minSize: 0
-    maxSize: 20
+    maxSize: 3
     volumeSize: 20
     volumeType: gp2
     volumeEncrypted: true
@@ -70,17 +70,12 @@ nodeGroups:
       k8s.io/cluster-autoscaler/enabled: "true"
       k8s.io/cluster-autoscaler/services-ap-south-1: "owned"
 
-fargateProfiles:
-  - name: fp-default
-    selectors:
-      - namespace: kube-system
-        labels:
-          app: aws-cluster-autoscaler
-  - name: fp-coredns
-    selectors:
-      - namespace: kube-system
-        labels:
-          k8s-app: kube-dns
+#fargateProfiles:
+#  - name: fp-coredns
+#    selectors:
+#      - namespace: kube-system
+#        labels:
+#          k8s-app: kube-dns
 
 cloudWatch:
   clusterLogging:
@@ -88,11 +83,3 @@ cloudWatch:
 
 addons:
   - name: vpc-cni
-
-gitops:
-  flux:
-    gitProvider: github
-    owner: nslhb
-    repository: services.nslhub.com
-    branch: main
-    namespace: "flux-system"
