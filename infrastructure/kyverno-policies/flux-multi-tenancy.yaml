@@ -31,6 +31,7 @@ spec:
             - Kustomization
             - HelmRelease
       validate:
+        # allow users to deploy only to assigned namespaces
         message: "spec.sourceRef.namespace must be the same as metadata.namespace"
         deny:
           conditions:

@@ -5,3 +5,5 @@ scripts/
 conf/
 **/cluster.yaml
 *.md
+apps/keycloak
+apps/bee

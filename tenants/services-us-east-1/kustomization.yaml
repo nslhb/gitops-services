@@ -1,6 +1,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ../aabase/ap-south-1
+  - ../base/dev-team
 patchesStrategicMerge:
-  - ap-south-1-patch.yaml
+  - patch.yaml
