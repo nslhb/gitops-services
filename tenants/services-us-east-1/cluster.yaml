@@ -1,0 +1,98 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: services
+  region: us-east-1
+  version: "1.19"
+
+
+vpc:
+  id: "vpc-0d9e76bd7b471527d"
+  cidr: "10.18.0.0/16"
+  clusterEndpoints:
+    publicAccess: true
+    privateAccess: true
+  subnets:
+    private:
+      ap-south-1d:
+        id: "subnet-0df9cd915982e1d92"
+        cidr: "10.18.0.0/19"
+      ap-south-1a:
+        id: "subnet-047a38909122b2903"
+        cidr: "10.18.64.0/19"
+    public:
+      ap-south-1d:
+        id: "subnet-0df685203f1522e82"
+        cidr: "10.18.216.0/21"
+      ap-south-1a:
+        id: "subnet-0949343196a07f6c1"
+        cidr: "10.18.224.0/21"
+
+iam:
+  withOIDC: true
+  serviceAccounts:
+    - metadata:
+        name: aws-load-balancer-controller
+        namespace: kube-system
+      wellKnownPolicies:
+        awsLoadBalancerController: true
+    - metadata:
+        name: external-dns
+        namespace: kube-system
+      wellKnownPolicies:
+        externalDNS: true
+    - metadata:
+        name: aws-cluster-autoscaler
+        namespace: kube-system
+      wellKnownPolicies:
+        autoScaler: true
+
+nodeGroups:
+  - name: edge
+    instanceType: "m5a.large"
+    desiredCapacity: 4
+    minSize: 0
+    maxSize: 20
+    volumeSize: 20
+    volumeType: gp2
+    volumeEncrypted: true
+    volumeKmsKeyID: fc0e8723-fa6e-4d9c-bd92-02c0e77886d4
+    privateNetworking: true
+    amiFamily: Bottlerocket
+    disableIMDSv1: true
+    iam:
+      instanceProfileARN: arn:aws:iam::832807087073:instance-profile/EKS-Default-SSM-AD-Role-ip
+      instanceRoleARN: arn:aws:iam::832807087073:role/EKS-Default-SSM-AD-Role
+    labels:
+      workload: public
+    tags:
+      k8s.io/cluster-autoscaler/enabled: "true"
+      k8s.io/cluster-autoscaler/services-ap-south-1: "owned"
+
+fargateProfiles:
+  - name: fp-default
+    selectors:
+      - namespace: kube-system
+        labels:
+          app: aws-cluster-autoscaler
+  - name: fp-coredns
+    selectors:
+      - namespace: kube-system
+        labels:
+          k8s-app: kube-dns
+
+cloudWatch:
+  clusterLogging:
+    enableTypes: [ "authenticator" ]
+
+addons:
+  - name: vpc-cni
+
+gitops:
+  flux:
+    gitProvider: github
+    owner: nslhb
+    repository: services.nslhub.com
+    branch: main
+    namespace: "flux-system"

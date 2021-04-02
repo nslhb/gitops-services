@@ -1,0 +1,26 @@
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: GitRepository
+metadata:
+  name: ap-south-1
+  namespace: apps
+spec:
+  interval: 1m
+  url: https://github.com/fluxcd/flux2-multi-tenancy
+  ref:
+    branch: ap-south-1
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+kind: Kustomization
+metadata:
+  name: ap-south-1
+  namespace: apps
+spec:
+  serviceAccountName: ap-south-1
+  interval: 5m
+  sourceRef:
+    kind: GitRepository
+    name: ap-south-1
+  prune: true
+  validation: client
+
+
