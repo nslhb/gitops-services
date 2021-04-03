@@ -68,7 +68,27 @@ nodeGroups:
       workload: public
     tags:
       k8s.io/cluster-autoscaler/enabled: "true"
-      k8s.io/cluster-autoscaler/services-ap-south-1: "owned"
+      k8s.io/cluster-autoscaler/services-us-east-1: "owned"
+
+managedNodeGroups:
+  - name: system
+    instanceType: "t3.xlarge"
+    desiredCapacity: 1
+    minSize: 1
+    maxSize: 5
+    volumeSize: 20
+    volumeType: gp3
+    volumeEncrypted: true
+    volumeKmsKeyID: fc0e8723-fa6e-4d9c-bd92-02c0e77886d4
+    privateNetworking: true
+    disableIMDSv1: true
+    iam:
+      instanceRoleARN: arn:aws:iam::832807087073:role/EKS-Default-SSM-AD-Role
+    labels:
+      workload: system
+    tags:
+      k8s.io/cluster-autoscaler/enabled: "true"
+      k8s.io/cluster-autoscaler/services-us-east-1: "owned"
 
 #fargateProfiles:
 #  - name: fp-coredns
