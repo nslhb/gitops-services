@@ -4,4 +4,4 @@ metadata:
   name: ap-south-1
   namespace: apps
 spec:
-  path: ./staging
+  path: ./services-us-east-1
