@@ -71,7 +71,7 @@ spec:
               mountPath: /var/log/dmesg
               readOnly: true
       nodeSelector:
-        ssd: "true"
+        workload: public
       volumes:
         - name: config-volume
           configMap:

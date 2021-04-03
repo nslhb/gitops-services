@@ -1,0 +1,13 @@
+---
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: aws-sigv4-proxy-admission-controller
+  namespace: logging
+spec:
+  helmVersion: v3
+  releaseName: aws-sigv4-proxy-admission-controller
+  chart:
+    repository: https://aws.github.io/eks-charts
+    name: aws-sigv4-proxy-admission-controller
+    version: 0.1.2

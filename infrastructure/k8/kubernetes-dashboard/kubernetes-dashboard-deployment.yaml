@@ -69,3 +69,5 @@ spec:
       tolerations:
         - key: node-role.kubernetes.io/master
           effect: NoSchedule
+      nodeSelector:
+        workload: system
