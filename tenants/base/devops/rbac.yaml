@@ -12,7 +12,7 @@ kind: ServiceAccount
 metadata:
   labels:
     toolkit.fluxcd.io/tenant: ap-south-1
-  name: ap-south-1
+  name: devops
   namespace: apps
 
 ---

@@ -46,7 +46,7 @@ The [platform admin repository](https://github.com/fluxcd/flux2-multi-tenancy/tr
     └── staging
 ```
 
-A [tenant repository](https://github.com/fluxcd/flux2-multi-tenancy/tree/dev-team) contains the following top directories:
+A [tenant repository](https://github.com/fluxcd/flux2-multi-tenancy/tree/devops) contains the following top directories:
 
 - **base** dir contains `HelmRepository` and `HelmRelease` manifests
 - **staging** dir contains `HelmRelease` Kustomize patches for deploying pre-releases on the staging cluster
@@ -69,42 +69,42 @@ A [tenant repository](https://github.com/fluxcd/flux2-multi-tenancy/tree/dev-tea
 
 The Flux CLI offers commands to generate the Kubernetes manifests needed to define tenants.
 
-Assuming a platform admin wants to create a tenant named `dev-team` with access to the `apps` namespace.
+Assuming a platform admin wants to create a tenant named `devops` with access to the `apps` namespace.
 
 Create the tenant base directory:
 
 ```sh
-mkdir -p ./tenants/base/dev-team
+mkdir -p ./tenants/base/devops
 ```
 
-Generate the namespace, service account and role binding for the dev-team:
+Generate the namespace, service account and role binding for the devops:
 
 ```sh
-flux create tenant dev-team --with-namespace=apps \
-    --export > ./tenants/base/dev-team/rbac.yaml
+flux create tenant devops --with-namespace=apps \
+    --export > ./tenants/base/devops/rbac.yaml
 ```
 
 Create the sync manifests for the tenant Git repository:
 
 ```sh
-flux create source git dev-team \
+flux create source git devops \
     --namespace=apps \
-    --url=https://github.com/<org>/<dev-team> \
+    --url=https://github.com/<org>/<devops> \
     --branch=main \
-    --export > ./tenants/base/dev-team/sync.yaml
+    --export > ./tenants/base/devops/sync.yaml
 
-flux create kustomization dev-team \
+flux create kustomization devops \
     --namespace=apps \
-    --service-account=dev-team \
-    --source=GitRepository/dev-team \
+    --service-account=devops \
+    --source=GitRepository/devops \
     --path="./" \
-    --export >> ./tenants/base/dev-team/sync.yaml
+    --export >> ./tenants/base/devops/sync.yaml
 ```
 
 Create the base `kustomization.yaml` file:
 
 ```sh
-cd ./tenants/base/dev-team/ && kustomize create --autodetect
+cd ./tenants/base/devops/ && kustomize create --autodetect
 ```
 
 Create the staging overlay and set the path to the staging dir inside the tenant repository:
@@ -114,7 +114,7 @@ cat << EOF | tee ./tenants/staging/patch.yaml
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:
-  name: dev-team
+  name: devops
   namespace: apps
 spec:
   path: ./staging
@@ -124,16 +124,16 @@ cat << EOF | tee ./tenants/staging/kustomization.yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ../base/dev-team
+  - ../base/devops
 patchesStrategicMerge:
-  - dev-team-patch.yaml
+  - devops-patch.yaml
 EOF
 ```
 
 With the above configuration, the Flux instance running on the staging cluster will clone the
-dev-team's repository, and it will reconcile the `./staging` directory from the tenant's repo
-using the `dev-team` service account. Since that service account is restricted to the `apps` namespace,
-the dev-team repository must contain Kubernetes objects scoped to the `apps` namespace only.
+devops's repository, and it will reconcile the `./staging` directory from the tenant's repo
+using the `devops` service account. Since that service account is restricted to the `apps` namespace,
+the devops repository must contain Kubernetes objects scoped to the `apps` namespace only.
 
 ## Enforce tenant isolation
 
@@ -276,7 +276,7 @@ Verify that the tenant Git repository has been cloned:
 ```console
 $ flux -n apps get sources git
 NAME    	READY	MESSAGE 
-dev-team	True 	Fetched revision: dev-team/ca8ec25405cc03f2f374d2f35f9299d84ced01e4
+devops	True 	Fetched revision: devops/ca8ec25405cc03f2f374d2f35f9299d84ced01e4
 ```
 
 Verify that the tenant Helm repository index has been downloaded:
@@ -343,12 +343,12 @@ write access to the platform repository can encrypt secrets.
 Generate a Kubernetes secret with the SSH and known host keys:
 
 ```sh
-flux -n apps create secret git dev-team-auth \
-    --url=ssh://git@github.com/<org>/<dev-team> \
-    --export > ./tenants/base/dev-team/auth.yaml
+flux -n apps create secret git devops-auth \
+    --url=ssh://git@github.com/<org>/<devops> \
+    --export > ./tenants/base/devops/auth.yaml
 ```
 
-Print the SSH public key and add it as a read-only deploy key to the dev-team repository:
+Print the SSH public key and add it as a read-only deploy key to the devops repository:
 
 ```sh
 yq read git-auth.yaml 'data."identity.pub"' | base64 --decode
@@ -359,48 +359,48 @@ yq read git-auth.yaml 'data."identity.pub"' | base64 --decode
 Generate a Kubernetes secret with basic auth credentials:
 
 ```sh
-flux -n apps create secret git dev-team-auth \
-    --url=https://github.com/<org>/<dev-team> \
+flux -n apps create secret git devops-auth \
+    --url=https://github.com/<org>/<devops> \
     --username=$GITHUB_USERNAME \
     --password=$GITHUB_TOKEN \
-    --export > ./tenants/base/dev-team/auth.yaml
+    --export > ./tenants/base/devops/auth.yaml
 ```
 
-The GitHub token must have read-only access to the dev-team repository.
+The GitHub token must have read-only access to the devops repository.
 
 ### Configure Git authentication
 
-Encrypt the `dev-team-auth` secret's data field with sops:
+Encrypt the `devops-auth` secret's data field with sops:
 
 ```sh
 sops --encrypt \
     --pgp=1F3D1CED2F865F5E59CA564553241F147E7C5FA4 \
     --encrypted-regex '^(data|stringData)$' \
-    --in-place ./tenants/base/dev-team/auth.yaml
+    --in-place ./tenants/base/devops/auth.yaml
 ```
 
 Create the sync manifests for the tenant Git repository referencing the `git-auth` secret:
 
 ```sh
-flux create source git dev-team \
+flux create source git devops \
     --namespace=apps \
-    --url=https://github.com/<org>/<dev-team> \
+    --url=https://github.com/<org>/<devops> \
     --branch=main \
-    --secret-ref=dev-team-auth \
-    --export > ./tenants/base/dev-team/sync.yaml
+    --secret-ref=devops-auth \
+    --export > ./tenants/base/devops/sync.yaml
 
-flux create kustomization dev-team \
+flux create kustomization devops \
     --namespace=apps \
-    --service-account=dev-team \
-    --source=GitRepository/dev-team \
+    --service-account=devops \
+    --source=GitRepository/devops \
     --path="./" \
-    --export >> ./tenants/base/dev-team/sync.yaml
+    --export >> ./tenants/base/devops/sync.yaml
 ```
 
 Create the base kustomization.yaml file:
 
 ```sh
-cd ./tenants/base/dev-team/ && kustomize create --autodetect
+cd ./tenants/base/devops/ && kustomize create --autodetect
 ```
 
 Configure Flux to decrypt secrets using the `sops-gpg` key:
