@@ -1,0 +1,69 @@
+apiVersion: keycloak.org/v1alpha1
+kind: Keycloak
+metadata:
+  name: keycloak
+  namespace: keycloak
+spec:
+  instances: 3
+  extensions:
+    - https://github.com/aerogear/keycloak-metrics-spi/releases/download/1.0.4/keycloak-metrics-spi-1.0.4.jar
+  externalAccess:
+    enabled: false
+  externalDatabase:
+    enabled: True
+  podDisruptionBudget:
+    enabled: True
+  keycloakDeploymentSpec:
+    experimental:
+      env:
+        - name: JAVA_OPTS
+          value: >-
+            -XX:MaxRAMPercentage=80
+            -XX:+UseG1GC
+            -XX:+UseStringDeduplication
+            -XX:+UseCompressedOops
+            -server
+            -Djava.net.preferIPv4Stack=true
+            -Djava.awt.headless=true
+            -Djboss.default.jgroups.stack=kubernetes
+            -Djboss.node.name=$(POD_NAME)
+            -Djboss.tx.node.id=$(POD_NAME)
+            -Djboss.site.name=$(KUBERNETES_NAMESPACE)
+            -Dcom.sun.jersey.server.impl.cdi.lookupExtensionInBeanManager=true
+        - name: JGROUPS_DISCOVERY_PROTOCOL
+          value: kubernetes.KUBE_PING
+        - name: JGROUPS_DISCOVERY_PROPERTIES
+          value: port_range=0,namespace=scaling
+        - name: PROXY_ADDRESS_FORWARDING
+          value: "true"
+        - name: KUBERNETES_LABELS
+          value: app=keycloak
+      volumes:
+        items:
+        - configMap:
+            mountPath: /opt/jboss/keycloak/standalone/extra
+            name: wildfly-config
+    resources:
+      limits:
+        cpu: "2"
+        memory: 10G
+      requests:
+        cpu: "2"
+        memory: 10G
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: keycloak-db-secret
+  namespace: keycloak
+stringData:
+  POSTGRES_DATABASE: keycloakdb
+  POSTGRES_EXTERNAL_ADDRESS: "database-1.c3zxp963quri.ap-south-1.rds.amazonaws.com"
+  POSTGRES_EXTERNAL_PORT: "5432"
+  POSTGRES_PASSWORD: keycloak
+  POSTGRES_USERNAME: keycloak
+  ADMIN_USERNAME: admin
+  ADMIN_PASSWORD: admin
+type: Opaque
+
