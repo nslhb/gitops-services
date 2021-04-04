@@ -2,4 +2,5 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - rbac.yaml
-  - flagger
+  - flagger/flagger-repository.yaml
+  - flagger/flagger-kustomization.yaml
