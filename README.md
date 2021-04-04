@@ -110,7 +110,7 @@ cd ./tenants/base/devops/ && kustomize create --autodetect
 Create the staging overlay and set the path to the staging dir inside the tenant repository:
 
 ```sh
-cat << EOF | tee ./tenants/staging/patch.yaml
+cat << EOF | tee ./tenants/staging/dev-team-dev-team-patch.yaml
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:

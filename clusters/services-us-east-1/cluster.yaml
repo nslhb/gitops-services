@@ -54,7 +54,7 @@ nodeGroups:
     desiredCapacity: 1
     minSize: 0
     maxSize: 3
-    volumeSize: 20
+    volumeSize: 10
     volumeType: gp2
     volumeEncrypted: true
     volumeKmsKeyID: fc0e8723-fa6e-4d9c-bd92-02c0e77886d4
