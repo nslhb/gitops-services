@@ -8,6 +8,3 @@ resources:
   - kubernetes-dashboard-rbac.yaml
   - kubernetes-dashboard-secrets.yaml
   - kubernetes-dashboard-service.yaml
-
-images:
-  -
