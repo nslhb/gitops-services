@@ -7,3 +7,12 @@ resources:
 - linkerd/linkerd-repository.yaml
 - flagger/flagger-kustomization.yaml
 - flagger/flagger-repository.yaml
+- kubernetes-dashboard/dashboard-metrics-scraper-deployment.yaml
+- kubernetes-dashboard/dashboard-metrics-scraper-service.yaml
+- kubernetes-dashboard/kubernetes-dashboard-configmap.yaml
+- kubernetes-dashboard/kubernetes-dashboard-deployment.yaml
+- kubernetes-dashboard/kubernetes-dashboard-rbac.yaml
+- kubernetes-dashboard/kubernetes-dashboard-secrets.yaml
+- kubernetes-dashboard/kubernetes-dashboard-service.yaml
+- kubernetes-dashboard/kustomization.yaml
+- monitoring/prometheus-operator.yaml
