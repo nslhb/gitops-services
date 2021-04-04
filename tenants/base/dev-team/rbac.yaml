@@ -4,7 +4,7 @@ kind: Namespace
 metadata:
   labels:
     toolkit.fluxcd.io/tenant: dev-team
-  name: app
+  name: apps
 
 ---
 apiVersion: v1
@@ -13,7 +13,7 @@ metadata:
   labels:
     toolkit.fluxcd.io/tenant: dev-team
   name: dev-team
-  namespace: app
+  namespace: apps
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -22,7 +22,7 @@ metadata:
   labels:
     toolkit.fluxcd.io/tenant: dev-team
   name: dev-team-reconciler
-  namespace: app
+  namespace: apps
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -30,8 +30,8 @@ roleRef:
 subjects:
 - apiGroup: rbac.authorization.k8s.io
   kind: User
-  name: gotk:app:reconciler
+  name: gotk:apps:reconciler
 - kind: ServiceAccount
   name: dev-team
-  namespace: app
+  namespace: apps
 
