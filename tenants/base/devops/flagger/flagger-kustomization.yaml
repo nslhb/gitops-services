@@ -8,6 +8,7 @@ spec:
   timeout: 5m
   path: "./kustomize/linkerd/"
   prune: true
+  serviceAccountName: devops
   sourceRef:
     kind: GitRepository
     name: flagger
