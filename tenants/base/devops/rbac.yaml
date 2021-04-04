@@ -115,6 +115,7 @@ kind: Namespace
 metadata:
   labels:
     toolkit.fluxcd.io/tenant: devops
+    linkerd.io/admission-webhooks: disabled
   name: linkerd
 
 ---
