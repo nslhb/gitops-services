@@ -1,11 +1,28 @@
-apiVersion: helm.fluxcd.io/v1
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: podinfo
-  namespace: apps
+  name: backend
+  namespace: default
 spec:
-  releaseName: podinfo
+  interval: 5m
   chart:
-    git: https://github.com/stefanprodan/podinfo
-    ref: v3.x
-    path: charts/podinfo
+    spec:
+      chart: podinfo
+      version: ">=4.0.0 <5.0.0"
+      sourceRef:
+        kind: HelmRepository
+        name: podinfo
+        namespace: default
+      interval: 1m
+  upgrade:
+    remediation:
+      remediateLastFailure: true
+  test:
+    enable: true
+  values:
+    service:
+      grpcService: backend
+    resources:
+      requests:
+        cpu: 100m
+        memory: 64Mi
