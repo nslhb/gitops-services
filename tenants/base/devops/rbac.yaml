@@ -60,7 +60,7 @@ kind: ClusterRoleBinding
 metadata:
   labels:
     toolkit.fluxcd.io/tenant: devops
-  name: devops-reconciler
+  name: monitoring-reconciler
   namespace: monitoring
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -136,8 +136,7 @@ kind: ClusterRoleBinding
 metadata:
   labels:
     toolkit.fluxcd.io/tenant: devops
-  name: devops-reconciler
-  namespace: linkerd
+  name: linkerd-reconciler
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
