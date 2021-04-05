@@ -1,0 +1,28 @@
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: HelmRepository
+metadata:
+  name: eks
+  namespace: flagger-system
+spec:
+  interval: 1h10m0s
+  url: https://aws.github.io/eks-charts
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: aws-sigv4-proxy-admission-controller
+  namespace: monitoring
+spec:
+  dependsOn:
+    - name: aws-load-balancer-controller
+      namespace: kube-system
+  interval: 10m0s
+  releaseName: aws-sigv4-proxy-admission-controller
+  serviceAccountName: devops
+  chart:
+    spec:
+      chart: aws-sigv4-proxy-admission-controller
+      sourceRef:
+        kind: HelmRepository
+        name: eks
+        namespace: flagger-system
