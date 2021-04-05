@@ -1,10 +1,11 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - dashboard-metrics-scraper-deployment.yaml
-  - dashboard-metrics-scraper-service.yaml
-  - kubernetes-dashboard-configmap.yaml
-  - kubernetes-dashboard-deployment.yaml
-  - kubernetes-dashboard-rbac.yaml
-  - kubernetes-dashboard-secrets.yaml
-  - kubernetes-dashboard-service.yaml
+  - https://raw.githubusercontent.com/kubernetes/dashboard/master/aio/deploy/recommended/01_dashboard-serviceaccount.yaml
+  - https://raw.githubusercontent.com/kubernetes/dashboard/master/aio/deploy/recommended/02_dashboard-service.yaml
+  - https://raw.githubusercontent.com/kubernetes/dashboard/master/aio/deploy/recommended/03_dashboard-secret.yaml
+  - https://raw.githubusercontent.com/kubernetes/dashboard/master/aio/deploy/recommended/04_dashboard-configmap.yaml
+  - https://raw.githubusercontent.com/kubernetes/dashboard/master/aio/deploy/recommended/05_dashboard-rbac.yaml
+  - https://raw.githubusercontent.com/kubernetes/dashboard/master/aio/deploy/recommended/06_dashboard-deployment.yaml
+  - https://raw.githubusercontent.com/kubernetes/dashboard/master/aio/deploy/recommended/07_scraper-service.yaml
+  - https://raw.githubusercontent.com/kubernetes/dashboard/master/aio/deploy/recommended/08_scraper-deployment.yaml
