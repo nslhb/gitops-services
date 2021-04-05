@@ -16,3 +16,5 @@ metadata:
     eks.amazonaws.com/role-arn: arn:aws:iam::832807087073:role/eksctl-services-addon-iamserviceaccount-kube-Role1-WMYXKFE1L7QX
   name: aws-cluster-autoscaler
   namespace: kube-system
+
+
