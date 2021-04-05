@@ -16,6 +16,15 @@ spec:
       resources:
         kinds:
         - Pod
+    exclude:
+      resources:
+        namespaces:
+          - kube-system
+          - flux-system
+          - monitoring
+          - logging
+          - linkerd
+          - kubernetes-dashboard
     validate:
       message: "CPU and memory resource requests and limits are required"
       pattern:
