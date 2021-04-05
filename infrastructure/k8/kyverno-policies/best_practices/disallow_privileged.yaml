@@ -18,7 +18,7 @@ spec:
           kinds:
             - Pod
       exclude:
-        namespaces:
+        resources:
           namespaces:
             - "monitoring"
             - "linkerd"
