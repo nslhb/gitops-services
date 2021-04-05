@@ -7,8 +7,8 @@ resources:
 #- best_practices/add_safe_to_evict.yaml
 - best_practices/disallow_bind_mounts.yaml
 #- best_practices/disallow_default_namespace.yaml
-#- best_practices/disallow_docker_sock_mount.yaml
-#- best_practices/disallow_helm_tiller.yaml
+- best_practices/disallow_docker_sock_mount.yaml
+- best_practices/disallow_helm_tiller.yaml
 #- best_practices/disallow_host_network_port.yaml
 #- best_practices/disallow_host_pid_ipc.yaml
 #- best_practices/disallow_latest_tag.yaml
