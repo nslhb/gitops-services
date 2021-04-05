@@ -25,6 +25,8 @@ spec:
           - logging
           - linkerd
           - kubernetes-dashboard
+          - kube-public
+          - kyverno
     validate:
       message: "CPU and memory resource requests and limits are required"
       pattern:
