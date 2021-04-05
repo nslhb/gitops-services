@@ -21,7 +21,7 @@ spec:
       chart: kube-prometheus-stack
       sourceRef:
         kind: HelmRepository
-        name: flagger-system
+        name: flux-system
   values:
     grafana:
       enabled: true

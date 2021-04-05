@@ -14,7 +14,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: eks
-        namespace: flagger-system
+        namespace: flux-system
   values:
     clusterName: services
     nodeSelector:
