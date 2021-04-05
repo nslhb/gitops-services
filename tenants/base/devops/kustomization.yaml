@@ -9,3 +9,4 @@ resources:
 - flagger/flagger-repository.yaml
 - kubernetes-dashboard
 - monitoring/prometheus-operator.yaml
+- kube-system.yaml
