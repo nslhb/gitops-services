@@ -32,3 +32,7 @@ kubectl -n linkerd create secret generic linkerd-certs \
 --from-file=issuer.key -oyaml --dry-run=client \
 > linkerd-certs.yaml
 ```
+
+```sh
+gdate -d "$(cat issuer-linkerd.crt | openssl x509 -noout -enddate | sed 's/notAfter=//')" +"%Y-%m-%dT%H:%M:%SZ"
+```
