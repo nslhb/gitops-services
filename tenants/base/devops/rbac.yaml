@@ -46,6 +46,34 @@ metadata:
   name: monitoring
 
 ---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    toolkit.fluxcd.io/tenant: devops
+  name: devops
+  namespace: monitoring
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    toolkit.fluxcd.io/tenant: devops
+  name: devops-reconciler
+  namespace: monitoring
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- apiGroup: rbac.authorization.k8s.io
+  kind: User
+  name: gotk:monitoring:reconciler
+- kind: ServiceAccount
+  name: devops
+  namespace: monitoring
+---
 
 apiVersion: v1
 kind: Namespace
