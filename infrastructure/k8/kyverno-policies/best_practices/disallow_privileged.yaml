@@ -18,10 +18,9 @@ spec:
           kinds:
             - Pod
       exclude:
-        resources:
-          namespace:
-            - monitoring
-            - linkerd
+        namespaces:
+          - monitoring
+          - linkerd
       validate:
         message: "Privileged mode is not allowed. Set privileged to false"
         pattern:
@@ -35,10 +34,9 @@ spec:
           kinds:
             - Pod
       exclude:
-        resources:
-          namespace:
-            - monitoring
-            - linkerd
+        namespaces:
+          - monitoring
+          - linkerd
       validate:
         message: "Privileged mode is not allowed. Set allowPrivilegeEscalation to false"
         pattern:
