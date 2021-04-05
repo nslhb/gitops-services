@@ -16,6 +16,6 @@ spec:
         name: eks
         namespace: flagger-system
   values:
-    clusterName: {{.ClusterName}}
+    clusterName: services
     nodeSelector:
        workload: system
