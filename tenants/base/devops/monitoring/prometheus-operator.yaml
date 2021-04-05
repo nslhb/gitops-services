@@ -10,15 +10,15 @@ spec:
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: prometheus-operator
+  name: kube-prometheus-stack
   namespace: monitoring
 spec:
   interval: 10m0s
-  releaseName: prometheus-operator
+  releaseName: kube-prometheus-stack
   serviceAccountName: devops
   chart:
     spec:
-      chart: prometheus-operator
+      chart: kube-prometheus-stack
       sourceRef:
         kind: HelmRepository
         name: prometheus-community
@@ -26,8 +26,8 @@ spec:
     grafana:
       enabled: true
       defaultDashboardsEnabled: true
-    nodeExporter:
-      serviceMonitor:
-        relabelings:
-        - sourceLabels: [__meta_kubernetes_pod_node_name]
-          targetLabel: instance
+#    nodeExporter:
+#      serviceMonitor:
+#        relabelings:
+#        - sourceLabels: [__meta_kubernetes_pod_node_name]
+#          targetLabel: instance
