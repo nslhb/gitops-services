@@ -19,7 +19,7 @@ spec:
             - Pod
       exclude:
         resources:
-          namespaces:
+          namespace:
             - monitoring
             - linkerd
       validate:
@@ -36,7 +36,7 @@ spec:
             - Pod
       exclude:
         resources:
-          namespaces:
+          namespace:
             - monitoring
             - linkerd
       validate:
