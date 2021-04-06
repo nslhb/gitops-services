@@ -13,3 +13,4 @@ resources:
 - kube-system/aws-load-balancer-controller.yaml
 - kube-system/cluster-autoscaler-deployment.yaml
 - kube-system/cluster-autoscaler-rbac.yaml
+- https://raw.githubusercontent.com/bottlerocket-os/bottlerocket-update-operator/develop/update-operator.yaml
