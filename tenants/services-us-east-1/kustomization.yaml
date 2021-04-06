@@ -3,5 +3,3 @@ kind: Kustomization
 resources:
   - ../services-ap-south-1/devops
 #  - ../base/dev-team
-patchesStrategicMerge:
-  - devops-path.yaml
