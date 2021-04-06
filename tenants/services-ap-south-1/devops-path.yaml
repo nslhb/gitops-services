@@ -7,12 +7,12 @@ spec:
   values:
     serviceAccount:
       annotations:
-        eks.amazonaws.com/role-arn: arn:aws:iam::832807087073:role/eksctl-services-addon-iamserviceaccount-kube-Role1-1NTP8GKFPJIOW
+        eks.amazonaws.com/role-arn: arn:aws:iam::832807087073:role/load-balancer-ap-south-1
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   labels:
-    eks.amazonaws.com/role-arn: arn:aws:iam::832807087073:role/eksctl-services-addon-iamserviceaccount-kube-Role1-V63CL5UFWOJN
-  name: aws-cluster-autoscaler
+    eks.amazonaws.com/role-arn: arn:aws:iam::832807087073:role/cluster-autoscaler-ap-south-1
+  name: cluster-autoscaler
   namespace: kube-system

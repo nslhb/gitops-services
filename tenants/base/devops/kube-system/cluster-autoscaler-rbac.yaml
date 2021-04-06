@@ -5,7 +5,7 @@ metadata:
   labels:
     k8s-addon: cluster-autoscaler.addons.k8s.io
     k8s-app: cluster-autoscaler
-  name: aws-cluster-autoscaler
+  name: cluster-autoscaler
   namespace: kube-system
 
 ---
@@ -96,7 +96,7 @@ roleRef:
   name: cluster-autoscaler
 subjects:
   - kind: ServiceAccount
-    name: aws-cluster-autoscaler
+    name: cluster-autoscaler
     namespace: kube-system
 
 ---
@@ -114,5 +114,5 @@ roleRef:
   name: cluster-autoscaler
 subjects:
   - kind: ServiceAccount
-    name: aws-cluster-autoscaler
+    name: cluster-autoscaler
     namespace: kube-system

@@ -35,16 +35,19 @@ iam:
     - metadata:
         name: aws-load-balancer-controller
         namespace: kube-system
+      roleName: load-balancer-ap-south-1
       wellKnownPolicies:
         awsLoadBalancerController: true
     - metadata:
         name: external-dns
         namespace: kube-system
+      roleName: external-dns-ap-south-1
       wellKnownPolicies:
         externalDNS: true
     - metadata:
-        name: aws-cluster-autoscaler
+        name: cluster-autoscaler
         namespace: kube-system
+      roleName: cluster-autoscaler-ap-south-1
       wellKnownPolicies:
         autoScaler: true
 

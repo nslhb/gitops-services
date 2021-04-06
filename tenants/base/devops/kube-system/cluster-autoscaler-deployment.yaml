@@ -22,7 +22,7 @@ spec:
         prometheus.io/scrape: 'true'
         prometheus.io/port: '8085'
     spec:
-      serviceAccountName: aws-cluster-autoscaler
+      serviceAccountName: cluster-autoscaler
       containers:
         - image: k8s.gcr.io/autoscaling/cluster-autoscaler:v1.19.1
           name: cluster-autoscaler
