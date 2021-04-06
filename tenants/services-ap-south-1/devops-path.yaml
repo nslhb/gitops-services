@@ -12,7 +12,7 @@ spec:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  labels:
+  annotations:
     eks.amazonaws.com/role-arn: arn:aws:iam::832807087073:role/cluster-autoscaler-ap-south-1
   name: cluster-autoscaler
   namespace: kube-system
