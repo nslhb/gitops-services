@@ -16,6 +16,11 @@ spec:
       resources:
         kinds:
         - Pod
+    exclude:
+      resources:
+        namespaces:
+          - linkerd
+          - monitoring
     validate:
       message: "Root filesystem must be read-only"
       pattern:
