@@ -9,7 +9,7 @@ resources:
 - flagger/flagger-repository.yaml
 - kubernetes-dashboard
 - monitoring/prometheus-operator.yaml
-- monitoring/aws-sigv4-proxy-admission-controller.yaml
+#- monitoring/aws-sigv4-proxy-admission-controller.yaml
 - kube-system/aws-load-balancer-controller.yaml
 - kube-system/cluster-autoscaler-deployment.yaml
 - kube-system/cluster-autoscaler-rbac.yaml
