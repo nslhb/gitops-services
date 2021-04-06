@@ -22,7 +22,8 @@ spec:
       chart: kube-prometheus-stack
       sourceRef:
         kind: HelmRepository
-        name: flux-system
+        name: prometheus-community
+        namespace: flux-system
   values:
     grafana:
       enabled: true
