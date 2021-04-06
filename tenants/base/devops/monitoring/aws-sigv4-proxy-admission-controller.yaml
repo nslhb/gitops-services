@@ -13,9 +13,6 @@ metadata:
   name: aws-sigv4-proxy-admission-controller
   namespace: monitoring
 spec:
-  dependsOn:
-    - name: aws-load-balancer-controller
-      namespace: kube-system
   interval: 10m0s
   releaseName: aws-sigv4-proxy-admission-controller
   serviceAccountName: devops
