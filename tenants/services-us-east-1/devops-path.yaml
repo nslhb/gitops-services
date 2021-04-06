@@ -8,6 +8,8 @@ spec:
     serviceAccount:
       annotations:
         eks.amazonaws.com/role-arn: arn:aws:iam::832807087073:role/load-balancer-us-east-1
+    image:
+      repository: 602401143452.dkr.ecr.us-east-1.amazonaws.com/amazon/aws-load-balancer-controller
 ---
 apiVersion: v1
 kind: ServiceAccount
