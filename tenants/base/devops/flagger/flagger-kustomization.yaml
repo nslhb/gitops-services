@@ -13,6 +13,7 @@ spec:
     kind: GitRepository
     name: flagger
     namespace: linkerd
+  targetNamespace: linkerd
   patchesStrategicMerge:
     - apiVersion: apps/v1
       kind: Deployment
