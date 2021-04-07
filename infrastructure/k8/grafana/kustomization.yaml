@@ -20,6 +20,27 @@ configMapGenerator:
     files:
       - flux/cluster.json
       - flux/control-plane.json
+  - name: linkerd
+    files:
+      - linkerd/authority.json
+      - linkerd/cronjob.json
+      - linkerd/daemonset.json
+      - linkerd/deployment.json
+      - linkerd/grafana.json
+      - linkerd/health.json
+      - linkerd/job.json
+      - linkerd/kubernetes.json
+      - linkerd/multicluster.json
+      - linkerd/namespace.json
+      - linkerd/pod.json
+      - linkerd/prometheus.json
+      - linkerd/prometheus-benchmark.json
+      - linkerd/replicaset.json
+      - linkerd/replicationcontroller.json
+      - linkerd/route.json
+      - linkerd/service.json
+      - linkerd/statefulset.json
+      - linkerd/top-line.json
   #  - name: prometheus-remote-write
   #    files:
   #      - general/prometheus-remote-write.json
