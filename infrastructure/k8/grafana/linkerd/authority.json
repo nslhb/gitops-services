@@ -20,6 +20,7 @@
   "links": [],
   "panels": [
     {
+      "datasource": "${DS_PROMETHEUS}",
       "content": "<div style=\"display: flex; align-items: center\">\n  <img src=\"https://linkerd.io/images/identity/favicon/linkerd-favicon.png\" style=\"height:32px;\"/>&nbsp;\n  <span style=\"font-size: 32px\">au/$authority</span>\n</div>",
       "gridPos": {
         "h": 2,
