@@ -5,6 +5,7 @@ resources:
 - linkerd/linkerd-certs.yaml
 - linkerd/linkerd-release.yaml
 - linkerd/linkerd-repository.yaml
+- linkerd/quota.yaml
 - flagger/flagger-kustomization.yaml
 - flagger/flagger-repository.yaml
 - monitoring/prometheus-operator.yaml
