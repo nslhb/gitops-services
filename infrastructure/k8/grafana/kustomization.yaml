@@ -40,6 +40,8 @@ configMapGenerator:
     files:
       - linkerd/prometheus.json
       - linkerd/prometheus-benchmark.json
+  - name: linkerd5
+    files:
       - linkerd/replicaset.json
       - linkerd/replicationcontroller.json
   - name: linkerd4
