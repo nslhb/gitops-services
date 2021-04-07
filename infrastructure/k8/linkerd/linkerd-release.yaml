@@ -4,6 +4,9 @@ metadata:
   name: linkerd
   namespace: linkerd
 spec:
+  dependsOn:
+    - name: jaeger
+      namespace: monitoring
   interval: 10m0s
   releaseName: linkerd
   serviceAccountName: devops
@@ -32,3 +35,53 @@ spec:
     identity:
       issuer:
         crtExpiry: "2022-04-04T22:52:03Z"
+    controlPlaneTracing: true
+    controlPlaneTracingNamespace: monitoring
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: jaeger
+  namespace: monitoring
+spec:
+  interval: 10m0s
+  releaseName: jaeger
+  serviceAccountName: devops
+  chart:
+    spec:
+      chart: linkerd-jaeger
+      sourceRef:
+        kind: HelmRepository
+        name: linkerd
+        namespace: flux-system
+  values:
+    namespace: monitoring
+
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: linkerd-viz
+  namespace: linkerd
+spec:
+  dependsOn:
+    - name: jaeger
+      namespace: monitoring
+    - name: linkerd
+      namespace: linkerd
+  interval: 10m0s
+  releaseName: linkerd-viz
+  serviceAccountName: devops
+  chart:
+    spec:
+      chart: linkerd-viz
+      sourceRef:
+        kind: HelmRepository
+        name: linkerd
+        namespace: flux-system
+  values:
+    grafana.enabled: false
+    jaegerUrl: ""
+    namespace: linkerd-viz
+    prometheus.enabled: false
+    prometheusUrl:
