@@ -6,7 +6,7 @@ metadata:
 spec:
   dependsOn:
     - name: jaeger
-      namespace: monitoring
+      namespace: linkerd
   interval: 10m0s
   releaseName: linkerd
   serviceAccountName: devops
