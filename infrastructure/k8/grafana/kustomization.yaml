@@ -30,7 +30,6 @@ configMapGenerator:
     files:
       - linkerd/health.json
       - linkerd/job.json
-      - linkerd/kubernetes.json
   - name: linkerd2
     files:
       - linkerd/multicluster.json
