@@ -78,8 +78,10 @@ spec:
         name: linkerd
         namespace: flux-system
   values:
-    grafana.enabled: false
-    prometheus.enabled: false
+    grafana:
+      enabled: false
+    prometheus:
+      enabled: false
     grafanaUrl: http://kube-prometheus-stack-grafana.monitoring.svc.cluster.local
     prometheusUrl: http://prometheus-operated.monitoring.svc.cluster.local:9090
     jaegerUrl: jaeger.linkerd-jaeger.svc.cluster.local
