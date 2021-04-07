@@ -8,6 +8,7 @@ spec:
   interval: 1m
   path: "./kustomize/tester/"
   prune: true
+  serviceAccountName: devops
   sourceRef:
     kind: GitRepository
     name: flagger
