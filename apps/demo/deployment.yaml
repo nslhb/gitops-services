@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: api
-          image: argoproj/rollouts-demo:yellow
+          image: argoproj/rollouts-demo:red
           ports:
             - name: http
               containerPort: 8080
