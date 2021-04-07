@@ -30,6 +30,8 @@ configMapGenerator:
       - linkerd/health.json
       - linkerd/job.json
       - linkerd/kubernetes.json
+  - name: linkerd2
+    files:
       - linkerd/multicluster.json
       - linkerd/namespace.json
       - linkerd/pod.json
@@ -41,6 +43,7 @@ configMapGenerator:
       - linkerd/service.json
       - linkerd/statefulset.json
       - linkerd/top-line.json
+
   #  - name: prometheus-remote-write
   #    files:
   #      - general/prometheus-remote-write.json
