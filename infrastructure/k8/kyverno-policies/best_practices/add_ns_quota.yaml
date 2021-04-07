@@ -21,6 +21,7 @@ spec:
           - "default"
           - "kube-public"
           - "kyverno"
+          - "linkerd"
     generate:
       kind: ResourceQuota
       name: default-resourcequota
