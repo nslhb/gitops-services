@@ -9,6 +9,7 @@ resources:
 - flagger/flagger-kustomization.yaml
 - flagger/flagger-repository.yaml
 - monitoring/prometheus-operator.yaml
+- monitoring/quota.yaml
 #- monitoring/aws-sigv4-proxy-admission-controller.yaml
 - kube-system/aws-load-balancer-controller.yaml
 - kube-system/cluster-autoscaler-deployment.yaml
