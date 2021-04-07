@@ -30,16 +30,16 @@ spec:
         thresholdRange:
           max: 500
         interval: 30s
-#    webhooks:
-#      - name: acceptance-test
-#        type: pre-rollout
-#        url: http://flagger-loadtester.test/
-#        timeout: 30s
-#        metadata:
-#          type: bash
-#          cmd: "curl -sd 'test' http://podinfo-canary.test:9898/token | grep token"
-#      - name: load-test
-#        type: rollout
-#        url: http://flagger-loadtester.test/
-#        metadata:
-#          cmd: "hey -z 2m -q 10 -c 2 http://podinfo-canary.test:9898/"
+    webhooks:
+      - name: acceptance-test
+        type: pre-rollout
+        url: http://flagger-loadtester/
+        timeout: 30s
+        metadata:
+          type: bash
+          cmd: "curl http://roullouts-demo-canary/color"
+      - name: load-test
+        type: rollout
+        url: http://flagger-loadtester/
+        metadata:
+          cmd: "hey -z 2m -q 10 -c 2 http://roullouts-demo-canary/color"
