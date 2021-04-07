@@ -26,7 +26,8 @@ configMapGenerator:
       - linkerd/cronjob.json
       - linkerd/daemonset.json
       - linkerd/deployment.json
-      - linkerd/grafana.json
+  - name: linkerd1
+    files:
       - linkerd/health.json
       - linkerd/job.json
       - linkerd/kubernetes.json
@@ -35,10 +36,14 @@ configMapGenerator:
       - linkerd/multicluster.json
       - linkerd/namespace.json
       - linkerd/pod.json
+  - name: linkerd3
+    files:
       - linkerd/prometheus.json
       - linkerd/prometheus-benchmark.json
       - linkerd/replicaset.json
       - linkerd/replicationcontroller.json
+  - name: linkerd4
+    files:
       - linkerd/route.json
       - linkerd/service.json
       - linkerd/statefulset.json
