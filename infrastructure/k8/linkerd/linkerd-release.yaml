@@ -79,11 +79,11 @@ spec:
         namespace: flux-system
   values:
     grafana:
-      enabled: false
+      enabled: true
     prometheus:
       enabled: false
-    grafanaUrl: http://kube-prometheus-stack-grafana.monitoring.svc.cluster.local
+#    grafanaUrl: http://kube-prometheus-stack-grafana.monitoring.svc.cluster.local
     prometheusUrl: http://prometheus-operated.monitoring.svc.cluster.local:9090
-    jaegerUrl: jaeger.linkerd-jaeger.svc.cluster.local
+#    jaegerUrl: jaeger.linkerd-jaeger.svc.cluster.local
     nodeSelector:
       workload: system
