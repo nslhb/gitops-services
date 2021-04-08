@@ -24,10 +24,6 @@ spec:
           args:
             - --interval=60
             - --debug
-            - --include-resources=deployment
-            - --include-resources=horizontalpodautoscalers
-            - --include-resources=statefulset
-            - --exclude-namespace=flux-system
           envFrom:
             - configMapRef:
                 name: kube-downscaler
