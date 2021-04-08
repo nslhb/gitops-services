@@ -4,19 +4,7 @@ metadata:
   name: rollouts-demo
   namespace: apps
 spec:
-  replicas: 1
-  strategy:
-    canary:
-      canaryService: rollouts-demo-canary
-      stableService: rollouts-demo-stable
-      trafficRouting:
-        alb:
-          ingress: rollouts-demo-ingress
-          servicePort: 80
-          rootService: rollouts-demo-root
-      steps:
-        - setWeight: 5
-        - pause: {}
+  replicas: 3
   revisionHistoryLimit: 2
   selector:
     matchLabels:
@@ -37,3 +25,25 @@ spec:
             requests:
               memory: 32Mi
               cpu: 5m
+
+  strategy:
+    canary:
+      canaryService: rollouts-demo-canary
+      stableService: rollouts-demo-stable
+      trafficRouting:
+        alb:
+          ingress: rollouts-demo-ingress
+          servicePort: 80
+          rootService: rollouts-demo-root
+      steps:
+        - setWeight: 5
+        - pause:
+            { duration: 20s }
+        - setWeight: 20
+        - pause: { duration: 20s }
+        - setWeight: 40
+        - pause: { duration: 40s }
+        - setWeight: 60
+        - pause: { duration: 40s }
+        - setWeight: 80
+        - pause: { duration: 40s }
