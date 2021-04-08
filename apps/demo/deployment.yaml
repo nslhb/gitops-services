@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   name: rollouts-demo
   namespace: apps
+  annotations:
+    timestamp: "2021-04-07T18:37:48Z"
 spec:
   replicas: 1
   minReadySeconds: 5
