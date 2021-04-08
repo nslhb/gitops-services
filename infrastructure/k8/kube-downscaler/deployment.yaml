@@ -25,7 +25,7 @@ spec:
             - --interval=60
             - --debug
             - --include-resources=deployment
-            - --include-resources=rollout
+            - --include-resources=horizontalpodautoscalers
             - --include-resources=statefulset
             - --exclude-namespace=flux-system
           envFrom:
