@@ -23,6 +23,7 @@ spec:
           - "kyverno"
           - "linkerd"
           - "monitoring"
+          - "test"
     generate:
       kind: ResourceQuota
       name: default-resourcequota
