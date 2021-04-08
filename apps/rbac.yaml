@@ -4,6 +4,7 @@ kind: Namespace
 metadata:
   labels:
     toolkit.fluxcd.io/tenant: dev-team
+  annotations:
     linkerd.io/inject: enabled
   name: apps
 
