@@ -80,6 +80,7 @@ spec:
     grafana:
       enabled: false
     grafanaUrl: http://kube-prometheus-stack-grafana.monitoring.svc.cluster.local:3000
+    jaegerUrl: http://jaeger.linkerd-jaeger.svc.cluster.local:16686
     prometheus:
       enabled: false
     prometheusUrl: http://prometheus-operated.monitoring.svc.cluster.local:9090
