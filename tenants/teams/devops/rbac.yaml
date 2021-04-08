@@ -140,12 +140,13 @@ subjects:
   name: devops
   namespace: kube-system
 
+
 ---
 apiVersion: v1
 kind: Namespace
 metadata:
   labels:
-    toolkit.fluxcd.io/tenant: argo-rollouts
+    toolkit.fluxcd.io/tenant: devops
   name: argo-rollouts
 
 ---
@@ -153,17 +154,17 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   labels:
-    toolkit.fluxcd.io/tenant: argo-rollouts
-  name: argo-rollouts
+    toolkit.fluxcd.io/tenant: devops
+  name: devops
   namespace: argo-rollouts
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
+kind: RoleBinding
 metadata:
   labels:
-    toolkit.fluxcd.io/tenant: argo-rollouts
-  name: argo-rollouts-reconciler
+    toolkit.fluxcd.io/tenant: devops
+  name: devops-reconciler
   namespace: argo-rollouts
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -174,6 +175,6 @@ subjects:
   kind: User
   name: gotk:argo-rollouts:reconciler
 - kind: ServiceAccount
-  name: argo-rollouts
+  name: devops
   namespace: argo-rollouts
 
