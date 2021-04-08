@@ -77,9 +77,9 @@ spec:
         name: linkerd
         namespace: linkerd
   values:
-#    grafana:
-#      enabled: false
-#    grafanaUrl: kube-prometheus-stack-grafana.monitoring.svc.cluster.local
+    grafana:
+      enabled: false
+    grafanaUrl: kube-prometheus-stack-grafana.monitoring.svc.cluster.local:3000
     prometheus:
       enabled: false
     prometheusUrl: prometheus-operated.monitoring.svc.cluster.local:9090
