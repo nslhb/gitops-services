@@ -23,6 +23,7 @@ spec:
           image: hjacobs/kube-downscaler:21.2.0
           args:
             - --interval=60
+            - --debug
             - --include-resources=deployment
             - --include-resources=rollout
             - --include-resources=statefulset
