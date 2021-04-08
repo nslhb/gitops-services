@@ -4,7 +4,9 @@ namespace: apps
 commonLabels:
   app: rollouts-demo
 resources:
-  - deployment.yaml
-  - hpa.yaml
-  - canary.yaml
-
+#  - deployment.yaml
+#  - hpa.yaml
+#  - canary.yaml
+  - ingress.yaml
+  - rollout.yaml
+  - services.yaml
