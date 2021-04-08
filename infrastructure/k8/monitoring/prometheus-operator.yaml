@@ -39,7 +39,6 @@ spec:
               - source_labels: [ __meta_kubernetes_pod_container_name ]
                 action: replace
                 target_label: component
-
           - job_name: 'linkerd-service-mirror'
             kubernetes_sd_configs:
               - role: pod
@@ -52,7 +51,6 @@ spec:
               - source_labels: [ __meta_kubernetes_pod_container_name ]
                 action: replace
                 target_label: component
-
           - job_name: 'linkerd-proxy'
             kubernetes_sd_configs:
               - role: pod
@@ -104,7 +102,6 @@ spec:
               # Copy tmp labels into real labels
               - action: labelmap
                 regex: __tmp_pod_label_(.+)
-
           - job_name: kubernetes-apiserver
             kubernetes_sd_configs:
               - role: endpoints
@@ -120,8 +117,6 @@ spec:
               - source_labels: [__meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
                 action: keep
                 regex: kubernetes;https
-
-          # Kubernetes pods
           - job_name: kubernetes-pods
             kubernetes_sd_configs:
               - role: pod
