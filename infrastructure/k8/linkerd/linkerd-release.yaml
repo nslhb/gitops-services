@@ -79,9 +79,9 @@ spec:
   values:
     grafana:
       enabled: false
-    grafanaUrl: kube-prometheus-stack-grafana.monitoring.svc.cluster.local:3000
+    grafanaUrl: http://kube-prometheus-stack-grafana.monitoring.svc.cluster.local:3000
     prometheus:
       enabled: false
-    prometheusUrl: prometheus-operated.monitoring.svc.cluster.local:9090
+    prometheusUrl: http://prometheus-operated.monitoring.svc.cluster.local:9090
     nodeSelector:
       workload: system
