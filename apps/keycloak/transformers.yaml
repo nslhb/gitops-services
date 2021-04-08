@@ -1,5 +1,0 @@
-nameReference:
-  - kind: ConfigMap
-    fieldSpecs:
-      - path: spec/keycloakDeploymentSpec/experimental/volumes/items/configMap/name
-        kind: Keycloak
