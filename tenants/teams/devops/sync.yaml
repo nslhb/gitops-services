@@ -13,7 +13,6 @@ spec:
     name: flux-system
   timeout: 2m0s
   validation: client
-  serviceAccountName: devops
   healthChecks:
     - kind: Deployment
       name: argo-rollouts
@@ -34,7 +33,6 @@ spec:
     name: flux-system
   timeout: 2m0s
   validation: client
-  serviceAccountName: devops
   healthChecks:
     - kind: Deployment
       name: cluster-autoscaler
@@ -52,7 +50,6 @@ spec:
   interval: 10m0s
   path: ./infrastructure/k8/linkerd
   prune: true
-  serviceAccountName: devops
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -78,4 +75,3 @@ spec:
     name: flux-system
   timeout: 2m0s
   validation: client
-  serviceAccountName: devops

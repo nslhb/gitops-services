@@ -21,6 +21,6 @@ spec:
   serviceAccountName: dev-team
   sourceRef:
     kind: GitRepository
-    name: flux-system
+    name: dev-team
   validation: client
 
