@@ -140,3 +140,40 @@ subjects:
   name: devops
   namespace: kube-system
 
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    toolkit.fluxcd.io/tenant: argo-rollouts
+  name: argo-rollouts
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    toolkit.fluxcd.io/tenant: argo-rollouts
+  name: argo-rollouts
+  namespace: argo-rollouts
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    toolkit.fluxcd.io/tenant: argo-rollouts
+  name: argo-rollouts-reconciler
+  namespace: argo-rollouts
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- apiGroup: rbac.authorization.k8s.io
+  kind: User
+  name: gotk:argo-rollouts:reconciler
+- kind: ServiceAccount
+  name: argo-rollouts
+  namespace: argo-rollouts
+
