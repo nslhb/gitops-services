@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: rollouts-demo
-          image: argoproj/rollouts-demo:yellow
+          image: argoproj/rollouts-demo:blue
           ports:
             - name: http
               containerPort: 8080
@@ -54,4 +54,3 @@ spec:
         - pause: { duration: 40s }
         - setWeight: 80
         - pause: { duration: 40s }
-        - setWeight: 100
