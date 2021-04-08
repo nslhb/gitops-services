@@ -90,6 +90,7 @@ spec:
     name: flux-system
   timeout: 2m0s
   validation: client
+  targetNamespace: kube-system
   healthChecks:
     - kind: Deployment
       name: kube-downscaler
