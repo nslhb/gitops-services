@@ -20,20 +20,24 @@ spec:
       containers:
         - name: downscaler
           # see https://github.com/hjacobs/kube-downscaler/releases
-          image: hjacobs/kube-downscaler:20.10.0
+          image: hjacobs/kube-downscaler:21.2.0
           args:
             - --interval=60
+            - --include-resources=deployment
+            - --include-resources=rollout
+            - --include-resources=statefulset
+            - --exclude-namespace=flux-system
           envFrom:
             - configMapRef:
                 name: kube-downscaler
                 optional: true
           resources:
             limits:
-              cpu: 100m
-              memory: 50Mi
+              cpu: 50m
+              memory: 100Mi
             requests:
-              cpu: 20m
-              memory: 50Mi
+              cpu: 50m
+              memory: 100Mi
           securityContext:
             readOnlyRootFilesystem: true
             runAsNonRoot: true
