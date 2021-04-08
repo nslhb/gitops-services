@@ -69,6 +69,7 @@ spec:
   interval: 10m0s
   releaseName: linkerd-viz
   serviceAccountName: devops
+  suspend: true
   chart:
     spec:
       chart: linkerd-viz
