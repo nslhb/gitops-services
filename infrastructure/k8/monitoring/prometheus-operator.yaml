@@ -14,11 +14,14 @@ spec:
         kind: HelmRepository
         name: prometheus-community
   values:
-    nodeSelector:
-      worload: edge
+    nodeExporter:
+      nodeSelector:
+        worload: edge
     kubeControllerManager:
       enabled: false
     kubeScheduler:
+      enabled: false
+    kubeEtcd:
       enabled: false
     grafana:
       enabled: true
