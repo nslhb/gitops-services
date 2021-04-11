@@ -2458,11 +2458,17 @@ spec:
           name: temp
       nodeSelector:
         kubernetes.io/os: linux
+        workload: system
       serviceAccountName: helm-controller
       terminationGracePeriodSeconds: 600
       volumes:
       - emptyDir: {}
         name: temp
+      tolerations:
+        - key: SystemAddonsOnly
+          operator: "Exists"
+          effect: "NoSchedule"
+
 ---
 apiVersion: apps/v1
 kind: Deployment
