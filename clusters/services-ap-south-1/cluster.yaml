@@ -53,16 +53,17 @@ iam:
 
 nodeGroups:
   - name: edge
-    instanceType: "m5a.large"
-    desiredCapacity: 0
+    instanceType: "t3.medium"
+    desiredCapacity: 1
     minSize: 0
     maxSize: 3
     volumeSize: 10
-    volumeType: gp2
+    volumeType: gp3
     volumeEncrypted: true
     volumeKmsKeyID: 97f38a15-a525-49d6-beb7-7e768066c762
     privateNetworking: true
     amiFamily: Bottlerocket
+    ami: auto-ssm
     disableIMDSv1: true
     iam:
       instanceProfileARN: arn:aws:iam::832807087073:instance-profile/EKS-Default-SSM-AD-Role-ip
@@ -71,11 +72,36 @@ nodeGroups:
       workload: public
     tags:
       k8s.io/cluster-autoscaler/enabled: "true"
-      k8s.io/cluster-autoscaler/services-ap-south-1: "owned"
+      k8s.io/cluster-autoscaler/services-us-east-1: "owned"
+    taints:
+      Edge: "true:NoSchedule"
+  - name: devops
+    instanceType: "t3.medium"
+    desiredCapacity: 1
+    minSize: 0
+    maxSize: 3
+    volumeSize: 10
+    volumeType: gp3
+    volumeEncrypted: true
+    volumeKmsKeyID: 97f38a15-a525-49d6-beb7-7e768066c762
+    privateNetworking: true
+    amiFamily: Bottlerocket
+    ami: auto-ssm
+    disableIMDSv1: true
+    iam:
+      instanceProfileARN: arn:aws:iam::832807087073:instance-profile/EKS-Default-SSM-AD-Role-ip
+      instanceRoleARN: arn:aws:iam::832807087073:role/EKS-Default-SSM-AD-Role
+    labels:
+      workload: devops
+    tags:
+      k8s.io/cluster-autoscaler/enabled: "true"
+      k8s.io/cluster-autoscaler/services-us-east-1: "owned"
+    taints:
+      SystemAddonsOnly: "true:NoSchedule"
 
 managedNodeGroups:
-  - name: system
-    instanceType: "t3.xlarge"
+  - name: critical
+    instanceType: "t3.large"
     desiredCapacity: 1
     minSize: 1
     maxSize: 5
@@ -91,14 +117,14 @@ managedNodeGroups:
       workload: system
     tags:
       k8s.io/cluster-autoscaler/enabled: "true"
-      k8s.io/cluster-autoscaler/services-ap-south-1: "owned"
+      k8s.io/cluster-autoscaler/services-us-east-1: "owned"
+    preBootstrapCommands:
+      - sed -i '/^KUBELET_EXTRA_ARGS=/a KUBELET_EXTRA_ARGS+=" --register-with-taints=CriticalAddonsOnly=true:NoSchedule"' /etc/eks/bootstrap.sh
 
-#fargateProfiles:
-#  - name: fp-coredns
-#    selectors:
-#      - namespace: kube-system
-#        labels:
-#          k8s-app: kube-dns
+fargateProfiles:
+  - name: flux
+    selectors:
+      - namespace: flux-system
 
 cloudWatch:
   clusterLogging:
