@@ -6,5 +6,5 @@ data:
   # downscale for non-work hours
   DEFAULT_UPTIME: "Mon-Thu 08:00-21:00 Asia/Kolkata"
   INCLUDE_RESOURCES: "cronjobs,deployments,horizontalpodautoscalers,statefulsets"
-  EXCLUDE_NAMESPACES: "monitoring,flux-system"
+  EXCLUDE_NAMESPACES: "kube-system,monitoring,flux-system"
   EXCLUDE_DEPLOYMENTS: "cluster-autoscaler"
