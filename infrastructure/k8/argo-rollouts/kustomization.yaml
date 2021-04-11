@@ -3,3 +3,5 @@ kind: Kustomization
 namespace: argo-rollouts
 resources:
   - https://raw.githubusercontent.com/argoproj/argo-rollouts/stable/manifests/install.yaml
+patchesStrategicMerge:
+  - patch.yaml
