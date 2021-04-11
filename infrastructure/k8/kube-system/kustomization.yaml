@@ -5,4 +5,4 @@ resources:
   - cluster-autoscaler-rbac.yaml
   - cluster-autoscaler-deployment.yaml
   - aws-load-balancer-controller.yaml
-  - aws-sigv4-proxy-admission-controller.yaml
+#  - aws-sigv4-proxy-admission-controller.yaml
