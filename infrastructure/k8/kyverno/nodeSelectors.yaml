@@ -8,3 +8,6 @@ spec:
     spec:
       nodeSelector:
         workload: system
+      tolerations:
+        - key: SystemAddonsOnly
+          operator: Exists
