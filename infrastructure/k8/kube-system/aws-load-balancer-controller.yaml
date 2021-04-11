@@ -28,3 +28,6 @@ spec:
     clusterName: services
     nodeSelector:
        workload: system
+    tolerations:
+      - key: SystemAddonsOnly
+        operator: Exists

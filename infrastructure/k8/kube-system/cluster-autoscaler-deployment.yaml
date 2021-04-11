@@ -54,3 +54,6 @@ spec:
         - name: ssl-certs
           hostPath:
             path: "/etc/ssl/certs/ca-bundle.crt"
+      tolerations:
+        - key: SystemAddonsOnly
+          operator: Exists
