@@ -9,7 +9,9 @@ coredns:
         -n kube-system \
         --type json \
         -p='[{"op": "remove", "path": "/spec/template/metadata/annotations/eks.amazonaws.com~1compute-type"}]'
-	kubectl patch deployment valid-deployment  --type json  -p='[{"op": "merge", "path": "/spec/template/spec/containers/0/livenessProbe"}]'
+	kubectl patch deployment coredns \
+		-n kube-system \
+		-p='{"spec":{"template":{"spec":{"containers":[{ "name": "coredns","resources":{"limits":{"cpu":"250m","memory":"256Mi"},"requests":{"cpu":"250m","memory":"256Mi"}}}]}}}}'
 
 create:
 	@eksctl create cluster --config-file=infrastructure/cluster.yaml

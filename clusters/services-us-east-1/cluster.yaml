@@ -52,6 +52,34 @@ iam:
         autoScaler: true
 
 nodeGroups:
+  - name: system
+    instanceType: "t3a.large"
+    desiredCapacity: 1
+    minSize: 0
+    maxSize: 3
+    volumeSize: 10
+    volumeType: gp3
+    volumeEncrypted: true
+    volumeKmsKeyID: fc0e8723-fa6e-4d9c-bd92-02c0e77886d4
+    privateNetworking: true
+    amiFamily: Bottlerocket
+    ami: auto-ssm
+    disableIMDSv1: true
+    iam:
+      instanceProfileARN: arn:aws:iam::832807087073:instance-profile/EKS-Default-SSM-AD-Role-ip
+      instanceRoleARN: arn:aws:iam::832807087073:role/EKS-Default-SSM-AD-Role
+    labels:
+      workload: system
+    tags:
+      k8s.io/cluster-autoscaler/enabled: "true"
+      k8s.io/cluster-autoscaler/services-us-east-1: "owned"
+    taints:
+      SystemAddonsOnly: "true:NoSchedule"
+    ssh:
+      allow: true
+      publicKeyName: bottlerocketkey
+    bottlerocket:
+      enableAdminContainer: true
   - name: edge
     instanceType: "t3.medium"
     desiredCapacity: 1
@@ -63,7 +91,6 @@ nodeGroups:
     volumeKmsKeyID: fc0e8723-fa6e-4d9c-bd92-02c0e77886d4
     privateNetworking: true
     amiFamily: Bottlerocket
-    ami: auto-ssm
     disableIMDSv1: true
     iam:
       instanceProfileARN: arn:aws:iam::832807087073:instance-profile/EKS-Default-SSM-AD-Role-ip
@@ -75,35 +102,6 @@ nodeGroups:
       k8s.io/cluster-autoscaler/services-us-east-1: "owned"
     taints:
       Edge: "true:NoSchedule"
-  - name: devops
-    instanceType: "t3.medium"
-    desiredCapacity: 1
-    minSize: 0
-    maxSize: 3
-    volumeSize: 10
-    volumeType: gp3
-    volumeEncrypted: true
-    volumeKmsKeyID: fc0e8723-fa6e-4d9c-bd92-02c0e77886d4
-    privateNetworking: true
-    amiFamily: Bottlerocket
-    ami: auto-ssm
-    disableIMDSv1: true
-    iam:
-      instanceProfileARN: arn:aws:iam::832807087073:instance-profile/EKS-Default-SSM-AD-Role-ip
-      instanceRoleARN: arn:aws:iam::832807087073:role/EKS-Default-SSM-AD-Role
-    labels:
-      workload: devops
-    tags:
-      k8s.io/cluster-autoscaler/enabled: "true"
-      k8s.io/cluster-autoscaler/services-us-east-1: "owned"
-    taints:
-      SystemAddonsOnly: "true:NoSchedule"
-    ssh:
-      allow: true
-      publicKeyName: bottlerocketkey
-    bottlerocket:
-      enableAdminContainer: true
-
 
 managedNodeGroups:
   - name: critical
@@ -131,9 +129,6 @@ managedNodeGroups:
       - sed -i '/^KUBELET_EXTRA_ARGS=/a KUBELET_EXTRA_ARGS+=" --register-with-taints=CriticalAddonsOnly=true:NoSchedule"' /etc/eks/bootstrap.sh
 
 fargateProfiles:
-  - name: flux
-    selectors:
-      - namespace: flux-system
   - name: coredns
     selectors:
       - namespace: kube-system
