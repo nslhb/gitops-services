@@ -14,6 +14,10 @@ spec:
         kind: HelmRepository
         name: prometheus-community
   values:
+    prometheusOperator:
+      tolerations:
+          - key: monitoring
+            operator: Exists
     prometheus-node-exporter:
       nodeSelector:
         eks.amazonaws.com/compute-type: ec2
@@ -26,8 +30,21 @@ spec:
     grafana:
       enabled: true
       defaultDashboardsEnabled: true
+    alertmanager:
+      alertmanagerSpec:
+        tolerations:
+          - key: monitoring
+            operator: Exists
     prometheus:
       prometheusSpec:
+        resources:
+         requests:
+           memory: 8Gi
+          limits:
+            memory: 10Gi
+        tolerations:
+          - key: monitoring
+            operator: Exists
         additionalScrapeConfigs:
           - job_name: 'linkerd-controller'
             kubernetes_sd_configs:

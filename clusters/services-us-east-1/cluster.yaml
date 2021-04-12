@@ -106,6 +106,31 @@ nodeGroups:
       k8s.io/cluster-autoscaler/node-template/taint/linkerd: NoSchedule
     taints:
       linkerd: "true:NoSchedule"
+  - name: monitoring
+    instanceType: "r5a.large"
+    desiredCapacity: 1
+    minSize: 0
+    maxSize: 3
+    volumeType: gp3
+    volumeSize: 10
+    volumeEncrypted: true
+    volumeKmsKeyID: fc0e8723-fa6e-4d9c-bd92-02c0e77886d4
+    privateNetworking: true
+    amiFamily: Bottlerocket
+    disableIMDSv1: true
+    iam:
+      instanceProfileARN: arn:aws:iam::832807087073:instance-profile/EKS-Default-SSM-AD-Role-ip
+      instanceRoleARN: arn:aws:iam::832807087073:role/EKS-Default-SSM-AD-Role
+    labels:
+      workload: monitoring
+      eks.amazonaws.com/compute-type: ec2
+    tags:
+      k8s.io/cluster-autoscaler/enabled: "true"
+      k8s.io/cluster-autoscaler/services-us-east-1: "owned"
+      k8s.io/cluster-autoscaler/node-template/label/workload: monitoring
+      k8s.io/cluster-autoscaler/node-template/taint/monitoring: NoSchedule
+    taints:
+      monitoring: "true:NoSchedule"
   - name: edge
     instanceType: "t3.medium"
     desiredCapacity: 1
