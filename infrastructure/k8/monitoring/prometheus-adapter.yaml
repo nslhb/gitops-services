@@ -2,6 +2,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: prometheus-adapter
+  namespace: monitoring
 spec:
   interval: 10m0s
   releaseName: prometheus-adapter
@@ -13,23 +14,22 @@ spec:
         kind: HelmRepository
         name: prometheus-community
   values:
-    prometheus:
-      url: http://prometheus-operated.monitoring.svc.cluster.local
-      port: 9090
-    psp:
-      create: true
     resources:
-      requests:
-        cpu: 100m
-        memory: 512Mi
       limits:
         cpu: 100m
+        memory: 512Mi
+      requests:
+        cpu: 100m
         memory: 256Mi
-    nodeSelector:
-      workload: monitoring
     tolerations:
       - key: monitoring
         operator: Exists
+    prometheus:
+      url: "http://prometheus-operated.monitoring.svc.cluster.local"
+    psp:
+      create: true
+    nodeSelector:
+      workload: monitoring
     rules:
       resource:
         cpu:

@@ -16,8 +16,8 @@ spec:
   values:
     prometheusOperator:
       tolerations:
-          - key: monitoring
-            operator: Exists
+        - key: monitoring
+          operator: Exists
     prometheus-node-exporter:
       nodeSelector:
         eks.amazonaws.com/compute-type: ec2
@@ -43,10 +43,10 @@ spec:
     prometheus:
       prometheusSpec:
         resources:
-         requests:
-           memory: 8Gi
-          limits:
-            memory: 10Gi
+          requests:
+            memory: 8Gi
+            limits:
+              memory: 10Gi
         tolerations:
           - key: monitoring
             operator: Exists
