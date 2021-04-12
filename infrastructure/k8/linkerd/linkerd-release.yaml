@@ -35,7 +35,7 @@ spec:
     controlPlaneTracing: true
     controlPlaneTracingNamespace: linkerd-jaeger
     tolerations:
-      - key: SystemAddonsOnly
+      - key: OptionalAddonsOnly
         operator: Exists
 ---
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
@@ -58,7 +58,7 @@ spec:
         namespace: linkerd
   values:
     tolerations:
-      - key: SystemAddonsOnly
+      - key: OptionalAddonsOnly
         operator: Exists
 
 ---
@@ -94,5 +94,5 @@ spec:
     nodeSelector:
       workload: system
     tolerations:
-      - key: SystemAddonsOnly
+      - key: OptionalAddonsOnly
         operator: Exists
