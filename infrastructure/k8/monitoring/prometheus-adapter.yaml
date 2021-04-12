@@ -14,7 +14,7 @@ spec:
         name: prometheus-community
   values:
     prometheus:
-      url: http://prometheus.default.svc
+      url: http://prometheus-operated.monitoring.svc.cluster.local
       port: 9090
     psp:
       create: true
