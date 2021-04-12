@@ -5,3 +5,4 @@ resources:
   - prometheus-operator-repository.yaml
   - prometheus-operator.yaml
   - grafana
+  - prometheus-adapter.yaml

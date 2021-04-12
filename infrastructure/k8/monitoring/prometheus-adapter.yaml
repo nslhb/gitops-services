@@ -1,0 +1,53 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: prometheus-adapter
+spec:
+  interval: 10m0s
+  releaseName: prometheus-adapter
+  serviceAccountName: devops
+  chart:
+    spec:
+      chart: prometheus-adapter
+      sourceRef:
+        kind: HelmRepository
+        name: prometheus-community
+  values:
+    prometheus:
+      url: http://prometheus.default.svc
+      port: 9090
+    psp:
+      create: true
+    resources:
+       requests:
+         cpu: 100m
+         memory: 128Mi
+       limits:
+         cpu: 100m
+         memory: 128Mi
+    resourceRules:
+      cpu:
+        containerQuery: sum(rate(container_cpu_usage_seconds_total{<<.LabelMatchers>>}[1m])) by (<<.GroupBy>>)
+        nodeQuery: sum(rate(container_cpu_usage_seconds_total{<<.LabelMatchers>>, id='/'}[1m])) by (<<.GroupBy>>)
+        resources:
+          overrides:
+            instance:
+              resource: node
+            namespace:
+              resource: namespace
+            pod_name:
+              resource: pod
+        containerLabel: container_name
+      memory:
+        containerQuery: sum(container_memory_working_set_bytes{<<.LabelMatchers>>}) by (<<.GroupBy>>)
+        nodeQuery: sum(container_memory_working_set_bytes{<<.LabelMatchers>>,id='/'}) by (<<.GroupBy>>)
+        resources:
+          overrides:
+            instance:
+              resource: node
+            namespace:
+              resource: namespace
+            pod_name:
+              resource: pod
+        containerLabel: container_name
+      window: 1m
