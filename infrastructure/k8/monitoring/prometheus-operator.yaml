@@ -58,7 +58,7 @@ spec:
           requests:
             memory: 8Gi
           limits:
-            memory: 10Gi
+            memory: 8Gi
         tolerations:
           - key: monitoring
             operator: Exists
