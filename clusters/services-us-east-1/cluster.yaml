@@ -72,7 +72,7 @@ nodeGroups:
       eks.amazonaws.com/compute-type: ec2
     tags:
       k8s.io/cluster-autoscaler/enabled: "true"
-      k8s.io/cluster-autoscaler/services-us-east-1: "owned"
+      k8s.io/cluster-autoscaler/services: "owned"
       k8s.io/cluster-autoscaler/node-template/label/workload: system
       k8s.io/cluster-autoscaler/node-template/taint/SystemAddonsOnly: NoSchedule
     taints:
@@ -101,7 +101,7 @@ nodeGroups:
       eks.amazonaws.com/compute-type: ec2
     tags:
       k8s.io/cluster-autoscaler/enabled: "true"
-      k8s.io/cluster-autoscaler/services-us-east-1: "owned"
+      k8s.io/cluster-autoscaler/services: "owned"
       k8s.io/cluster-autoscaler/node-template/label/part-of: Linkerd
       k8s.io/cluster-autoscaler/node-template/taint/linkerd: NoSchedule
     taints:
@@ -126,7 +126,7 @@ nodeGroups:
       eks.amazonaws.com/compute-type: ec2
     tags:
       k8s.io/cluster-autoscaler/enabled: "true"
-      k8s.io/cluster-autoscaler/services-us-east-1: "owned"
+      k8s.io/cluster-autoscaler/services: "owned"
       k8s.io/cluster-autoscaler/node-template/label/workload: monitoring
       k8s.io/cluster-autoscaler/node-template/taint/monitoring: NoSchedule
     taints:
@@ -151,7 +151,7 @@ nodeGroups:
       eks.amazonaws.com/compute-type: ec2
     tags:
       k8s.io/cluster-autoscaler/enabled: "true"
-      k8s.io/cluster-autoscaler/services-us-east-1: "owned"
+      k8s.io/cluster-autoscaler/services: "owned"
       k8s.io/cluster-autoscaler/node-template/label/workload: public
       k8s.io/cluster-autoscaler/node-template/taint/Edge: NoSchedule
     taints:
