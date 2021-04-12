@@ -34,6 +34,9 @@ spec:
         crtExpiry: "2022-04-04T22:52:03Z"
     controlPlaneTracing: true
     controlPlaneTracingNamespace: linkerd-jaeger
+    tolerations:
+      - key: SystemAddonsOnly
+        operator: Exists
 ---
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
@@ -53,6 +56,10 @@ spec:
         kind: HelmRepository
         name: linkerd
         namespace: linkerd
+  values:
+    tolerations:
+      - key: SystemAddonsOnly
+        operator: Exists
 
 ---
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
@@ -86,3 +93,6 @@ spec:
     prometheusUrl: http://prometheus-operated.monitoring.svc.cluster.local:9090
     nodeSelector:
       workload: system
+    tolerations:
+      - key: SystemAddonsOnly
+        operator: Exists
