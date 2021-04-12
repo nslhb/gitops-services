@@ -50,9 +50,9 @@ spec:
         spec:
           limits:
           - default:
-              cpu: 500m
-              memory: 1Gi
+              cpu: 100m
+              memory: 256Mi
             defaultRequest:
-              cpu: 200m
+              cpu: 100m
               memory: 256Mi
             type: Container
