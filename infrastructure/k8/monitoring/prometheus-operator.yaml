@@ -44,11 +44,6 @@ spec:
           operator: Exists
     alertmanager:
       alertmanagerSpec:
-        resources:
-          requests:
-            memory: 2Gi
-          limits:
-            memory: 2Gi
         tolerations:
           - key: monitoring
             operator: Exists
