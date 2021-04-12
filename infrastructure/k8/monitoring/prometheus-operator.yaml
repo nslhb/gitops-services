@@ -15,6 +15,11 @@ spec:
         name: prometheus-community
   values:
     prometheusOperator:
+      admissionWebhooks:
+        patch:
+          tolerations:
+            - key: monitoring
+              operator: Exists
       tolerations:
         - key: monitoring
           operator: Exists
