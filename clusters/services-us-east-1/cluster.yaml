@@ -78,8 +78,8 @@ nodeGroups:
     ssh:
       allow: true
       publicKeyName: bottlerocketkey
-  - name: addons
-    instanceType: "t3a.large"
+  - name: linkerd
+    instanceType: "c5.large"
     desiredCapacity: 1
     minSize: 0
     maxSize: 3
@@ -95,13 +95,13 @@ nodeGroups:
       instanceProfileARN: arn:aws:iam::832807087073:instance-profile/EKS-Default-SSM-AD-Role-ip
       instanceRoleARN: arn:aws:iam::832807087073:role/EKS-Default-SSM-AD-Role
     labels:
-      workload: system
+      part-of: Linkerd
       eks.amazonaws.com/compute-type: ec2
     tags:
       k8s.io/cluster-autoscaler/enabled: "true"
       k8s.io/cluster-autoscaler/services-us-east-1: "owned"
     taints:
-      OptionalAddonsOnly: "true:NoSchedule"
+      linkerd: "true:NoSchedule"
   - name: edge
     instanceType: "t3.medium"
     desiredCapacity: 1
