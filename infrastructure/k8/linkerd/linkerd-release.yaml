@@ -38,61 +38,61 @@ spec:
       - key: linkerd
         operator: Exists
 ---
-apiVersion: helm.toolkit.fluxcd.io/v2beta1
-kind: HelmRelease
-metadata:
-  name: jaeger
-  namespace: linkerd
-spec:
-  dependsOn:
-    - name: linkerd
-  interval: 10m0s
-  releaseName: jaeger
-  serviceAccountName: devops
-  chart:
-    spec:
-      chart: linkerd-jaeger
-      sourceRef:
-        kind: HelmRepository
-        name: linkerd
-        namespace: linkerd
-  values:
-    tolerations:
-      - key: linkerd
-        operator: Exists
+#apiVersion: helm.toolkit.fluxcd.io/v2beta1
+#kind: HelmRelease
+#metadata:
+#  name: jaeger
+#  namespace: linkerd
+#spec:
+#  dependsOn:
+#    - name: linkerd
+#  interval: 10m0s
+#  releaseName: jaeger
+#  serviceAccountName: devops
+#  chart:
+#    spec:
+#      chart: linkerd-jaeger
+#      sourceRef:
+#        kind: HelmRepository
+#        name: linkerd
+#        namespace: linkerd
+#  values:
+#    tolerations:
+#      - key: linkerd
+#        operator: Exists
 
 ---
-apiVersion: helm.toolkit.fluxcd.io/v2beta1
-kind: HelmRelease
-metadata:
-  name: linkerd-viz
-  namespace: linkerd
-spec:
-  dependsOn:
-    - name: jaeger
-      namespace: linkerd
-    - name: linkerd
-      namespace: linkerd
-  interval: 10m0s
-  releaseName: linkerd-viz
-  serviceAccountName: devops
-  chart:
-    spec:
-      chart: linkerd-viz
-      sourceRef:
-        kind: HelmRepository
-        name: linkerd
-        namespace: linkerd
-  values:
-    grafana:
-      enabled: false
-    grafanaUrl: http://kube-prometheus-stack-grafana.monitoring.svc.cluster.local:3000
-    jaegerUrl: http://jaeger.linkerd-jaeger.svc.cluster.local:16686
-    prometheus:
-      enabled: false
-    prometheusUrl: http://prometheus-operated.monitoring.svc.cluster.local:9090
-    nodeSelector:
-      workload: system
-    tolerations:
-      - key: linkerd
-        operator: Exists
+#apiVersion: helm.toolkit.fluxcd.io/v2beta1
+#kind: HelmRelease
+#metadata:
+#  name: linkerd-viz
+#  namespace: linkerd
+#spec:
+#  dependsOn:
+#    - name: jaeger
+#      namespace: linkerd
+#    - name: linkerd
+#      namespace: linkerd
+#  interval: 10m0s
+#  releaseName: linkerd-viz
+#  serviceAccountName: devops
+#  chart:
+#    spec:
+#      chart: linkerd-viz
+#      sourceRef:
+#        kind: HelmRepository
+#        name: linkerd
+#        namespace: linkerd
+#  values:
+#    grafana:
+#      enabled: false
+#    grafanaUrl: http://kube-prometheus-stack-grafana.monitoring.svc.cluster.local:3000
+#    jaegerUrl: http://jaeger.linkerd-jaeger.svc.cluster.local:16686
+#    prometheus:
+#      enabled: false
+#    prometheusUrl: http://prometheus-operated.monitoring.svc.cluster.local:9090
+#    nodeSelector:
+#      workload: system
+#    tolerations:
+#      - key: linkerd
+#        operator: Exists
