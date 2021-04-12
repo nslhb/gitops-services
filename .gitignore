@@ -14,3 +14,16 @@
 bin/
 .idea/
 .vscode
+
+#  Local .terraform directories
+**/.terraform/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+# .user home directory
+.user/
+
+# terraform generated clusters directory
+clusters/

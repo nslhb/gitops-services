@@ -6,7 +6,6 @@ metadata:
   region: us-east-1
   version: "1.19"
 
-
 vpc:
   id: "vpc-0d9e76bd7b471527d"
   cidr: "10.18.0.0/16"
@@ -58,6 +57,7 @@ nodeGroups:
     minSize: 1
     maxSize: 1
     volumeType: gp3
+    volumeSize: 10
     volumeEncrypted: true
     volumeKmsKeyID: fc0e8723-fa6e-4d9c-bd92-02c0e77886d4
     privateNetworking: true
@@ -84,6 +84,7 @@ nodeGroups:
     minSize: 0
     maxSize: 3
     volumeType: gp3
+    volumeSize: 10
     volumeEncrypted: true
     volumeKmsKeyID: fc0e8723-fa6e-4d9c-bd92-02c0e77886d4
     privateNetworking: true
@@ -107,6 +108,7 @@ nodeGroups:
     minSize: 0
     maxSize: 3
     volumeType: gp3
+    volumeSize: 10
     volumeEncrypted: true
     volumeKmsKeyID: fc0e8723-fa6e-4d9c-bd92-02c0e77886d4
     privateNetworking: true
@@ -122,7 +124,7 @@ nodeGroups:
       k8s.io/cluster-autoscaler/enabled: "true"
       k8s.io/cluster-autoscaler/services-us-east-1: "owned"
     taints:
-      Edge: "true:NoSchedule"
+      Edge: "true:PreferNoSchedule"
 
 fargateProfiles:
   - name: coredns

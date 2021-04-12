@@ -36,14 +36,16 @@ flux:
          --repository=services.nslhub.com \
          --branch=main \
          --path=clusters/services-us-east-1 \
-         --toleration-keys=SystemAddonsOnly
+         --toleration-keys=SystemAddonsOnly \
+         --components-extra=image-reflector-controller,image-automation-controller
 	@flux bootstrap github \
 		  --context=mum  \
 		  --owner=nslhb \
 		  --repository=services.nslhub.com \
 		  --branch=main \
 		  --path=clusters/services-ap-south-1 \
-		   --toleration-keys=SystemAddonsOnly
+		   --toleration-keys=SystemAddonsOnly \
+		   --components-extra=image-reflector-controller,image-automation-controller
 
 init/apsouth1:
 	@make init

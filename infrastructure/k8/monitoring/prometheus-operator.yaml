@@ -16,7 +16,7 @@ spec:
   values:
     nodeExporter:
       nodeSelector:
-        worload: edge
+        eks.amazonaws.com/compute-type: ec2
     kubeControllerManager:
       enabled: false
     kubeScheduler:
