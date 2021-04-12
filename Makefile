@@ -46,6 +46,9 @@ flux:
 		  --path=clusters/services-ap-south-1 \
 		   --toleration-keys=SystemAddonsOnly \
 		   --components-extra=image-reflector-controller,image-automation-controller
+cleanup:
+	kubectl delete mutatingwebhookconfigurations.admissionregistration.k8s.io kube-prometheus-stack-admission   linkerd-proxy-injector-webhook-config
+	kubectl delete apiservice v1beta1.custom.metrics.k8s.io  v1beta1.metrics.k8s.io
 
 init/apsouth1:
 	@make init
