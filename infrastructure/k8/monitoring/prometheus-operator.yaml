@@ -14,7 +14,7 @@ spec:
         kind: HelmRepository
         name: prometheus-community
   values:
-    nodeExporter:
+    prometheus-node-exporter:
       nodeSelector:
         eks.amazonaws.com/compute-type: ec2
     kubeControllerManager:
