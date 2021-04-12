@@ -35,6 +35,13 @@ spec:
     grafana:
       enabled: true
       defaultDashboardsEnabled: true
+      tolerations:
+        - key: monitoring
+          operator: Exists
+    kube-state-metrics:
+      tolerations:
+        - key: monitoring
+          operator: Exists
     alertmanager:
       alertmanagerSpec:
         resources:
