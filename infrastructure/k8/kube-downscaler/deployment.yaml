@@ -24,7 +24,8 @@ spec:
           args:
             - --interval=60
             - --debug
-            - --include-resources="cronjobs,deployments,horizontalpodautoscalers,statefulsets"
+            - --include-resources
+            - cronjobs,deployments,horizontalpodautoscalers,statefulsets
           envFrom:
             - configMapRef:
                 name: kube-downscaler
