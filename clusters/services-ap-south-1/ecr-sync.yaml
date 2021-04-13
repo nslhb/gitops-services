@@ -88,3 +88,6 @@ spec:
                     --docker-server="$ECR_REGISTRY" \
                     --docker-username=AWS \
                     --docker-password="$(</token/ecr-token)"
+          tolerations:
+            - key: SystemAddonsOnly
+              operator: Exists
