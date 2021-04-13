@@ -11,7 +11,7 @@ metadata:
       Application teams can then configure additional NetworkPolicy resources to allow 
       desired traffic to application pods from select sources.
 spec:
-  validationFailureAction: enforce
+  validationFailureAction: audit
   rules:
   - name: default-deny-ingress
     match:
