@@ -8,6 +8,7 @@ metadata:
       total amount of compute that may be consumed by a single namespace, create 
       a default resource quota for each namespace.
 spec:
+  validationFailureAction: enforce
   rules:
   - name: generate-resourcequota
     match:

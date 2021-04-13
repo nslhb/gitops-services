@@ -8,7 +8,7 @@ metadata:
       unexpected errors if the image changes. A best practice is to use an immutable 
       tag that maps to a specific version of an application pod.
 spec:
-  validationFailureAction: audit
+  validationFailureAction: enforce
   rules:
   - name: require-image-tag
     match:

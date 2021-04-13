@@ -9,7 +9,7 @@ metadata:
       least privileged user ID when building the container image and require that 
       application containers run as non root users.
 spec:
-  validationFailureAction: audit
+  validationFailureAction: enforce
   rules:
   - name: validate-runAsNonRoot
     match:
