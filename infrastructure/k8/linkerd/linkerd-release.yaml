@@ -38,30 +38,6 @@ spec:
       - key: linkerd
         operator: Exists
 ---
-apiVersion: helm.toolkit.fluxcd.io/v2beta1
-kind: HelmRelease
-metadata:
-  name: jaeger
-  namespace: linkerd
-spec:
-  dependsOn:
-    - name: linkerd
-  interval: 10m0s
-  releaseName: jaeger
-  serviceAccountName: devops
-  chart:
-    spec:
-      chart: linkerd-jaeger
-      sourceRef:
-        kind: HelmRepository
-        name: linkerd
-        namespace: linkerd
-  values:
-    tolerations:
-      - key: linkerd
-        operator: Exists
-
----
 #apiVersion: helm.toolkit.fluxcd.io/v2beta1
 #kind: HelmRelease
 #metadata:
