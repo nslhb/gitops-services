@@ -37,3 +37,18 @@ subjects:
   name: dev-team
   namespace: apps
 
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: default-limitrange
+  namespace: apps
+spec:
+  limits:
+    - default:
+        cpu: 100m
+        memory: 256Mi
+      defaultRequest:
+        cpu: 50m
+        memory: 100Mi
+      type: Container
