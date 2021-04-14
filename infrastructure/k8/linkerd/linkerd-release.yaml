@@ -45,8 +45,8 @@ metadata:
   namespace: linkerd
 spec:
   dependsOn:
-    - name: jaeger
-      namespace: linkerd
+#    - name: jaeger
+#      namespace: linkerd
     - name: linkerd
       namespace: linkerd
   interval: 10m0s
