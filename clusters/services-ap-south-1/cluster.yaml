@@ -49,6 +49,14 @@ iam:
       roleName: cluster-autoscaler-ap-south-1
       wellKnownPolicies:
         autoScaler: true
+    - metadata:
+        name: s3-reader
+        namespace: monitoring
+        attachPolicyARNs:
+          - "arn:aws:iam::aws:policy/CloudWatchReadOnlyAccess"
+        tags:
+          Team: "Devops"
+      roleName: cloudwatch-ap-south-1
 
 nodeGroups:
   - name: system
