@@ -6,5 +6,5 @@ metadata:
 spec:
   images:
     - name: argoproj/rollouts-demo
-      newName: 832807087073.dkr.ecr.us-east-1.amazonaws.com/rollouts-demo:blue
-      newTag: blue
+      newName: 832807087073.dkr.ecr.ap-south-1.amazonaws.com/rollouts-demo
+      newTag: green

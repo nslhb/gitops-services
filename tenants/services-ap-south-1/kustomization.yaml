@@ -5,3 +5,4 @@ resources:
   - ../teams/dev-team
 patchesStrategicMerge:
   - alb-patch.yaml
+  - demo-patch.yaml
