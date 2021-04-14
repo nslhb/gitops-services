@@ -11,7 +11,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  timeout: 2m0s
+  timeout: 10m0s
   validation: client
   healthChecks:
     - kind: Deployment
@@ -31,7 +31,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  timeout: 2m0s
+  timeout: 10m0s
   validation: client
   healthChecks:
     - kind: Deployment
@@ -53,12 +53,15 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  timeout: 2m0s
+  timeout: 10m0s
   validation: client
   healthChecks:
     - kind: Deployment
       name: linkerd-proxy-injector
       namespace: linkerd
+    - kind: Deployment
+      name: metrics-api
+      namespace: linkerd-viz
 
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
@@ -73,8 +76,15 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  timeout: 2m0s
+  timeout: 10m0s
   validation: client
+  healthChecks:
+    - kind: Statefulset
+      name: alertmanager-kube-prometheus-stack-alertmanager
+      namespace: monitoring
+    - kind: Statefulset
+      name:   prometheus-kube-prometheus-stack-prometheus
+      namespace: monitoring
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
@@ -88,7 +98,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  timeout: 2m0s
+  timeout: 10m0s
   validation: client
   targetNamespace: kube-system
   healthChecks:
