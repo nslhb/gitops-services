@@ -112,7 +112,7 @@ metadata:
   name: falcosecurity
   namespace: flux-system
 spec:
-  interval: 10m0s
+  interval: 2m0s
   path: ./infrastructure/k8/falcosecurity
   prune: true
   sourceRef:
