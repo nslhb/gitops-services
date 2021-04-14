@@ -67,8 +67,6 @@ spec:
     prometheus:
       enabled: false
     prometheusUrl: http://prometheus-operated.monitoring.svc.cluster.local:9090
-    nodeSelector:
-      workload: system
     tolerations:
       - key: linkerd
         operator: Exists
