@@ -92,7 +92,7 @@ metadata:
   name: kube-downscaler
   namespace: flux-system
 spec:
-  interval: 10m0s
+  interval: 1m0s
   path: ./infrastructure/k8/kube-downscaler
   prune: true
   sourceRef:
