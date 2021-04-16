@@ -20,7 +20,7 @@ spec:
       containers:
         - name: downscaler
           # see https://github.com/hjacobs/kube-downscaler/releases
-          image: hjacobs/kube-downscaler:21.2.0
+          image: ghcr.io/rverma-nsl/kube-downscaler:61e73d12bdafd334c56a7277f6077f59a5804a5c
           args:
             - --interval=60
             - --debug
