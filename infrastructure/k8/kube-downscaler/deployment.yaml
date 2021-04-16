@@ -23,7 +23,6 @@ spec:
           image: ghcr.io/rverma-nsl/kube-downscaler:986e8be658e8a9e9733833046a8d0a51a04380db
           args:
             - --interval=60
-            - --debug
             - --include-resources
             - cronjobs,deployments,horizontalpodautoscalers,stacks,statefulsets
           envFrom:
