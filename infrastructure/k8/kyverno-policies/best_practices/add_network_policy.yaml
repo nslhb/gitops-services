@@ -19,6 +19,9 @@ spec:
         kinds:
         - Namespace
         name: "*"
+        selector:
+          matchLabels:
+            policy-rollout: ALL
     exclude:
       resources:
         namespaces:

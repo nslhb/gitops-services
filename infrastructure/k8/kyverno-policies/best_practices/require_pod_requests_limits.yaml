@@ -21,10 +21,6 @@ spec:
         namespaces:
           - kube-system
           - flux-system
-          - monitoring
-          - logging
-          - linkerd
-          - kubernetes-dashboard
           - kube-public
           - kyverno
     validate:

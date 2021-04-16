@@ -5,6 +5,7 @@ metadata:
   labels:
     toolkit.fluxcd.io/tenant: devops
     linkerd.io/admission-webhooks: disabled
+    policy-rollout: ALL
   name: logging
 
 ---
@@ -43,6 +44,7 @@ metadata:
   labels:
     toolkit.fluxcd.io/tenant: devops
     linkerd.io/admission-webhooks: disabled
+    policy-rollout: ALL
   name: monitoring
 
 ---
@@ -81,6 +83,7 @@ metadata:
   labels:
     toolkit.fluxcd.io/tenant: devops
     linkerd.io/admission-webhooks: disabled
+    policy-rollout: ALL
   name: linkerd
 
 ---
@@ -147,6 +150,7 @@ kind: Namespace
 metadata:
   labels:
     toolkit.fluxcd.io/tenant: devops
+    policy-rollout: ALL
   name: argo-rollouts
 
 ---
