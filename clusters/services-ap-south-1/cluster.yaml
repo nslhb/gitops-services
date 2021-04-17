@@ -30,6 +30,7 @@ vpc:
 
 iam:
   withOIDC: true
+  fargatePodExecutionRolePermissionsBoundary: arn:aws:iam::832807087073:policy/Default-Boundary-Policy
   serviceAccounts:
     - metadata:
         name: aws-load-balancer-controller
@@ -50,14 +51,36 @@ iam:
       wellKnownPolicies:
         autoScaler: true
     - metadata:
-        name: s3-reader
+        name: kube-prometheus-stack-grafana
         namespace: monitoring
-        attachPolicyARNs:
-          - "arn:aws:iam::aws:policy/CloudWatchReadOnlyAccess"
-        tags:
-          Team: "Devops"
+        labels: {aws-usage: "application"}
+      attachPolicyARNs:
+        - "arn:aws:iam::aws:policy/CloudWatchReadOnlyAccess"
       roleName: cloudwatch-ap-south-1
-
+    - metadata:
+        name: ebs-csi-driver
+        namespace: kube-system
+      attachPolicy:
+        Statement:
+          - Effect: Allow
+            Action:
+              - ec2:AttachVolume
+              - ec2:CreateSnapshot
+              - ec2:CreateTags
+              - ec2:CreateVolume
+              - ec2:DeleteSnapshot
+              - ec2:DeleteTags
+              - ec2:DeleteVolume
+              - ec2:DescribeAvailabilityZones
+              - ec2:DescribeInstances
+              - ec2:DescribeSnapshots
+              - ec2:DescribeTags
+              - ec2:DescribeVolumes
+              - ec2:DescribeVolumesModifications
+              - ec2:DetachVolume
+              - ec2:ModifyVolume
+            Resource: "*"
+      roleName: ebs-csi-driver-ap-south-1
 nodeGroups:
   - name: system
     instanceType: "t3a.large"
