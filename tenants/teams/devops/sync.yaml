@@ -146,5 +146,5 @@ spec:
   prune: true
   sourceRef:
     kind: GitRepository
-    name: flux-system
+    name: ebs-csi-driver
   validation: client
