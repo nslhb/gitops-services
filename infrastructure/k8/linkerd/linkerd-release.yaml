@@ -14,7 +14,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: linkerd
-        namespace: linkerd
+        namespace: flux-system
   valuesFrom:
     - kind: Secret
       name: linkerd-certs

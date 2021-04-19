@@ -24,7 +24,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: eks
-        namespace: kube-system
+        namespace: flux-system
   values:
     clusterName: services
     nodeSelector:
