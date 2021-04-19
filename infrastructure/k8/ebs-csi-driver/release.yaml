@@ -2,18 +2,19 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: aws-ebs-csi-driver
-  namespace: kube-system
+  namespace: flux-system
 spec:
   interval: 10m0s
   releaseName: aws-ebs-csi-driver
   serviceAccountName: devops
+  targetNamespace: kube-system
   chart:
     spec:
       chart: aws-ebs-csi-driver
       sourceRef:
         kind: HelmRepository
         name: aws-ebs-csi-driver
-        namespace: kube-system
+        namespace: flux-system
   values:
     tolerateAllTaints: true
     serviceAccount:
