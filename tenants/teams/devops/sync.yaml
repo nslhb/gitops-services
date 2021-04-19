@@ -122,51 +122,18 @@ spec:
   validation: client
   targetNamespace: kube-system
 ---
-apiVersion: source.toolkit.fluxcd.io/v1beta1
-kind: GitRepository
-metadata:
-  name: ebs-csi-driver
-  namespace: flux-system
-spec:
-  interval: 1m0s
-  ref:
-    branch: master
-  secretRef:
-    name: flux-system
-  url: "https://github.com/kubernetes-sigs/aws-ebs-csi-driver"
----
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:
   name: ebs-csi-driver
   namespace: flux-system
 spec:
-  interval: 10m0s
-  path: ./deploy/kubernetes/overlays/stable
+  interval: 2m0s
+  path: ./infrastructure/k8/ebs-csi-driver
   prune: true
   sourceRef:
     kind: GitRepository
-    name: ebs-csi-driver
+    name: flux-system
+  timeout: 10m0s
   validation: client
-  patchesStrategicMerge:
-  - kind: DaemonSet
-    apiVersion: apps/v1
-    metadata:
-      name: ebs-csi-node
-    spec:
-      template:
-        spec:
-          tolerations:
-            - operator: Exists
-  - kind: Deployment
-    apiVersion: apps/v1
-    metadata:
-      name: ebs-csi-controller
-    spec:
-      replicas: 1
-      template:
-        spec:
-          serviceAccountName: ebs-csi-controller-sa
-          tolerations:
-            - key: SystemAddonsOnly
-              operator: Exists
+  targetNamespace: kube-system

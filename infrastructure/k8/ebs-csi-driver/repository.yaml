@@ -1,8 +1,8 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: HelmRepository
 metadata:
-  name: falcosecurity
+  name: aws-ebs-csi-driver
   namespace: kube-system
 spec:
   interval: 1h0m0s
-  url: https://falcosecurity.github.io/charts
+  url: https://kubernetes-sigs.github.io/aws-ebs-csi-driver

@@ -58,7 +58,7 @@ iam:
         - "arn:aws:iam::aws:policy/CloudWatchReadOnlyAccess"
       roleName: cloudwatch-ap-south-1
     - metadata:
-        name: ebs-csi-controller-sa
+        name: ebs-csi-driver
         namespace: kube-system
       attachPolicy:
         Statement:
