@@ -2,12 +2,11 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: linkerd
-  namespace: flux-system
+  namespace: linkerd
 spec:
   interval: 10m0s
   releaseName: linkerd
   serviceAccountName: devops
-  targetNamespace: linkerd
   chart:
     spec:
       chart: linkerd2
@@ -43,7 +42,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: linkerd-viz
-  namespace: flux-system
+  namespace: linkerd
 spec:
   dependsOn:
 #    - name: jaeger
@@ -53,7 +52,6 @@ spec:
   interval: 10m0s
   releaseName: linkerd-viz
   serviceAccountName: devops
-  targetNamespace: flux-system
   chart:
     spec:
       chart: linkerd-viz

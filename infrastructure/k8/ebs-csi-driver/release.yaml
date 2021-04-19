@@ -7,7 +7,6 @@ spec:
   interval: 10m0s
   releaseName: aws-ebs-csi-driver
   serviceAccountName: devops
-  targetNamespace: kube-system
   chart:
     spec:
       chart: aws-ebs-csi-driver
@@ -17,6 +16,8 @@ spec:
         namespace: flux-system
   values:
     tolerateAllTaints: true
+    node:
+      tolerateAllTaints: true
     serviceAccount:
       controller:
         create: false
