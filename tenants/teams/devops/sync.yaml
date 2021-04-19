@@ -100,7 +100,6 @@ spec:
     name: flux-system
   timeout: 10m0s
   validation: client
-  targetNamespace: kube-system
   healthChecks:
     - kind: Deployment
       name: kube-downscaler
@@ -120,7 +119,6 @@ spec:
     name: flux-system
   timeout: 10m0s
   validation: client
-  targetNamespace: kube-system
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
@@ -136,4 +134,3 @@ spec:
     name: flux-system
   timeout: 10m0s
   validation: client
-  targetNamespace: kube-system
