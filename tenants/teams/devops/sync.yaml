@@ -133,7 +133,7 @@ spec:
     branch: master
   secretRef:
     name: flux-system
-  url: https://github.com/kubernetes-sigs/aws-ebs-csi-driver
+  url: "https://github.com/kubernetes-sigs/aws-ebs-csi-driver"
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
@@ -148,3 +148,26 @@ spec:
     kind: GitRepository
     name: ebs-csi-driver
   validation: client
+  patchesStrategicMerge:
+  - kind: DaemonSet
+    apiVersion: apps/v1
+    metadata:
+      name: ebs-csi-node
+    spec:
+      template:
+        spec:
+          tolerations:
+            - key: SystemAddonsOnly
+              operator: Exists
+  - kind: Deployment
+    apiVersion: apps/v1
+    metadata:
+      name: ebs-csi-controller
+    spec:
+      replicas: 1
+      template:
+        spec:
+          serviceAccountName: ebs-csi-controller-sa
+          tolerations:
+            - key: SystemAddonsOnly
+              operator: Exists
