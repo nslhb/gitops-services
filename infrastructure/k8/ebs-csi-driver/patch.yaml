@@ -29,8 +29,6 @@ spec:
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  labels:
-    app.kubernetes.io/name: aws-ebs-csi-driver
   name: ebs-csi-node
   namespace: kube-system
 spec:
@@ -39,4 +37,3 @@ spec:
       tolerations:
         - key: SystemAddonsOnly
           operator: Exists
----
