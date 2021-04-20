@@ -6,7 +6,7 @@ resources:
 patchesStrategicMerge:
   - patch.yaml
 
-mages:
+images:
   - name: k8s.gcr.io/provider-aws/aws-ebs-csi-driver
     newTag: v0.10.1
   - name: k8s.gcr.io/sig-storage/csi-provisioner
