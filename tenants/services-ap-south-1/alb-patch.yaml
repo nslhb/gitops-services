@@ -24,3 +24,22 @@ spec:
           eks.amazonaws.com/role-arn: arn:aws:iam::832807087073:role/cluster-autoscaler-ap-south-1
         name: cluster-autoscaler
         namespace: kube-system
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+kind: Kustomization
+metadata:
+  name: ebs-csi-driver
+  namespace: flux-system
+spec:
+  patchesStrategicMerge:
+    - apiVersion: helm.toolkit.fluxcd.io/v2beta1
+      kind: HelmRelease
+      metadata:
+        name: aws-ebs-csi-driver
+        namespace: kube-system
+      spec:
+        values:
+          storageClasses:
+            - name: ebs-sc
+              parameters:
+                kmsKeyId: 97f38a15-a525-49d6-beb7-7e768066c762

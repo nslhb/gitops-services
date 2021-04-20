@@ -8,6 +8,13 @@ This repository serves as a starting point for managing multi-tenant clusters wi
 
 ![](docs/img/flux2-multi-tenancy.png)
 
+## Scennarions
+1. Wihtin all the environments devops team update istio (centralized control)
+2. Within all the clusters in dev environment devops team deploy downscaler 
+3. Within all the clusters in prod environment dev-team deploy a code patch
+4. Within clusters in us-east-1 region in dev environment devops deploy test application
+5. Each team has their own gitrepo of artifacts for clear bifurcation of ownership
+
 ## Roles
 
 **Platform Admin**
