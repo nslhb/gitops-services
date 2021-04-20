@@ -32,7 +32,13 @@ spec:
         name: ebs-csi-driver
     enableVolumeResizing: true
     enableVolumeSnapshot: false
-    resources: {}
+    resources:
+       limits:
+         cpu: 50m
+         memory: 50Mi
+       requests:
+         cpu: 10m
+         memory: 20Mi
     extraCreateMetadata: true
     k8sTagClusterId: "services"
     storageClasses:
