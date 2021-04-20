@@ -4,7 +4,7 @@ metadata:
   name: prometheus-adapter
   namespace: monitoring
 spec:
-  interval: 10m0s
+  interval: 1h0m0s
   releaseName: prometheus-adapter
   serviceAccountName: devops
   chart:

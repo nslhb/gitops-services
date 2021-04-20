@@ -4,7 +4,7 @@ metadata:
   name: kube-prometheus-stack
   namespace: monitoring
 spec:
-  interval: 10m0s
+  interval: 1h0m0s
   timeout: 10m
   releaseName: kube-prometheus-stack
   serviceAccountName: devops
