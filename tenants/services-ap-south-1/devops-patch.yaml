@@ -26,7 +26,7 @@ spec:
           grafana:
             enabled: true
             ingress:
-              enabled: false
+              enabled: true
               annotations:
                 alb.ingress.kubernetes.io/group.name: default
                 hosts:
