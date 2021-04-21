@@ -4,29 +4,6 @@ metadata:
   name: kube-system
   namespace: flux-system
 spec:
-  patchesStrategicMerge:
-  - apiVersion: helm.toolkit.fluxcd.io/v2beta1
-    kind: HelmRelease
-    metadata:
-      name: aws-load-balancer-controller
-      namespace: kube-system
-    spec:
-      values:
-        serviceAccount:
-          annotations:
-            eks.amazonaws.com/role-arn: arn:aws:iam::832807087073:role/load-balancer-us-east-1
-        image:
-          repository: 602401143452.dkr.ecr.us-east-1.amazonaws.com/amazon/aws-load-balancer-controller
-  - apiVersion: v1
-    kind: ServiceAccount
-    metadata:
-      annotations:
-        eks.amazonaws.com/role-arn: arn:aws:iam::832807087073:role/cluster-autoscaler-us-east-1
-      name: cluster-autoscaler
-      namespace: kube-system
-  - apiVersion: v1
-    kind: ServiceAccount
-    metadata:
-      name: external-dns
-      annotations:
-        eks.amazonaws.com/role-arn: arn:aws:iam::832807087073:role/external-dns-us-east-1
+  postBuild:
+    substitute:
+      cluster_region: "us-east-1"

@@ -5,6 +5,8 @@ metadata:
   labels:
     k8s-addon: cluster-autoscaler.addons.k8s.io
     k8s-app: cluster-autoscaler
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::832807087073:role/cluster-autoscaler-${cluster_region}
   name: cluster-autoscaler
   namespace: kube-system
 
