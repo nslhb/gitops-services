@@ -4,7 +4,7 @@ metadata:
   name: dev-team
   namespace: flux-system
 spec:
-  interval: 5m
+  interval: 1m
   url: ssh://git@github.com/nslhb/services.nslhub.com
   ref:
     branch: apps
@@ -18,7 +18,7 @@ metadata:
   name: demo
   namespace: flux-system
 spec:
-  interval: 5m0s
+  interval: 1m0s
   path: ./demo
   prune: true
   sourceRef:
