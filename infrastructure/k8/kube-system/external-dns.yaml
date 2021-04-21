@@ -1,0 +1,54 @@
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: HelmRepository
+metadata:
+  name: bitnami
+  namespace: flux-system
+spec:
+  interval: 24h0m0s
+  url: https://charts.bitnami.com/bitnami
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: external-dns
+  namespace: kube-system
+spec:
+  interval: 24h0m0s
+  timeout: 10m
+  releaseName: external-dns
+  serviceAccountName: devops
+  chart:
+    spec:
+      chart: external-dns
+      sourceRef:
+        kind: HelmRepository
+        name: bitnami
+        namespace: flux-system
+  values:
+    publishInternalServices: true
+    publishHostIP: true
+    region: "${cluster_region}"
+    txtOwnerId: "${cluster_region}"
+    nodeSelector:
+      workload: system
+    tolerations:
+      - key: SystemAddonsOnly
+        operator: Exists
+    resources:
+      limits:
+        cpu: 50m
+        memory: 50Mi
+      requests:
+        memory: 50Mi
+        cpu: 10m
+    serviceAccount:
+      annotations:
+        eks.amazonaws.com/role-arn: arn:aws:iam::${account_id}:role/external-dns-${cluster_region}
+    rbac:
+      pspEnabled: true
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+    image:
+      registry: public.ecr.aws
