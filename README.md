@@ -1,8 +1,7 @@
 # flux2-multi-tenancy
 
-[![test](https://github.com/fluxcd/flux2-multi-tenancy/workflows/test/badge.svg)](https://github.com/fluxcd/flux2-multi-tenancy/actions)
-[![e2e](https://github.com/fluxcd/flux2-multi-tenancy/workflows/e2e/badge.svg)](https://github.com/fluxcd/flux2-multi-tenancy/actions)
-[![license](https://img.shields.io/github/license/fluxcd/flux2-multi-tenancy.svg)](https://github.com/fluxcd/flux2-multi-tenancy/blob/main/LICENSE)
+[![test](https://github.com/nslhb/services.nslhub.com/workflows/test/badge.svg)](https://github.com/fluxcd/flux2-multi-tenancy/actions)
+[![e2e](https://github.com/nslhb/services.nslhub.com/workflows/e2e/badge.svg)](https://github.com/fluxcd/flux2-multi-tenancy/actions)
 
 This repository serves as a starting point for managing multi-tenant clusters with Git and Flux v2.
 
