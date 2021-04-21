@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ClusterAnalysisTemplate
+metadata:
+  name: success-rate
+spec:
+  args:
+    - name: rollouts-demo
+  metrics:
+    - name: success-rate
+      interval: 5m
+      successCondition: result[0] >= 0.95
+      provider:
+        prometheus:
+          address: "http://prometheus-operated.monitoring.svc.cluster.local:9090"
+          query: |
+            sum(irate(
+              istio_requests_total{reporter="source",destination_service=~"{{args.service-name}}",response_code!~"5.*"}[5m]
+            )) /
+            sum(irate(
+              istio_requests_total{reporter="source",destination_service=~"{{args.service-name}}"}[5m]
+            ))

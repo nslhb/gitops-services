@@ -4,3 +4,4 @@ resources:
   - linkerd-certs.yaml
   - linkerd-release.yaml
   - linkerd-repository.yaml
+  - analysis.yaml
