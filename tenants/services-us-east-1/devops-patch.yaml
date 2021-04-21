@@ -25,8 +25,8 @@ spec:
       name: cluster-autoscaler
       namespace: kube-system
   - apiVersion: v1
-      kind: ServiceAccount
-      metadata:
-        name: external-dns
-        annotations:
-          eks.amazonaws.com/role-arn: arn:aws:iam::832807087073:role/external-dns-us-east-1
+    kind: ServiceAccount
+    metadata:
+      name: external-dns
+      annotations:
+        eks.amazonaws.com/role-arn: arn:aws:iam::832807087073:role/external-dns-us-east-1
