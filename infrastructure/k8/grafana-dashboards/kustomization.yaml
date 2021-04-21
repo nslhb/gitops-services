@@ -6,8 +6,6 @@ generatorOptions:
   labels:
     grafana_dashboard: "1"
   disableNameSuffixHash: true
-  annotations:
-    strategy.spinnaker.io/versioned: 'false'
 
 configMapGenerator:
   - name: aws
