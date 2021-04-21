@@ -24,8 +24,6 @@ spec:
           imagePullPolicy: Always
           args:
             - --interval=60
-            - --enable-events
-            - true
             - --include-resources
             - cronjobs,deployments,horizontalpodautoscalers,statefulsets,rollouts
           envFrom:
