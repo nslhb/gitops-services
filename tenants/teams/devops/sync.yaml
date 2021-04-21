@@ -131,18 +131,3 @@ spec:
     kind: GitRepository
     name: flux-system
   validation: client
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
-kind: Kustomization
-metadata:
-  name: external-dns
-  namespace: flux-system
-spec:
-  interval: 10m0s
-  path: ./infrastructure/k8/external-dns
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  validation: client
----
