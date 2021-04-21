@@ -29,4 +29,4 @@ spec:
       metadata:
         name: external-dns
         annotations:
-          eks.amazonaws.com/role-arn: arn:aws:iam::832807087073:role/load-balancer-us-east-1
+          eks.amazonaws.com/role-arn: arn:aws:iam::832807087073:role/external-dns-us-east-1
