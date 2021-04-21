@@ -5,6 +5,12 @@ metadata:
 spec:
   template:
     spec:
+      containers:
+        - args:
+            - --source=service
+            - --source=ingress
+            - --registry=txt
+            - --provider=aws
       tolerations:
         - key: SystemAddonsOnly
           operator: Exists
