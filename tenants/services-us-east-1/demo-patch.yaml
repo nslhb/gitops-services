@@ -8,3 +8,11 @@ spec:
     - name: argoproj/rollouts-demo
       newName: 832807087073.dkr.ecr.us-east-1.amazonaws.com/rollouts-demo
       newTag: yellow #  {"$imagepolicy": "apps:rollouts-demo:tag"}
+  patchesStrategicMerge:
+    - apiVersion: networking.k8s.io/v1
+      kind: Ingress
+      metadata:
+        name: rollouts-demo-ingress
+        namespace: apps
+        annotations:
+          external-dns.alpha.kubernetes.io/aws-region: us-east-1
