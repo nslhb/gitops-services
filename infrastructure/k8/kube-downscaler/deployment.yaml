@@ -20,11 +20,12 @@ spec:
       containers:
         - name: downscaler
           # see https://github.com/hjacobs/kube-downscaler/releases
-          image: ghcr.io/rverma-nsl/kube-downscaler:986e8be658e8a9e9733833046a8d0a51a04380db
+          image: ghcr.io/rverma-nsl/kube-downscaler:latest
+          imagePullPolicy: Always
           args:
             - --interval=60
             - --include-resources
-            - cronjobs,deployments,horizontalpodautoscalers,stacks,statefulsets
+            - cronjobs,deployments,horizontalpodautoscalers,statefulsets,rollouts
           envFrom:
             - configMapRef:
                 name: kube-downscaler

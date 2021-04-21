@@ -49,8 +49,10 @@ rules:
       - update
       - patch
   - apiGroups:
+      - zalando.org
       - argoproj.io
     resources:
+      - stacks
       - rollouts
     verbs:
       - get
