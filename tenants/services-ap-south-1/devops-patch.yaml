@@ -29,6 +29,6 @@ spec:
               enabled: true
               annotations:
                 alb.ingress.kubernetes.io/group.name: default
-                hosts:
-                  - grafana.nslhub.click
+              hosts:
+                - grafana.nslhub.click
               path: /*
