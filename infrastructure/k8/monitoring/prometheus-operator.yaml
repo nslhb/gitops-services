@@ -35,7 +35,7 @@ spec:
     kubeEtcd:
       enabled: false
     grafana:
-      enabled: "${grafana_enabled:=false}"
+      enabled: false
       defaultDashboardsEnabled: true
       tolerations:
         - key: monitoring
