@@ -41,5 +41,5 @@ spec:
     serviceAccount:
       annotations:
         eks.amazonaws.com/role-arn: arn:aws:iam::832807087073:role/load-balancer-${cluster_region}
-      image:
-        repository: 602401143452.dkr.ecr.${cluster_region}.amazonaws.com/amazon/aws-load-balancer-controller
+    image:
+      repository: 602401143452.dkr.ecr.${cluster_region}.amazonaws.com/amazon/aws-load-balancer-controller
