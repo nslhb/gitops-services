@@ -11,6 +11,7 @@ spec:
             - --source=ingress
             - --registry=txt
             - --provider=aws
+          name: external-dns
       tolerations:
         - key: SystemAddonsOnly
           operator: Exists
