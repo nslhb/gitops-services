@@ -16,4 +16,4 @@ metadata:
 spec:
   postBuild:
     substitute:
-      grafana_enabled: true
+      grafana_enabled: "true"
