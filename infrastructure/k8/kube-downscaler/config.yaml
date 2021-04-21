@@ -5,5 +5,5 @@ metadata:
 data:
   # downscale for non-work hours
   DEFAULT_UPTIME: "Mon-Fri 09:30-19:00 Asia/Kolkata"
-  EXCLUDE_NAMESPACES: ""
+  EXCLUDE_NAMESPACES: "argo-rollouts"
   EXCLUDE_DEPLOYMENTS: "coredns,cluster-autoscaler,kube-downscaler"
