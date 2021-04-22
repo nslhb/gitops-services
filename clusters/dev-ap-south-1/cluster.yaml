@@ -95,7 +95,7 @@ nodeGroups:
     volumeType: gp3
     volumeSize: 10
     volumeEncrypted: true
-    volumeKmsKeyID: 97f38a15-a525-49d6-beb7-7e768066c762
+    volumeKmsKeyID: a3456af4-c4de-4938-837d-86d5615d75d7
     privateNetworking: true
     amiFamily: Bottlerocket
     ami: auto-ssm
@@ -121,7 +121,7 @@ nodeGroups:
     volumeType: gp3
     volumeSize: 10
     volumeEncrypted: true
-    volumeKmsKeyID: 97f38a15-a525-49d6-beb7-7e768066c762
+    volumeKmsKeyID: a3456af4-c4de-4938-837d-86d5615d75d7
     privateNetworking: true
     amiFamily: Bottlerocket
     disableIMDSv1: true
