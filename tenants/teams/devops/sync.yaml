@@ -19,28 +19,7 @@ spec:
       namespace: argo-rollouts
 
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
-kind: Kustomization
-metadata:
-  name: kube-system
-  namespace: flux-system
-spec:
-  interval: 10m0s
-  path: ./infrastructure/k8/kube-system
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  timeout: 10m0s
-  validation: client
-  healthChecks:
-    - kind: Deployment
-      name: cluster-autoscaler
-      namespace: kube-system
-    - kind: Deployment
-      name: aws-load-balancer-controller
-      namespace: kube-system
----
+
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:
@@ -89,24 +68,6 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:
-  name: kube-downscaler
-  namespace: flux-system
-spec:
-  interval: 10m0s
-  path: ./infrastructure/k8/kube-downscaler
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  validation: client
-  healthChecks:
-    - kind: Deployment
-      name: kube-downscaler
-      namespace: kube-system
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
-kind: Kustomization
-metadata:
   name: falcosecurity
   namespace: flux-system
 spec:
@@ -118,16 +79,3 @@ spec:
     name: flux-system
   validation: client
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
-kind: Kustomization
-metadata:
-  name: ebs-csi-driver
-  namespace: flux-system
-spec:
-  interval: 10m0s
-  path: ./infrastructure/k8/ebs-csi-driver
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  validation: client
