@@ -2,7 +2,7 @@ apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 
 metadata:
-  name: services
+  name: dev
   region: ap-south-1
   version: "1.19"
 
