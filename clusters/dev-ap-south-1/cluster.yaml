@@ -21,7 +21,7 @@ vpc:
         id: "subnet-0c1ee00495e8fa8e2"
         cidr: "10.100.64.0/19"
       ap-south-1c:
-        id: "subnet-014228877d6c932a62"
+        id: "subnet-014228877d6c932a6"
         cidr: "10.100.128.0/19"
     public:
       ap-south-1a:
