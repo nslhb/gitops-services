@@ -75,7 +75,7 @@ spec:
                 - name: SECRET_NAME
                   value: ecr-credentials
                 - name: ECR_REGISTRY
-                  value: 755502957828.dkr.ecr.ap-south-1.amazonaws.com
+                  value: 660124699787.dkr.ecr.ap-south-1.amazonaws.com
               volumeMounts:
                 - mountPath: /token
                   name: token
