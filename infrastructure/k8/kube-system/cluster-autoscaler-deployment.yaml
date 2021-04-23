@@ -35,7 +35,7 @@ spec:
               memory: 300Mi
           command:
             - ./cluster-autoscaler
-            - --v=4
+            - --v=2
             - --stderrthreshold=info
             - --cloud-provider=aws
             - --skip-nodes-with-local-storage=false
