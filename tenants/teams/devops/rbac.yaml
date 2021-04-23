@@ -1,11 +1,41 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    toolkit.fluxcd.io/tenant: devops
+  name: devops
+  namespace: kube-system
+
 ---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    toolkit.fluxcd.io/tenant: devops
+  name: kube-system-reconciler
+  namespace: kube-system
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+  - apiGroup: rbac.authorization.k8s.io
+    kind: User
+    name: gotk:kube-system:reconciler
+  - kind: ServiceAccount
+    name: devops
+    namespace: kube-system
+---
+#########################################################################################
+#     Logging
+#########################################################################################
+
 apiVersion: v1
 kind: Namespace
 metadata:
   labels:
     toolkit.fluxcd.io/tenant: devops
     linkerd.io/admission-webhooks: disabled
-    policy-rollout: ALL
   name: logging
 
 ---
@@ -30,21 +60,24 @@ roleRef:
   kind: ClusterRole
   name: cluster-admin
 subjects:
-- apiGroup: rbac.authorization.k8s.io
-  kind: User
-  name: gotk:logging:reconciler
-- kind: ServiceAccount
-  name: devops
-  namespace: logging
+  - apiGroup: rbac.authorization.k8s.io
+    kind: User
+    name: gotk:logging:reconciler
+  - kind: ServiceAccount
+    name: devops
+    namespace: logging
 
 ---
+#########################################################################################
+#     Monitoring
+#########################################################################################
+
 apiVersion: v1
 kind: Namespace
 metadata:
   labels:
     toolkit.fluxcd.io/tenant: devops
     linkerd.io/admission-webhooks: disabled
-    policy-rollout: ALL
   name: monitoring
 
 ---
@@ -69,12 +102,26 @@ roleRef:
   kind: ClusterRole
   name: cluster-admin
 subjects:
-- apiGroup: rbac.authorization.k8s.io
-  kind: User
-  name: gotk:monitoring:reconciler
-- kind: ServiceAccount
-  name: devops
-  namespace: monitoring
+  - apiGroup: rbac.authorization.k8s.io
+    kind: User
+    name: gotk:monitoring:reconciler
+  - kind: ServiceAccount
+    name: devops
+    namespace: monitoring
+---
+
+#########################################################################################
+#     Linkerd
+#########################################################################################
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    toolkit.fluxcd.io/tenant: devops
+    linkerd.io/admission-webhooks: disabled
+  name: linkerd
+
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -82,7 +129,7 @@ metadata:
   labels:
     toolkit.fluxcd.io/tenant: devops
   name: devops
-  namespace: kube-system
+  namespace: linkerd
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -90,28 +137,30 @@ kind: ClusterRoleBinding
 metadata:
   labels:
     toolkit.fluxcd.io/tenant: devops
-  name: kube-system-reconciler
-  namespace: kube-system
+  name: linkerd-reconciler
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: cluster-admin
 subjects:
-- apiGroup: rbac.authorization.k8s.io
-  kind: User
-  name: gotk:kube-system:reconciler
-- kind: ServiceAccount
-  name: devops
-  namespace: kube-system
-
+  - apiGroup: rbac.authorization.k8s.io
+    kind: User
+    name: gotk:linkerd:reconciler
+  - kind: ServiceAccount
+    name: devops
+    namespace: linkerd
 
 ---
+
+#########################################################################################
+#     Argo Rollouts
+#########################################################################################
+
 apiVersion: v1
 kind: Namespace
 metadata:
   labels:
     toolkit.fluxcd.io/tenant: devops
-    policy-rollout: ALL
   name: argo-rollouts
 
 ---
@@ -136,10 +185,10 @@ roleRef:
   kind: ClusterRole
   name: cluster-admin
 subjects:
-- apiGroup: rbac.authorization.k8s.io
-  kind: User
-  name: gotk:argo-rollouts:reconciler
-- kind: ServiceAccount
-  name: devops
-  namespace: argo-rollouts
+  - apiGroup: rbac.authorization.k8s.io
+    kind: User
+    name: gotk:argo-rollouts:reconciler
+  - kind: ServiceAccount
+    name: devops
+    namespace: argo-rollouts
 

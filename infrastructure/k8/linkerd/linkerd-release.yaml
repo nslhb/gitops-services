@@ -9,7 +9,7 @@ spec:
   serviceAccountName: devops
   chart:
     spec:
-      chart: linkerd2-edge
+      chart: linkerd2
       sourceRef:
         kind: HelmRepository
         name: linkerd

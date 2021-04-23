@@ -1,23 +1,17 @@
----
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:
-  name: argo-rollouts
+  name: ebs-csi-driver
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: ./infrastructure/k8/argo-rollouts
+  path: ./infrastructure/k8/ebs-csi-driver
   prune: true
+  force: true
   sourceRef:
     kind: GitRepository
     name: flux-system
-  timeout: 10m0s
   validation: client
-  healthChecks:
-    - kind: Deployment
-      name: argo-rollouts
-      namespace: argo-rollouts
-
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
@@ -28,6 +22,7 @@ spec:
   interval: 10m0s
   path: ./infrastructure/k8/kube-system
   prune: true
+  force: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -50,6 +45,7 @@ spec:
   interval: 10m0s
   path: ./infrastructure/k8/monitoring
   prune: true
+  force: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -69,9 +65,12 @@ metadata:
   name: kube-downscaler
   namespace: flux-system
 spec:
+  dependsOn:
+    - name: kube-system
   interval: 10m0s
   path: ./infrastructure/k8/kube-downscaler
   prune: true
+  force: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -84,13 +83,60 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:
-  name: ebs-csi-driver
+  name: argo-rollouts
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: kube-system
+  interval: 10m0s
+  path: ./infrastructure/k8/argo-rollouts
+  prune: true
+  force: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 10m0s
+  validation: client
+  healthChecks:
+    - kind: Deployment
+      name: argo-rollouts
+      namespace: argo-rollouts
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+kind: Kustomization
+metadata:
+  name: falcosecurity
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: ./infrastructure/k8/ebs-csi-driver
+  path: ./infrastructure/k8/falcosecurity
   prune: true
+  force: true
   sourceRef:
     kind: GitRepository
     name: flux-system
   validation: client
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+kind: Kustomization
+metadata:
+  name: linkerd
+  namespace: flux-system
+spec:
+  interval: 10m0s
+  path: ./infrastructure/k8/linkerd
+  prune: true
+  force: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 10m0s
+  validation: client
+  healthChecks:
+    - kind: Deployment
+      name: linkerd-proxy-injector
+      namespace: linkerd
+    - kind: Deployment
+      name: metrics-api
+      namespace: linkerd-viz
+---

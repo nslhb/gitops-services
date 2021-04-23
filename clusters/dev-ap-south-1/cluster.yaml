@@ -88,7 +88,7 @@ iam:
       roleName: ebs-csi-driver-ap-south-1
 nodeGroups:
   - name: system
-    instanceType: "t3a.large"
+    instanceType: "m6g.medium"
     desiredCapacity: 1
     minSize: 1
     maxSize: 1
@@ -113,6 +113,31 @@ nodeGroups:
       k8s.io/cluster-autoscaler/node-template/taint/SystemAddonsOnly: NoSchedule
     taints:
       SystemAddonsOnly: "true:NoSchedule"
+  - name: monitoring
+    instanceType: "r6g.large"
+    desiredCapacity: 1
+    minSize: 0
+    maxSize: 3
+    volumeType: gp3
+    volumeSize: 10
+    volumeEncrypted: true
+    volumeKmsKeyID: a3456af4-c4de-4938-837d-86d5615d75d7
+    privateNetworking: true
+    amiFamily: Bottlerocket
+    disableIMDSv1: true
+    iam:
+      instanceProfileARN: arn:aws:iam::755502957828:instance-profile/EKS-Default-SSM-AD-Role-ip
+      instanceRoleARN: arn:aws:iam::755502957828:role/EKS-Default-SSM-AD-Role
+    labels:
+      workload: monitoring
+      eks.amazonaws.com/compute-type: ec2
+    tags:
+      k8s.io/cluster-autoscaler/enabled: "true"
+      k8s.io/cluster-autoscaler/services: "owned"
+      k8s.io/cluster-autoscaler/node-template/label/workload: monitoring
+      k8s.io/cluster-autoscaler/node-template/taint/monitoring: NoSchedule
+    taints:
+      monitoring: "true:NoSchedule"
   - name: common
     instanceType: "t3.medium"
     desiredCapacity: 1
