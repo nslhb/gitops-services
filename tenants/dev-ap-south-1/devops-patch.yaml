@@ -6,5 +6,5 @@ metadata:
 spec:
   postBuild:
     substitute:
-      cluster_region: "us-east-1"
-      account_id: "832807087073"
+      cluster_region: "ap-south-1"
+      account_id: "755502957828"
