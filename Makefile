@@ -16,28 +16,28 @@ dump:
 	@eksctl utils write-kubeconfig --cluster services
 
 addons:
-	@eksctl --context $(CTK) utils update-kube-proxy --config-file=clusters/$(CLUSTER)-$(REGION)/cluster.yaml --approve
-	@eksctl --context $(CTK)  utils update-aws-node --config-file=clusters/$(CLUSTER)-$(REGION)/cluster.yaml --approve
-	@eksctl --context $(CTK)  utils update-coredns --config-file=clusters/$(CLUSTER)-$(REGION)/cluster.yaml --approve
+	@eksctl utils update-kube-proxy --config-file=clusters/$(CLUSTER)-$(REGION)/cluster.yaml --approve
+	@eksctl  utils update-aws-node --config-file=clusters/$(CLUSTER)-$(REGION)/cluster.yaml --approve
+	@eksctl  utils update-coredns --config-file=clusters/$(CLUSTER)-$(REGION)/cluster.yaml --approve
 
 coredns:
-	kubectl --context $(CTK) patch deployment coredns \
+	kubectl patch deployment coredns \
         -n kube-system \
         --type json \
         -p='[{"op": "remove", "path": "/spec/template/metadata/annotations/eks.amazonaws.com~1compute-type"}]'
-	kubectl --context $(CTK)  patch deployment coredns \
+	kubectl  patch deployment coredns \
 		-n kube-system \
 		-p='{"spec":{"template":{"spec":{"containers":[{ "name": "coredns","resources":{"limits":{"cpu":"250m","memory":"256Mi"},"requests":{"cpu":"250m","memory":"256Mi"}}}]}}}}'
 
 ng:
-	@eksctl --context $(CTK)  create nodegroup --config-file=clusters/$(CLUSTER)-$(REGION)/cluster.yaml
-	@eksctl --context $(CTK)  delete nodegroup --config-file=clusters/$(CLUSTER)-$(REGION)/cluster.yaml --only-missing
+	@eksctl  create nodegroup --config-file=clusters/$(CLUSTER)-$(REGION)/cluster.yaml
+	@eksctl  delete nodegroup --config-file=clusters/$(CLUSTER)-$(REGION)/cluster.yaml --only-missing
 
 
 
 identity:
-	@eksctl --context $(CTK) create iamidentitymapping --cluster dev --service-name emr-containers --namespace default
-
+#	@eksctl create iamidentitymapping --cluster $(CLUSTER) --service-name emr-containers --namespace default
+	eksctl create iamidentitymapping --cluster $(CLUSTER) --group system:masters  --username iam:{{SessionName}} --arn $$(aws iam list-roles  --query 'Roles[?starts_with(RoleName, `AWSReservedSSO_AWSPowerUserAccess`) == `true`].Arn' --output text | awk '{print tolower($0)}')
 
 flux:
 	@flux bootstrap github \
@@ -50,8 +50,8 @@ flux:
 		   --components-extra=image-reflector-controller,image-automation-controller
 
 cleanup:
-	@kubectl --context $(CTK) delete mutatingwebhookconfigurations.admissionregistration.k8s.io kube-prometheus-stack-admission   linkerd-proxy-injector-webhook-config
-	@kubectl --context $(CTK) delete apiservice v1beta1.custom.metrics.k8s.io  v1beta1.metrics.k8s.io
+	@kubectl delete mutatingwebhookconfigurations.admissionregistration.k8s.io kube-prometheus-stack-admission   linkerd-proxy-injector-webhook-config
+	@kubectl delete apiservice v1beta1.custom.metrics.k8s.io  v1beta1.metrics.k8s.io
 
 echo:
 	@echo "cluster $(CLUSTER) in $(REGION) with context $(CTX)"

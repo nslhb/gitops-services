@@ -116,36 +116,6 @@ subjects:
 
 ---
 apiVersion: v1
-kind: ServiceAccount
-metadata:
-  labels:
-    toolkit.fluxcd.io/tenant: devops
-  name: devops
-  namespace: kube-system
-
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  labels:
-    toolkit.fluxcd.io/tenant: devops
-  name: kube-system-reconciler
-  namespace: kube-system
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: cluster-admin
-subjects:
-- apiGroup: rbac.authorization.k8s.io
-  kind: User
-  name: gotk:kube-system:reconciler
-- kind: ServiceAccount
-  name: devops
-  namespace: kube-system
-
-
----
-apiVersion: v1
 kind: Namespace
 metadata:
   labels:
