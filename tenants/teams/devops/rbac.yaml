@@ -76,24 +76,13 @@ subjects:
   name: devops
   namespace: monitoring
 ---
-
-apiVersion: v1
-kind: Namespace
-metadata:
-  labels:
-    toolkit.fluxcd.io/tenant: devops
-    linkerd.io/admission-webhooks: disabled
-    policy-rollout: ALL
-  name: linkerd
-
----
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   labels:
     toolkit.fluxcd.io/tenant: devops
   name: devops
-  namespace: linkerd
+  namespace: kube-system
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -101,7 +90,8 @@ kind: ClusterRoleBinding
 metadata:
   labels:
     toolkit.fluxcd.io/tenant: devops
-  name: linkerd-reconciler
+  name: kube-system-reconciler
+  namespace: kube-system
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -109,10 +99,11 @@ roleRef:
 subjects:
 - apiGroup: rbac.authorization.k8s.io
   kind: User
-  name: gotk:linkerd:reconciler
+  name: gotk:kube-system:reconciler
 - kind: ServiceAccount
   name: devops
-  namespace: linkerd
+  namespace: kube-system
+
 
 ---
 apiVersion: v1

@@ -19,15 +19,14 @@ spec:
       namespace: argo-rollouts
 
 ---
-
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:
-  name: linkerd
+  name: kube-system
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: ./infrastructure/k8/linkerd
+  path: ./infrastructure/k8/kube-system
   prune: true
   sourceRef:
     kind: GitRepository
@@ -36,12 +35,11 @@ spec:
   validation: client
   healthChecks:
     - kind: Deployment
-      name: linkerd-proxy-injector
-      namespace: linkerd
+      name: cluster-autoscaler
+      namespace: kube-system
     - kind: Deployment
-      name: metrics-api
-      namespace: linkerd-viz
-
+      name: aws-load-balancer-controller
+      namespace: kube-system
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
@@ -68,14 +66,31 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:
-  name: falcosecurity
+  name: kube-downscaler
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: ./infrastructure/k8/falcosecurity
+  path: ./infrastructure/k8/kube-downscaler
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
   validation: client
+  healthChecks:
+    - kind: Deployment
+      name: kube-downscaler
+      namespace: kube-system
 ---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+kind: Kustomization
+metadata:
+  name: ebs-csi-driver
+  namespace: flux-system
+spec:
+  interval: 10m0s
+  path: ./infrastructure/k8/ebs-csi-driver
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  validation: client
