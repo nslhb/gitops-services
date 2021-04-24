@@ -37,7 +37,7 @@ ng:
 
 identity:
 #	@eksctl create iamidentitymapping --cluster $(CLUSTER) --service-name emr-containers --namespace default
-	eksctl create iamidentitymapping --cluster $(CLUSTER) --group system:masters  --username iam:{{SessionName}} --arn $$(aws iam list-roles  --query 'Roles[?starts_with(RoleName, `AWSReservedSSO_AWSPowerUserAccess`) == `true`].Arn' --output text | awk '{print tolower($0)}')
+	eksctl --region $(REGION) create iamidentitymapping --cluster $(CLUSTER) --group system:masters  --username iam:{{SessionName}} --arn $$(aws iam list-roles  --query 'Roles[?starts_with(RoleName, `AWSReservedSSO_AWSPowerUserAccess`) == `true`].Arn' --output text |  awk -F'/' '{ print $$1 "/" $$4}')
 
 flux:
 	@flux bootstrap github \

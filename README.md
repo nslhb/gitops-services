@@ -5,7 +5,7 @@
 
 This repository serves as a starting point for managing multi-tenant clusters with Git and Flux v2.
 
-![](docs/img/flux2-multi-tenancy.png)
+![](docs/images/flux2-multi-tenancy.png)
 
 ## Scennarions
 1. Wihtin all the environments devops team update istio (centralized control)

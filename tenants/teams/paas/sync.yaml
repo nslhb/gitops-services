@@ -1,27 +1,28 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: GitRepository
 metadata:
-  name: dev-team
-  namespace: flux-system
+  name: data
+  namespace: paas
 spec:
-  interval: 1m
-  url: ssh://git@github.com/nslhb/services.nslhub.com
+  interval: 1m0s
   ref:
-    branch: apps
+    branch: main
   secretRef:
-    name: flux-system
-  timeout: 20s
+    name: paas
+  url: ssh://git@github.com/nslhb/gitops-paas
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:
-  name: demo
+  name: paas-system
   namespace: flux-system
 spec:
-  interval: 1m0s
-  path: ./demo
+  interval: 10m0s
+  path: ./clusters/dev-ap-south-1
   prune: true
   sourceRef:
     kind: GitRepository
-    name: dev-team
+    name: flux-system
   validation: client
+
+---
