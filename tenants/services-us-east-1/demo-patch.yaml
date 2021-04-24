@@ -6,7 +6,7 @@ metadata:
 spec:
   images:
     - name: argoproj/rollouts-demo
-      newName: 832807087073.dkr.ecr.us-east-1.amazonaws.com/rollouts-demo
+      newName: ghcr.io/nslhb/rollouts-demo
       newTag: yellow #  {"$imagepolicy": "apps:rollouts-demo:tag"}
   patchesStrategicMerge:
     - apiVersion: networking.k8s.io/v1

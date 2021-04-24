@@ -33,7 +33,8 @@ ng:
 	@eksctl create nodegroup --config-file=clusters/$(CLUSTER)-$(REGION)/cluster.yaml
 	@eksctl delete nodegroup --config-file=clusters/$(CLUSTER)-$(REGION)/cluster.yaml --only-missing
 
-
+sa:
+	@eksctl create iamserviceaccount --config-file=clusters/$(CLUSTER)-$(REGION)/cluster.yaml --approve --override-existing-serviceaccounts
 
 identity:
 #	@eksctl create iamidentitymapping --cluster $(CLUSTER) --service-name emr-containers --namespace default
