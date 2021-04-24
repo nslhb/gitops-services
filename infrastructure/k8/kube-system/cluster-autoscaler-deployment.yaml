@@ -24,7 +24,7 @@ spec:
     spec:
       serviceAccountName: cluster-autoscaler
       containers:
-        - image: k8s.gcr.io/autoscaling/cluster-autoscaler:v1.20.0
+        - image: public.ecr.aws/bitnami/cluster-autoscaler:1.20.0
           name: cluster-autoscaler
           resources:
             limits:
