@@ -3,6 +3,7 @@ kind: Kustomization
 resources:
   - ../teams/devops
   - ../teams/demo
+  - linkerd.yaml
 patchesStrategicMerge:
   - devops-patch.yaml
   - demo-patch.yaml

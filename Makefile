@@ -50,9 +50,11 @@ flux:
 		   --components-extra=image-reflector-controller,image-automation-controller
 
 cleanup:
-	@kubectl delete mutatingwebhookconfigurations kube-prometheus-stack-admission   linkerd-proxy-injector-webhook-config
-	@kubectl delete apiservice v1beta1.custom.metrics.k8s.io  v1beta1.metrics.k8s.io  v1beta1.external.metrics.k8s.io v2beta1.helm.toolkit.fluxcd.io v1beta1.kustomize.toolkit.fluxcd.io
+	@kubectl delete mutatingwebhookconfigurations  kube-prometheus-stack-admission
 	@kubectl delete ValidatingWebhookConfiguration kube-prometheus-stack-admission
+	@kubectl delete mutatingwebhookconfigurations  linkerd-proxy-injector-webhook-config
+	@kubectl delete apiservice v1beta1.custom.metrics.k8s.io  v1beta1.metrics.k8s.io  v1beta1.external.metrics.k8s.io
+	@kubectl delete apiservice v2beta1.helm.toolkit.fluxcd.io v1beta1.kustomize.toolkit.fluxcd.io
 
 echo:
 	@echo "cluster $(CLUSTER) in $(REGION) with context $(CTX)"
