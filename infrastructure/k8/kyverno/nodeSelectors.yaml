@@ -9,5 +9,5 @@ spec:
       nodeSelector:
         workload: system
       tolerations:
-        - key: SystemAddonsOnly
+        - key: CriticalAddonsOnly
           operator: Exists

@@ -16,7 +16,7 @@ spec:
         namespace: flux-system
   values:
     tolerations:
-      - key: SystemAddonsOnly
+      - key: CriticalAddonsOnly
         operator: Exists
     node:
       tolerateAllTaints: true

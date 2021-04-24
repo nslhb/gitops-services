@@ -74,9 +74,9 @@ nodeGroups:
       k8s.io/cluster-autoscaler/enabled: "true"
       k8s.io/cluster-autoscaler/services: "owned"
       k8s.io/cluster-autoscaler/node-template/label/workload: system
-      k8s.io/cluster-autoscaler/node-template/taint/SystemAddonsOnly: NoSchedule
+      k8s.io/cluster-autoscaler/node-template/taint/CriticalAddonsOnly: NoSchedule
     taints:
-      SystemAddonsOnly: "true:NoSchedule"
+      CriticalAddonsOnly: "true:NoSchedule"
     ssh:
       allow: true
       publicKeyName: bottlerocketkey

@@ -46,7 +46,7 @@ flux:
 		  --repository=services.nslhub.com \
 		  --branch=main \
 		  --path=clusters/$(CLUSTER)-$(REGION) \
-		   --toleration-keys=SystemAddonsOnly \
+		   --toleration-keys=CriticalAddonsOnly \
 		   --components-extra=image-reflector-controller,image-automation-controller
 
 cleanup:

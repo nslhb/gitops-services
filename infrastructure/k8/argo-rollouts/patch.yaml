@@ -6,5 +6,5 @@ spec:
   template:
     spec:
       tolerations:
-        - key: SystemAddonsOnly
+        - key: CriticalAddonsOnly
           operator: Exists
