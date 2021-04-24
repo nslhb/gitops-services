@@ -15,7 +15,10 @@ spec:
         name: prometheus-community
         namespace: flux-system
   values:
-    replicas: 2
+    image:
+      repository: k8s-prometheus-adapter-arm64
+      tag: v0.8.4
+    replicas: 1
     resources:
       limits:
         cpu: 100m
