@@ -16,7 +16,7 @@ spec:
         namespace: flux-system
   values:
     image:
-      repository: k8s-prometheus-adapter-arm64
+      repository: directxman12/k8s-prometheus-adapter-arm64
       tag: v0.8.4
     replicas: 1
     resources:
