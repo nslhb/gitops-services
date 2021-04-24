@@ -51,5 +51,6 @@ spec:
       serviceMonitor:
         enabled: true
     image:
-      registry: k8s.gcr.io/external-dns/external-dns
+      registry: k8s.gcr.io
+      repository: external-dns/external-dns
       tag: v0.7.6
