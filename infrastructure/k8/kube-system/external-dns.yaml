@@ -51,4 +51,5 @@ spec:
       serviceMonitor:
         enabled: true
     image:
-      registry: public.ecr.aws
+      registry: k8s.gcr.io/external-dns/external-dns
+      tag: v0.7.6
