@@ -52,7 +52,7 @@ iam:
 
 nodeGroups:
   - name: system
-    instanceType: "t3a.large"
+    instanceType: "a1.xlarge"
     desiredCapacity: 1
     minSize: 1
     maxSize: 1
@@ -81,7 +81,7 @@ nodeGroups:
       allow: true
       publicKeyName: bottlerocketkey
   - name: linkerd
-    instanceType: "c5.large"
+    instanceType: "c6g.large"
     desiredCapacity: 1
     minSize: 0
     maxSize: 3
@@ -107,7 +107,7 @@ nodeGroups:
     taints:
       linkerd: "true:NoSchedule"
   - name: monitoring
-    instanceType: "r5a.large"
+    instanceType: "r6g.large"
     desiredCapacity: 1
     minSize: 0
     maxSize: 3
@@ -132,7 +132,7 @@ nodeGroups:
     taints:
       monitoring: "true:NoSchedule"
   - name: edge
-    instanceType: "t3.medium"
+    instanceType: "t4g.medium"
     desiredCapacity: 1
     minSize: 0
     maxSize: 3

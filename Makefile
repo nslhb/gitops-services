@@ -9,16 +9,16 @@ init:
 	@aws ec2 describe-subnets --query  "Subnets[?Tags[?Key == 'Name' && contains(Value, 'Web')][]].SubnetArn" | jq -r '.[]' | xargs -I {} aws resourcegroupstaggingapi   tag-resources --resource-arn-list {} --tags kubernetes.io/cluster/$(CLUSTER)=shared
 
 create:
-	@eksctl create cluster --config-file=clusters/$(CLUSTER_NAME)/cluster.yaml
-#	@eksctl upgrade cluster --config-file=clusters/$(CLUSTER_NAME)/cluster.yaml --approve
+#	@eksctl --region $(REGION) create cluster --config-file=clusters/$(CLUSTER_NAME)/cluster.yaml
+	@eksctl upgrade cluster --config-file=clusters/$(CLUSTER)-$(REGION)/cluster.yaml --approve
 
 dump:
 	@eksctl utils write-kubeconfig --cluster services
 
 addons:
 	@eksctl utils update-kube-proxy --config-file=clusters/$(CLUSTER)-$(REGION)/cluster.yaml --approve
-	@eksctl  utils update-aws-node --config-file=clusters/$(CLUSTER)-$(REGION)/cluster.yaml --approve
-	@eksctl  utils update-coredns --config-file=clusters/$(CLUSTER)-$(REGION)/cluster.yaml --approve
+	@eksctl utils update-aws-node --config-file=clusters/$(CLUSTER)-$(REGION)/cluster.yaml --approve
+	@eksctl utils update-coredns --config-file=clusters/$(CLUSTER)-$(REGION)/cluster.yaml --approve
 
 coredns:
 	kubectl patch deployment coredns \
@@ -30,8 +30,8 @@ coredns:
 		-p='{"spec":{"template":{"spec":{"containers":[{ "name": "coredns","resources":{"limits":{"cpu":"250m","memory":"256Mi"},"requests":{"cpu":"250m","memory":"256Mi"}}}]}}}}'
 
 ng:
-	@eksctl  create nodegroup --config-file=clusters/$(CLUSTER)-$(REGION)/cluster.yaml
-	@eksctl  delete nodegroup --config-file=clusters/$(CLUSTER)-$(REGION)/cluster.yaml --only-missing
+	@eksctl create nodegroup --config-file=clusters/$(CLUSTER)-$(REGION)/cluster.yaml
+	@eksctl delete nodegroup --config-file=clusters/$(CLUSTER)-$(REGION)/cluster.yaml --only-missing
 
 
 
