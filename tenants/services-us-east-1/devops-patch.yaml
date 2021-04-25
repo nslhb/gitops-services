@@ -22,7 +22,7 @@ metadata:
 spec:
   patchesJson6902:
     - target:
-        version: helm.toolkit.fluxcd.io/v2beta1
+        version: v2beta1
         kind: HelmRelease
         name: prometheus-adapter
       patch:
