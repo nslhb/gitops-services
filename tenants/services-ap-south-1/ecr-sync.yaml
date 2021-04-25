@@ -85,9 +85,9 @@ spec:
                 - |-
                   kubectl delete secret --ignore-not-found $SECRET_NAME
                   kubectl create secret docker-registry $SECRET_NAME \
-                    --docker-server="$ECR_REGISTRY" \
-                    --docker-username=AWS \
-                    --docker-password="$(</token/ecr-token)"
+                  --docker-server="$ECR_REGISTRY" \
+                  --docker-username=AWS \
+                  --docker-password="$(</token/ecr-token)"
           tolerations:
             - key: CriticalAddonsOnly
               operator: Exists
