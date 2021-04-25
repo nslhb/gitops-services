@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: kube-downscaler
-data:
-  # downscale for non-work hours
-  DEFAULT_UPTIME: "Mon-Fri 08:30-21:00 Asia/Kolkata"
-  EXCLUDE_NAMESPACES: "argo-rollouts"
-  EXCLUDE_DEPLOYMENTS: "coredns,cluster-autoscaler,kube-downscaler"
