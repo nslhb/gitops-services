@@ -26,7 +26,7 @@ spec:
         namespace: flux-system
   values:
     syncPeriod: 30m0s
-    clusterName: ${cluster_name}
+    clusterName: "${cluster_name}"
     nodeSelector:
        workload: system
     tolerations:

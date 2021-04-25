@@ -42,7 +42,7 @@ spec:
          cpu: 10m
          memory: 20Mi
     extraCreateMetadata: true
-    k8sTagClusterId: "${cluster_name}"
+    k8sTagClusterId: "{cluster_name}"
     storageClasses:
      - name: ebs-sc
        annotations:
