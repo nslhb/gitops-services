@@ -4,23 +4,22 @@ metadata:
   name: kube-system
   namespace: flux-system
 spec:
+  images:
+    - name: public.ecr.aws/bitnami/cluster-autoscaler
+      newName: k8s.gcr.io/autoscaling/cluster-autoscaler-arm64
   postBuild:
     substitute:
       cluster_region: "ap-south-1"
       account_id: "755502957828"
       cluster_name: "dev"
-
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
-kind: Kustomization
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
 metadata:
-  name: linkerd
-  namespace: flux-system
-$patch: delete
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
-kind: Kustomization
-metadata:
-  name: falcosecurity
-  namespace: flux-system
-$patch: delete
+  name: prometheus-adapter
+  namespace: monitoring
+spec:
+  values:
+    image:
+      repository: directxman12/k8s-prometheus-adapter-arm64
+      tag: v0.8.4

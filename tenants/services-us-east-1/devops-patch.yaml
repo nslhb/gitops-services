@@ -12,3 +12,14 @@ spec:
       cluster_region: "us-east-1"
       account_id: "832807087073"
       cluster_name: "services"
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: prometheus-adapter
+  namespace: monitoring
+spec:
+  values:
+    image:
+      repository: directxman12/k8s-prometheus-adapter-arm64
+      tag: v0.8.4
