@@ -4,6 +4,9 @@ metadata:
   name: kube-system
   namespace: flux-system
 spec:
+  images:
+    - name: public.ecr.aws/bitnami/cluster-autoscaler
+      newName: k8s.gcr.io/autoscaling/cluster-autoscaler-arm64
   postBuild:
     substitute:
       cluster_region: "us-east-1"
