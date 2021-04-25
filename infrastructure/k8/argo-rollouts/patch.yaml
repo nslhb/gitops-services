@@ -5,6 +5,8 @@ metadata:
 spec:
   template:
     spec:
+      nodeSelector:
+        workload: system
       tolerations:
         - key: CriticalAddonsOnly
           operator: Exists

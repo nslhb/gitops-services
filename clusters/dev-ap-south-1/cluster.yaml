@@ -88,7 +88,7 @@ iam:
       roleName: ebs-csi-driver-ap-south-1
 nodeGroups:
   - name: system
-    instanceType: "m6g.medium"
+    instanceType: "a1.xlarge"
     desiredCapacity: 1
     minSize: 1
     maxSize: 1
@@ -110,7 +110,7 @@ nodeGroups:
       k8s.io/cluster-autoscaler/enabled: "true"
       k8s.io/cluster-autoscaler/services: "owned"
       k8s.io/cluster-autoscaler/node-template/label/workload: system
-      k8s.io/cluster-autoscaler/node-template/taint/SystemAddonsOnly: NoSchedule
+      k8s.io/cluster-autoscaler/node-template/taint/CriticalAddonsOnly: NoSchedule
     taints:
       SystemAddonsOnly: "true:NoSchedule"
   - name: monitoring
@@ -139,7 +139,7 @@ nodeGroups:
     taints:
       monitoring: "true:NoSchedule"
   - name: common
-    instanceType: "t3.medium"
+    instanceType: "t3a.large"
     desiredCapacity: 1
     minSize: 0
     maxSize: 3

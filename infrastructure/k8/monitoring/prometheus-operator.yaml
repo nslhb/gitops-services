@@ -41,11 +41,15 @@ spec:
         - key: monitoring
           operator: Exists
     kube-state-metrics:
+      nodeSelector:
+        workload: monitoring
       tolerations:
         - key: monitoring
           operator: Exists
     alertmanager:
       alertmanagerSpec:
+        nodeSelector:
+          workload: monitoring
         tolerations:
           - key: monitoring
             operator: Exists
@@ -56,6 +60,8 @@ spec:
             memory: 8Gi
           limits:
             memory: 8Gi
+        nodeSelector:
+          workload: monitoring
         tolerations:
           - key: monitoring
             operator: Exists
