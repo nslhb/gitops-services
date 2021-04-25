@@ -59,7 +59,7 @@ spec:
               imagePullPolicy: IfNotPresent
               env:
                 - name: REGION
-                  value: ap-south-1
+                  value: us-east-1
               volumeMounts:
                 - mountPath: /token
                   name: token
@@ -75,7 +75,7 @@ spec:
                 - name: SECRET_NAME
                   value: ecr-credentials
                 - name: ECR_REGISTRY
-                  value: 660124699787.dkr.ecr.ap-south-1.amazonaws.com
+                  value: 832807087073.dkr.ecr.us-east-1.amazonaws.com
               volumeMounts:
                 - mountPath: /token
                   name: token
@@ -85,9 +85,9 @@ spec:
                 - |-
                   kubectl delete secret --ignore-not-found $SECRET_NAME
                   kubectl create secret docker-registry $SECRET_NAME \
-                    --docker-server="$ECR_REGISTRY" \
-                    --docker-username=AWS \
-                    --docker-password="$(</token/ecr-token)"
+                  --docker-server="$ECR_REGISTRY" \
+                  --docker-username=AWS \
+                  --docker-password="$(</token/ecr-token)"
           tolerations:
-            - key: SystemAddonsOnly
+            - key: CriticalAddonsOnly
               operator: Exists
