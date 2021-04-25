@@ -7,7 +7,7 @@ spec:
   images:
     - name: public.ecr.aws/bitnami/cluster-autoscaler
       newName: k8s.gcr.io/autoscaling/cluster-autoscaler-arm64
-      newTag: 1.20.0
+      newTag: v1.20.0
   postBuild:
     substitute:
       cluster_region: "us-east-1"
