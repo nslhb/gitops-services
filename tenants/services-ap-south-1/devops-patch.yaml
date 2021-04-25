@@ -8,7 +8,7 @@ spec:
     substitute:
       cluster_region: "ap-south-1"
       account_id: "832807087073"
-        cluster_name: "services"
+      cluster_name: "services"
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
