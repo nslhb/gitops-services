@@ -4,6 +4,6 @@ metadata:
   name: kube-downscaler
 data:
   # downscale for non-work hours
-  DEFAULT_UPTIME: "Mon-FRI 09:30-19:00 Asia/Kolkata"
+  DEFAULT_UPTIME: "Mon-Fri 08:30-21:00 Asia/Kolkata"
   EXCLUDE_NAMESPACES: "argo-rollouts"
   EXCLUDE_DEPLOYMENTS: "coredns,cluster-autoscaler,kube-downscaler"
