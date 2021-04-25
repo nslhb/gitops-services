@@ -11,6 +11,7 @@ metadata:
     cluster-autoscaler.kubernetes.io/safe-to-evict: "false"
 spec:
   replicas: 1
+  revisionHistoryLimit: 2
   selector:
     matchLabels:
       app: cluster-autoscaler
