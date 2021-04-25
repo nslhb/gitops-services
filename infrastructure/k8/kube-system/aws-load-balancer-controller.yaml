@@ -25,7 +25,8 @@ spec:
         name: eks
         namespace: flux-system
   values:
-    clusterName: services
+    syncPeriod: 30m0s
+    clusterName: ${cluster_name}
     nodeSelector:
        workload: system
     tolerations:

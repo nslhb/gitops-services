@@ -8,6 +8,7 @@ spec:
     substitute:
       cluster_region: "ap-south-1"
       account_id: "755502957828"
+      cluster_name: "dev"
 
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
