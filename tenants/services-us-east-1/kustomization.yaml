@@ -4,6 +4,7 @@ resources:
   - ../teams/devops
   - ../teams/demo
   - linkerd.yaml
+  - ecr-sync.yaml
 patchesStrategicMerge:
   - devops-patch.yaml
   - demo-patch.yaml

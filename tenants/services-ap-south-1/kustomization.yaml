@@ -5,6 +5,7 @@ resources:
   - ../teams/demo
   - grafana-dashboards.yaml
   - linkerd.yaml
+  - ecr-sync.yaml
 patchesStrategicMerge:
   - devops-patch.yaml
   - demo-patch.yaml

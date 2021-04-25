@@ -68,7 +68,7 @@ spec:
                 - -ce
                 - aws ecr get-login-password --region ${REGION} > /token/ecr-token
           containers:
-            - image: ghcr.io/nslhb/kubectl:latest
+            - image: bitnami/kubectl
               name: create-secret
               imagePullPolicy: IfNotPresent
               env:
