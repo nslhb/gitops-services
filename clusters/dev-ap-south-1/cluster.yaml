@@ -112,7 +112,7 @@ nodeGroups:
       k8s.io/cluster-autoscaler/node-template/label/workload: system
       k8s.io/cluster-autoscaler/node-template/taint/CriticalAddonsOnly: NoSchedule
     taints:
-      SystemAddonsOnly: "true:NoSchedule"
+      CriticalAddonsOnly: "true:NoSchedule"
   - name: monitoring
     instanceType: "r6g.large"
     desiredCapacity: 1
