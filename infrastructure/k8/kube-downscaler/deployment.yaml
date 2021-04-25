@@ -7,6 +7,7 @@ metadata:
   name: kube-downscaler
 spec:
   replicas: 1
+  revisionHistoryLimit: 1
   selector:
     matchLabels:
       application: kube-downscaler
