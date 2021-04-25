@@ -5,3 +5,7 @@ resources:
   - https://raw.githubusercontent.com/argoproj/argo-rollouts/stable/manifests/install.yaml
 patchesStrategicMerge:
   - patch.yaml
+images:
+  - name: argoproj/argo-rollouts
+    newName: ghcr.io/argoproj/argo-rollouts
+    newTag: latest
