@@ -47,8 +47,8 @@ flux:
 		  --repository=services.nslhub.com \
 		  --branch=main \
 		  --path=clusters/$(CLUSTER)-$(REGION) \
-		   --toleration-keys=CriticalAddonsOnly \
-		   --components-extra=image-reflector-controller,image-automation-controller
+		  --toleration-keys=CriticalAddonsOnly \
+		  --components-extra=image-reflector-controller,image-automation-controller
 
 cleanup:
 	@kubectl delete mutatingwebhookconfigurations  kube-prometheus-stack-admission

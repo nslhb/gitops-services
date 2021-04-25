@@ -4,19 +4,19 @@
 # 
 # export GITHUB_TOKEN=<your-token>
 # export GITHUB_USER=<your-username>
-# export GITHUB_REPO=<repository-name>
 #
-# add-cluster.sh CLUSTER_NAME
+# add-cluster.sh CLUSTER REGION
 
-CLUSTER_NAME=$1
+CLUSTER=$1
+REGION=$2
 
-mkdir -p  ./clusters/$CLUSTER_NAME
-cp ./utils/templates/clusters/infra.yaml ./clusters/$CLUSTER_NAME/infra.yaml
-sed -i 's/{CLUSTER_NAME}/'$CLUSTER_NAME'/g' ./clusters/$CLUSTER_NAME/infra.yaml
+mkdir -p  ./clusters/$CLUSTER-$REGION
+cp ./scripts/templates/clusters ./clusters/$CLUSTER-$REGION
+sed -i 's/{CLUSTER}/'$CLUSTER'/g' ./clusters/$CLUSTER-$REGION
+sed -i 's/{REGION}/'$REGION'/g' ./clusters/$CLUSTER-$REGION
 
-mkdir -p  ./infra/$CLUSTER_NAME
-cp ./utils/templates/infra/kustomization.yaml ./infra/$CLUSTER_NAME/kustomization.yaml
-
+mkdir -p  ./tenants/$CLUSTER-$REGION
+cp ./utils/templates/infra/kustomization.yaml ./infra/$CLUSTER-$REGION/kustomization.yaml
 
 flux bootstrap github \
     --owner=${GITHUB_USER} \
@@ -24,7 +24,7 @@ flux bootstrap github \
     --branch=main \
     --path=clusters/base
 
-kubectl apply -f clusters/$CLUSTER_NAME/infra.yaml
+kubectl apply -f clusters/$CLUSTER-$REGION/infra.yaml
 
 
 

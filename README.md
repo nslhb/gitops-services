@@ -1,3 +1,7 @@
+# Usecase
+
+An organization has a few K8s clusters across the globe. Let's say a cluster per region (EMEA, Asia, America). There are also a few environments (Dev, Qa, Prod) distributed across these clusters. So each environment is represented on all clusters. There are also 100 teams working on these environments. When a team's application is being deployed to a Dev environment, for example, it's being deployed to all three clusters (in Dev environment). However, on each cluster the application behaves slightly differently (e.g. it communicates to external services hosted in that region). The desire is to have a single GitOps setup of the application, declaring that it should be deployed across all available clusters in the environment with a specific configuration for each cluster (e.g. different DB connection strings in different clusters, different load balancing settings, even different image tags).
+
 # flux2-multi-tenancy
 
 [![test](https://github.com/nslhb/services.nslhub.com/workflows/test/badge.svg)](https://github.com/fluxcd/flux2-multi-tenancy/actions)
