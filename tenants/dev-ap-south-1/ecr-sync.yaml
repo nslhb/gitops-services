@@ -89,5 +89,5 @@ spec:
                     --docker-username=AWS \
                     --docker-password="$(</token/ecr-token)"
           tolerations:
-            - key: SystemAddonsOnly
+            - key: CriticalAddonsOnly
               operator: Exists
