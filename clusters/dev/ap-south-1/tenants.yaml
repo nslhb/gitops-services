@@ -10,6 +10,6 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./tenants/services-ap-south-1
+  path: ./tenants/dev/ap-south-1
   prune: true
   validation: client

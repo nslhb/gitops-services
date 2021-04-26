@@ -19,7 +19,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: ./clusters/dev-ap-south-1
+  path: ./clusters/services/us-east-1
   prune: true
   sourceRef:
     kind: GitRepository
