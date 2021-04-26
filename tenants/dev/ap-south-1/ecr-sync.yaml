@@ -11,19 +11,6 @@ rules:
       - delete
       - create
 ---
-kind: RoleBinding
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: ecr-credentials-sync
-  namespace: flux-system
-subjects:
-  - kind: ServiceAccount
-    name: ecr-credentials-sync
-roleRef:
-  kind: Role
-  name: ecr-credentials-sync
-  apiGroup: ""
----
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -33,6 +20,32 @@ metadata:
   # annotations:
   #   eks.amazonaws.com/role-arn: <role arn>
 ---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: ecr-credentials-sync
+  namespace: paas
+  # Uncomment and edit if using IRSA
+  # annotations:
+  #   eks.amazonaws.com/role-arn: <role arn>
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: ecr-credentials-sync
+  namespace: flux-system
+subjects:
+  - kind: ServiceAccount
+    name: ecr-credentials-sync
+  - kind: ServiceAccount
+    name: ecr-credentials-sync
+    namespace: paas
+roleRef:
+  kind: Role
+  name: ecr-credentials-sync
+  apiGroup: ""
+---
+
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
