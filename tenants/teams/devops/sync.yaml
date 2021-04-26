@@ -20,7 +20,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: ebs-csi-driver
+  path: ./ebs-csi-driver
   prune: true
   force: true
   sourceRef:
@@ -35,7 +35,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: kube-system
+  path: ./kube-system
   prune: true
   force: true
   sourceRef:
@@ -58,7 +58,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: monitoring
+  path: ./monitoring
   prune: true
   force: true
   sourceRef:
@@ -83,7 +83,7 @@ spec:
   dependsOn:
     - name: kube-system
   interval: 10m0s
-  path: kube-downscaler
+  path: ./kube-downscaler
   prune: true
   force: true
   sourceRef:
@@ -104,7 +104,7 @@ spec:
   dependsOn:
     - name: kube-system
   interval: 10m0s
-  path: argo-rollouts
+  path: ./argo-rollouts
   prune: true
   force: true
   sourceRef:
