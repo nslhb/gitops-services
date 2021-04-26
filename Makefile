@@ -10,15 +10,15 @@ init:
 
 create:
 #	@eksctl --region $(REGION) create cluster --config-file=clusters/$(CLUSTER_NAME)/cluster.yaml
-	@eksctl upgrade cluster --config-file=clusters/$(CLUSTER)-$(REGION)/cluster.yaml --approve
+	@eksctl upgrade cluster --config-file=clusters/$(CLUSTER)/$(REGION)/cluster.yaml --approve
 
 dump:
 	@eksctl utils write-kubeconfig --cluster services
 
 addons:
-	@eksctl utils update-kube-proxy --config-file=clusters/$(CLUSTER)-$(REGION)/cluster.yaml --approve
-	@eksctl utils update-aws-node --config-file=clusters/$(CLUSTER)-$(REGION)/cluster.yaml --approve
-	@eksctl utils update-coredns --config-file=clusters/$(CLUSTER)-$(REGION)/cluster.yaml --approve
+	@eksctl utils update-kube-proxy --config-file=clusters/$(CLUSTER)/$(REGION)/cluster.yaml --approve
+	@eksctl utils update-aws-node --config-file=clusters/$(CLUSTER)/$(REGION)/cluster.yaml --approve
+	@eksctl utils update-coredns --config-file=clusters/$(CLUSTER)/$(REGION)/cluster.yaml --approve
 
 coredns:
 	kubectl patch deployment coredns \
@@ -30,11 +30,11 @@ coredns:
 		-p='{"spec":{"template":{"spec":{"containers":[{ "name": "coredns","resources":{"limits":{"cpu":"250m","memory":"256Mi"},"requests":{"cpu":"250m","memory":"256Mi"}}}]}}}}'
 
 ng:
-	@eksctl create nodegroup --config-file=clusters/$(CLUSTER)-$(REGION)/cluster.yaml
-	@eksctl delete nodegroup --config-file=clusters/$(CLUSTER)-$(REGION)/cluster.yaml --only-missing
+	@eksctl create nodegroup --config-file=clusters/$(CLUSTER)/$(REGION)/cluster.yaml
+	@eksctl delete nodegroup --config-file=clusters/$(CLUSTER)/$(REGION)/cluster.yaml --only-missing
 
 sa:
-	@eksctl create iamserviceaccount --config-file=clusters/$(CLUSTER)-$(REGION)/cluster.yaml --approve --override-existing-serviceaccounts
+	@eksctl create iamserviceaccount --config-file=clusters/$(CLUSTER)/$(REGION)/cluster.yaml --approve --override-existing-serviceaccounts
 
 identity:
 #	@eksctl create iamidentitymapping --cluster $(CLUSTER) --service-name emr-containers --namespace default
@@ -46,7 +46,7 @@ flux:
 		  --owner=nslhb \
 		  --repository=services.nslhub.com \
 		  --branch=main \
-		  --path=clusters/$(CLUSTER)-$(REGION) \
+		  --path=clusters/$(CLUSTER)/$(REGION) \
 		  --toleration-keys=CriticalAddonsOnly \
 		  --components-extra=image-reflector-controller,image-automation-controller
 
