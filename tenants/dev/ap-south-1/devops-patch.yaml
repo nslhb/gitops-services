@@ -23,8 +23,8 @@ spec:
   patchesJson6902:
     - target:
         version: v2beta1
-kind: HelmRelease
-  name: prometheus-adapter
+        kind: HelmRelease
+        name: prometheus-adapter
       patch:
         - op: replace
           path: /spec/values/image/repository
