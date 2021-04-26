@@ -6,3 +6,4 @@ resources:
   - ecr-sync.yaml
 patchesStrategicMerge:
   - devops-patch.yaml
+  - paas-patch.yaml
