@@ -1,3 +1,18 @@
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: GitRepository
+metadata:
+  name: infra
+  namespace: flux-system
+spec:
+  gitImplementation: go-git
+  interval: 1m0s
+  ref:
+    branch: main
+  secretRef:
+    name: infra
+  timeout: 20s
+  url: ssh://git@github.com/nslhb/gitops-devops.git
+---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:
@@ -5,7 +20,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: ./infrastructure/k8/ebs-csi-driver
+  path: ebs-csi-driver
   prune: true
   force: true
   sourceRef:
@@ -20,7 +35,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: ./infrastructure/k8/kube-system
+  path: kube-system
   prune: true
   force: true
   sourceRef:
@@ -43,7 +58,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: ./infrastructure/k8/monitoring
+  path: monitoring
   prune: true
   force: true
   sourceRef:
@@ -68,7 +83,7 @@ spec:
   dependsOn:
     - name: kube-system
   interval: 10m0s
-  path: ./infrastructure/k8/kube-downscaler
+  path: kube-downscaler
   prune: true
   force: true
   sourceRef:
@@ -89,7 +104,7 @@ spec:
   dependsOn:
     - name: kube-system
   interval: 10m0s
-  path: ./infrastructure/k8/argo-rollouts
+  path: argo-rollouts
   prune: true
   force: true
   sourceRef:
@@ -110,7 +125,7 @@ spec:
 #  namespace: flux-system
 #spec:
 #  interval: 10m0s
-#  path: ./infrastructure/k8/falcosecurity
+#  path: falcosecurity
 #  prune: true
 #  force: true
 #  sourceRef:

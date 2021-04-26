@@ -11,21 +11,14 @@ CLUSTER=$1
 REGION=$2
 
 mkdir -p  ./clusters/$CLUSTER-$REGION
-cp ./scripts/templates/clusters ./clusters/$CLUSTER-$REGION
-sed -i 's/{CLUSTER}/'$CLUSTER'/g' ./clusters/$CLUSTER-$REGION
-sed -i 's/{REGION}/'$REGION'/g' ./clusters/$CLUSTER-$REGION
+cp ./scripts/templates/clusters ./clusters/$CLUSTER/$REGION
+sed -i 's/{CLUSTER}/'$CLUSTER'/g' ./clusters/$CLUSTER/$REGION
+sed -i 's/{REGION}/'$REGION'/g' ./clusters/$CLUSTER/$REGION
 
-mkdir -p  ./tenants/$CLUSTER-$REGION
-cp ./utils/templates/infra/kustomization.yaml ./infra/$CLUSTER-$REGION/kustomization.yaml
+mkdir -p  ./tenants/$CLUSTER/$REGION
 
 flux bootstrap github \
     --owner=${GITHUB_USER} \
     --repository=${GITHUB_REPO} \
     --branch=main \
-    --path=clusters/base
-
-kubectl apply -f clusters/$CLUSTER-$REGION/infra.yaml
-
-
-
-
+    --path=clusters/$CLUSTER/$REGION

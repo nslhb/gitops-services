@@ -41,7 +41,7 @@ identity:
 	eksctl --region $(REGION) create iamidentitymapping --cluster $(CLUSTER) --group system:masters  --username iam:{{SessionName}} --arn $$(aws iam list-roles  --query 'Roles[?starts_with(RoleName, `AWSReservedSSO_AWSPowerUserAccess`) == `true`].Arn' --output text |  awk -F'/' '{ print $$1 "/" $$4}')
 
 flux:
-	flux bootstrap github \
+	@flux bootstrap github \
 		  --context=$(CTX)  \
 		  --owner=nslhb \
 		  --repository=services.nslhub.com \
@@ -49,6 +49,11 @@ flux:
 		  --path=clusters/$(CLUSTER)/$(REGION) \
 		  --toleration-keys=CriticalAddonsOnly \
 		  --components-extra=image-reflector-controller,image-automation-controller
+
+flux/source:
+	@flux create source git infra \
+         --url=ssh://git@github.com/nslhb/gitops-devops.git \
+         --branch=main
 
 cleanup:
 	@kubectl delete mutatingwebhookconfigurations  kube-prometheus-stack-admission

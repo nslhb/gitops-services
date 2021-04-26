@@ -5,7 +5,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 2m0s
-  path: ./infrastructure/k8/grafana-dashboards
+  path: grafana-dashboards
   prune: true
   sourceRef:
     kind: GitRepository
