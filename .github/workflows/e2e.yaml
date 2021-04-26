@@ -21,6 +21,9 @@ jobs:
         uses: engineerd/setup-kind@v0.5.0
       - name: Install Flux in Kubernetes Kind
         run: flux install
+      - name: Add cluster
+        run: |
+          ./scripts/add-cluster.sh test ap-south-1
       - name: Setup cluster reconciliation
         run: |
           flux create source git flux-system \
@@ -28,7 +31,7 @@ jobs:
           --branch=${GITHUB_REF#refs/heads/}
           flux create kustomization flux-system \
           --source=flux-system \
-          --path=./clusters/staging
+          --path=./clusters/test/ap-south-1
       - name: Verify cluster reconciliation
         run: |
           kubectl -n flux-system wait kustomization/kyverno --for=condition=ready --timeout=1m
@@ -36,7 +39,6 @@ jobs:
           kubectl -n flux-system wait kustomization/tenants --for=condition=ready --timeout=1m
       - name: Verify tenant reconciliation
         run: |
-          kubectl -n apps wait kustomization/devops --for=condition=ready --timeout=1m
           kubectl -n apps wait helmrelease/podinfo --for=condition=ready --timeout=1m
       - name: Debug failure
         if: failure()
