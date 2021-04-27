@@ -1,4 +1,4 @@
-kind: ClusterRole
+kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: ecr-credentials-sync
@@ -10,20 +10,8 @@ rules:
     verbs:
       - delete
       - create
-    resourceNames:
-      - ecr-credentials-sync
 ---
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: ecr-credentials-sync
-  namespace: flux-system
-  # Uncomment and edit if using IRSA
-  # annotations:
-  #   eks.amazonaws.com/role-arn: <role arn>
----
-
-kind: ClusterRoleBinding
+kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: ecr-credentials-sync
@@ -36,7 +24,15 @@ roleRef:
   name: ecr-credentials-sync
   apiGroup: ""
 ---
-
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: ecr-credentials-sync
+  namespace: flux-system
+  # Uncomment and edit if using IRSA
+  # annotations:
+  #   eks.amazonaws.com/role-arn: <role arn>
+---
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
@@ -89,11 +85,6 @@ spec:
                 - |-
                   kubectl delete secret --ignore-not-found $SECRET_NAME
                   kubectl create secret docker-registry $SECRET_NAME \
-                    --docker-server="$ECR_REGISTRY" \
-                    --docker-username=AWS \
-                    --docker-password="$(</token/ecr-token)"
-                  kubectl delete secret --ignore-not-found $SECRET_NAME -n paas
-                  kubectl create secret docker-registry $SECRET_NAME -n paas\
                     --docker-server="$ECR_REGISTRY" \
                     --docker-username=AWS \
                     --docker-password="$(</token/ecr-token)"
