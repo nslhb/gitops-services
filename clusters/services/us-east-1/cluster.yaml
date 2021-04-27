@@ -181,18 +181,19 @@ nodeGroups:
     taints:
       Edge: "true:NoSchedule"
 
-fargateProfiles:
-  - name: coredns
-    selectors:
-      - namespace: kube-system
-        labels:
-          eks.amazonaws.com/component: coredns
-          k8s-app: kube-dns
-  - name: kube-downscaler
-    selectors:
-      - namespace: kube-system
-        labels:
-          application: kube-downscaler
+# removed fargate profiles since they are running costlier
+#fargateProfiles:
+#  - name: coredns
+#    selectors:
+#      - namespace: kube-system
+#        labels:
+#          eks.amazonaws.com/component: coredns
+#          k8s-app: kube-dns
+#  - name: kube-downscaler
+#    selectors:
+#      - namespace: kube-system
+#        labels:
+#          application: kube-downscaler
 
 cloudWatch:
   clusterLogging:

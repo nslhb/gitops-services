@@ -28,6 +28,8 @@ coredns:
 	kubectl  patch deployment coredns \
 		-n kube-system \
 		-p='{"spec":{"template":{"spec":{"containers":[{ "name": "coredns","resources":{"limits":{"cpu":"250m","memory":"256Mi"},"requests":{"cpu":"250m","memory":"256Mi"}}}]}}}}'
+	kubectl annotate deployment coredns \
+		-n kube-system downscaler/downtime-replicas-
 
 ng:
 	@eksctl create nodegroup --config-file=clusters/$(CLUSTER)/$(REGION)/cluster.yaml
@@ -64,3 +66,6 @@ cleanup:
 
 echo:
 	@echo "cluster $(CLUSTER) in $(REGION) with context $(CTX)"
+
+dns:
+	
