@@ -68,4 +68,22 @@ echo:
 	@echo "cluster $(CLUSTER) in $(REGION) with context $(CTX)"
 
 dns:
-	
+	# create a dummy vpc first
+	# create private hosted zone
+	# authorize in dev account
+	aws route53 associate-vpc-with-hosted-zone --vpc VPCRegion=ap-south-1,VPCId=vpc-003978caf25a1d7ce --region ap-south-1 --hosted-zone-id Z0850381TEAQKXGLOB6E
+	# switch to newtork account and associate
+	aws route53 create-vpc-association-authorization  --vpc VPCRegion=ap-south-1,VPCId=vpc-003978caf25a1d7ce --region ap-south-1 --hosted-zone-id Z0850381TEAQKXGLOB6E
+	# switch to dev account, remove the dummy vpc from route53 association
+	# remote the dummy vpc
+
+
+
+down:
+	for nss in apps flux-system kube-system kyverno linkerd linkerd-viz monitoring; do \
+  	    kubectl annotate ns $$nss downscaler/force-uptime- ; \
+  	    kubectl annotate ns $$nss downscaler/uptime- ; \
+  		kubectl annotate ns $$nss downscaler/uptime='Mon-Fri 08:30-08:30 Asia/Kolkata'; done
+
+up:
+	for nss in apps flux-system kube-system kyverno linkerd linkerd-viz monitoring; do kubectl annotate ns $$nss downscaler/force-uptime=true; done
