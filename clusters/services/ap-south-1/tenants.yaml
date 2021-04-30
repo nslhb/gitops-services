@@ -4,9 +4,7 @@ metadata:
   name: tenants
   namespace: flux-system
 spec:
-  dependsOn:
-    - name: kyverno-policies
-  interval: 5m
+  interval: 1m
   sourceRef:
     kind: GitRepository
     name: flux-system
