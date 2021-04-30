@@ -4,7 +4,7 @@ metadata:
   name: demo
   namespace: flux-system
 spec:
-  interval: 1m
+  interval: 30s
   url: ssh://git@github.com/nslhb/services.nslhub.com
   ref:
     branch: apps
@@ -21,7 +21,7 @@ spec:
   dependsOn:
     - name: argo-rollouts
     - name: linkerd
-  interval: 1m0s
+  interval: 30s
   path: ./demo
   prune: true
   sourceRef:
