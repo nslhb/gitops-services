@@ -51,7 +51,7 @@ iam:
       wellKnownPolicies:
         autoScaler: true
     - metadata:
-        name: kube-prometheus-stack-grafana
+        name: grafana
         namespace: monitoring
         labels: {aws-usage: "application"}
       attachPolicyARNs:
@@ -61,10 +61,11 @@ iam:
         name: ebs-csi-driver
         namespace: kube-system
       roleName: ebs-csi-driver-ap-south-1
+      wellKnownPolicies:
+        ebsCSIController: true
 nodeGroups:
   - name: system
     instanceType: "t3a.large"
-    spot: true
     desiredCapacity: 1
     minSize: 0
     maxSize: 1

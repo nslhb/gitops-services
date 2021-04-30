@@ -56,13 +56,6 @@ iam:
       wellKnownPolicies:
         autoScaler: true
     - metadata:
-        name: kube-prometheus-stack-grafana
-        namespace: monitoring
-        labels: {aws-usage: "application"}
-      attachPolicyARNs:
-        - "arn:aws:iam::aws:policy/CloudWatchReadOnlyAccess"
-      roleName: cloudwatch-ap-south-1
-    - metadata:
         name: ebs-csi-driver
         namespace: kube-system
       roleName: ebs-csi-driver-ap-south-1
