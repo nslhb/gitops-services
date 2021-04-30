@@ -1,3 +1,25 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    alb.ingress.kubernetes.io/group.name: default
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    kubernetes.io/ingress.class: alb
+  name: grafana
+  namespace: monitoring
+spec:
+  rules:
+    - host: grafana.nslhub.click
+      http:
+        paths:
+          - backend:
+              serviceName: kube-prometheus-stack-grafana
+              servicePort: 80
+            path: /*
+            pathType: Prefix
+---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:

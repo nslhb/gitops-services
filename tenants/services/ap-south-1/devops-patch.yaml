@@ -38,13 +38,3 @@ spec:
         values:
           grafana:
             enabled: true
-            ingress:
-              enabled: true
-              annotations:
-                alb.ingress.kubernetes.io/group.name: default
-                alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
-                alb.ingress.kubernetes.io/scheme: internet-facing
-                alb.ingress.kubernetes.io/target-type: ip
-              hosts:
-                - grafana.nslhub.click
-              path: /*
