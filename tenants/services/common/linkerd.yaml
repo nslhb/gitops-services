@@ -52,7 +52,7 @@ spec:
   force: true
   sourceRef:
     kind: GitRepository
-    name: flux-system
+    name: infra
   timeout: 10m0s
   validation: client
   healthChecks:
