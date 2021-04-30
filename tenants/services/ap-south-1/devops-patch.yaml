@@ -38,3 +38,6 @@ spec:
         values:
           grafana:
             enabled: true
+            serviceAccount:
+              create: false
+              name: grafana
