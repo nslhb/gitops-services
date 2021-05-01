@@ -17,3 +17,5 @@ spec:
         annotations:
           external-dns.alpha.kubernetes.io/aws-region: us-east-1
           external-dns.alpha.kubernetes.io/set-identifier: us-east-1
+  dependsOn:
+  $patch: delete
