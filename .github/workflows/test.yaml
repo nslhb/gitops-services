@@ -14,5 +14,6 @@ jobs:
         uses: actions/checkout@v2
       - name: Setup tools
         uses: ./.github/actions/tools
+      - run: ls -al
       - name: Validate manifests
         run: ./scripts/validate.sh
