@@ -3,8 +3,6 @@ kind: Kustomization
 resources:
   - ../../teams/devops
   - ../../teams/demo
-  - ../_com
-  - grafana-dashboards.yaml
 patchesStrategicMerge:
   - devops-patch.yaml
   - demo-patch.yaml

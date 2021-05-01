@@ -38,7 +38,7 @@ spec:
           conditions:
             - key: "{{request.object.spec.sourceRef.namespace}}"
               operator: NotEquals
-              value:  "flux-system"
+              value: "flux-system"
     - name: helmRefNamespace-devops
       exclude:
         resources:
@@ -57,7 +57,7 @@ spec:
           conditions:
             - key: "{{request.object.spec.chart.spec.sourceRef.namespace}}"
               operator: NotEquals
-              value:  "flux-system"
+              value: "flux-system"
     - name: sourceRefNamespace
       exclude:
         resources:
@@ -76,23 +76,23 @@ spec:
           conditions:
             - key: "{{request.object.spec.sourceRef.namespace}}"
               operator: NotEquals
-              value:  "{{request.object.metadata.namespace}}"
-      - name: helmRefNamespace
-        exclude:
-          resources:
-            namespaces:
-              - flux-system
-            namespaceSelector:
-              matchLabels:
-                toolkit.fluxcd.io/tenant: devops
-        match:
-          resources:
-            kinds:
-              - HelmRelease
-        validate:
-          message: "spec.sourceRef.namespace must be the same as metadata.namespace"
-          deny:
-            conditions:
-              - key: "{{request.object.spec.chart.spec.sourceRef.namespace}}"
-                operator: NotEquals
-                value:  "{{request.object.metadata.namespace}}"
+              value: "{{request.object.metadata.namespace}}"
+            - name: helmRefNamespace
+              exclude:
+                resources:
+                  namespaces:
+                    - flux-system
+                  namespaceSelector:
+                    matchLabels:
+                      toolkit.fluxcd.io/tenant: devops
+              match:
+                resources:
+                  kinds:
+                    - HelmRelease
+              validate:
+                message: "spec.sourceRef.namespace must be the same as metadata.namespace"
+                deny:
+                  conditions:
+                    - key: "{{request.object.spec.chart.spec.sourceRef.namespace}}"
+                      operator: NotEquals
+                      value: "{{request.object.metadata.namespace}}"
