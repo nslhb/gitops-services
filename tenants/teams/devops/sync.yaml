@@ -22,7 +22,6 @@ metadata:
   name: devops
   namespace: flux-system
 spec:
-  serviceAccountName: devops
   interval: 5m0s
   prune: true
   sourceRef:
