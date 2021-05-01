@@ -1,42 +1,8 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:
-  name: kube-system
+  name: devops
   namespace: flux-system
 spec:
-  postBuild:
-    substitute:
-      cluster_region: "ap-south-1"
-      account_id: "832807087073"
-      cluster_name: "services"
-  patchesStrategicMerge:
-  - apiVersion: helm.toolkit.fluxcd.io/v2beta1
-    kind: HelmRelease
-    metadata:
-      name: csi-secrets-store
-      namespace: flux-system
-    values:
-      tolerations:
-        - key: Edge
-          operator: Exists
-
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
-kind: Kustomization
-metadata:
-  name: monitoring
-  namespace: flux-system
-spec:
-  patchesStrategicMerge:
-    - apiVersion: helm.toolkit.fluxcd.io/v2beta1
-      kind: HelmRelease
-      metadata:
-        name: kube-prometheus-stack
-        namespace: monitoring
-      spec:
-        values:
-          grafana:
-            enabled: true
-            serviceAccount:
-              create: false
-              name: grafana
+  serviceAccountName: devops
+  path: ./clusters/services/ap-south-1

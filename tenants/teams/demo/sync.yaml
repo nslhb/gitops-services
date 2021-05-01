@@ -2,14 +2,14 @@ apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: GitRepository
 metadata:
   name: demo
-  namespace: flux-system
+  namespace: apps
 spec:
-  interval: 30s
+  interval: 1m
   url: ssh://git@github.com/nslhb/services.nslhub.com
   ref:
     branch: apps
   secretRef:
-    name: flux-system
+    name: git
   timeout: 20s
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
@@ -20,9 +20,9 @@ metadata:
 spec:
   serviceAccountName: demo
   dependsOn:
-    - name: argo-rollouts
     - name: linkerd
-  interval: 30s
+      namespace: linkerd
+  interval: 1m
   path: ./demo
   prune: true
   sourceRef:

@@ -5,7 +5,7 @@ metadata:
   namespace: flux-system
 spec:
   gitImplementation: go-git
-  interval: 1m0s
+  interval: 1m
   ref:
     branch: main
   secretRef:
@@ -13,123 +13,19 @@ spec:
   timeout: 20s
   url: ssh://git@github.com/nslhb/gitops-devops.git
 ---
+#########################################################################################
+#     Monitoring
+#########################################################################################
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:
-  name: ebs-csi-driver
+  name: devops
   namespace: flux-system
 spec:
-  interval: 10m0s
-  path: ./ebs-csi-driver
+  serviceAccountName: devops
+  interval: 5m0s
   prune: true
-  force: true
   sourceRef:
     kind: GitRepository
     name: infra
   validation: client
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
-kind: Kustomization
-metadata:
-  name: kube-system
-  namespace: flux-system
-spec:
-  interval: 10m0s
-  path: ./kube-system
-  prune: true
-  force: true
-  sourceRef:
-    kind: GitRepository
-    name: infra
-  timeout: 10m0s
-  validation: client
-  healthChecks:
-    - kind: Deployment
-      name: cluster-autoscaler
-      namespace: kube-system
-    - kind: Deployment
-      name: aws-load-balancer-controller
-      namespace: kube-system
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
-kind: Kustomization
-metadata:
-  name: monitoring
-  namespace: flux-system
-spec:
-  interval: 10m0s
-  path: ./monitoring
-  prune: true
-  force: true
-  sourceRef:
-    kind: GitRepository
-    name: infra
-  timeout: 10m0s
-  validation: client
-  healthChecks:
-    - kind: Statefulset
-      name: alertmanager-kube-prometheus-stack-alertmanager
-      namespace: monitoring
-    - kind: Statefulset
-      name:   prometheus-kube-prometheus-stack-prometheus
-      namespace: monitoring
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
-kind: Kustomization
-metadata:
-  name: kube-downscaler
-  namespace: flux-system
-spec:
-  dependsOn:
-    - name: kube-system
-  interval: 10m0s
-  path: ./kube-downscaler
-  prune: true
-  force: true
-  sourceRef:
-    kind: GitRepository
-    name: infra
-  validation: client
-  healthChecks:
-    - kind: Deployment
-      name: kube-downscaler
-      namespace: kube-system
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
-kind: Kustomization
-metadata:
-  name: argo-rollouts
-  namespace: flux-system
-spec:
-  dependsOn:
-    - name: kube-system
-  interval: 10m0s
-  path: ./argo-rollouts
-  prune: true
-  force: true
-  sourceRef:
-    kind: GitRepository
-    name: infra
-  timeout: 10m0s
-  validation: client
-  healthChecks:
-    - kind: Deployment
-      name: argo-rollouts
-      namespace: argo-rollouts
----
-# Falco doesn't work on arm64
-#apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
-#kind: Kustomization
-#metadata:
-#  name: falcosecurity
-#  namespace: flux-system
-#spec:
-#  interval: 10m0s
-#  path: falcosecurity
-#  prune: true
-#  force: true
-#  sourceRef:
-#    kind: GitRepository
-#    name: infra
-#  validation: client
-#---

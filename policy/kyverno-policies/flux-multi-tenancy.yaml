@@ -20,35 +20,79 @@ spec:
         pattern:
           spec:
             serviceAccountName: "?*"
-    - name: sourceRefNamespace
+    - name: sourceRefNamespace-devops
       exclude:
         resources:
           namespaces:
             - flux-system
       match:
         resources:
+          namespaceSelector:
+            matchLabels:
+              toolkit.fluxcd.io/tenant: devops
           kinds:
             - Kustomization
       validate:
-        message: "spec.sourceRef.namespace must be in the flux-system"
+        message: "spec.sourceRef.namespace must be flux-system to avoid repetition"
         deny:
           conditions:
             - key: "{{request.object.spec.sourceRef.namespace}}"
               operator: NotEquals
               value:  "flux-system"
-    - name: helmRefNamespace
+    - name: helmRefNamespace-devops
       exclude:
         resources:
           namespaces:
             - flux-system
       match:
         resources:
+          namespaceSelector:
+            matchLabels:
+              toolkit.fluxcd.io/tenant: devops
           kinds:
             - HelmRelease
       validate:
-        message: "spec.sourceRef.namespace must be in the flux-system"
+        message: "spec.sourceRef.namespace must be flux-system to avoid repetition"
         deny:
           conditions:
             - key: "{{request.object.spec.chart.spec.sourceRef.namespace}}"
               operator: NotEquals
               value:  "flux-system"
+    - name: sourceRefNamespace
+      exclude:
+        resources:
+          namespaces:
+            - flux-system
+          namespaceSelector:
+            matchLabels:
+              toolkit.fluxcd.io/tenant: devops
+      match:
+        resources:
+          kinds:
+            - Kustomization
+      validate:
+        message: "spec.sourceRef.namespace must be the same as metadata.namespace"
+        deny:
+          conditions:
+            - key: "{{request.object.spec.sourceRef.namespace}}"
+              operator: NotEquals
+              value:  "{{request.object.metadata.namespace}}"
+      - name: helmRefNamespace
+        exclude:
+          resources:
+            namespaces:
+              - flux-system
+            namespaceSelector:
+              matchLabels:
+                toolkit.fluxcd.io/tenant: devops
+        match:
+          resources:
+            kinds:
+              - HelmRelease
+        validate:
+          message: "spec.sourceRef.namespace must be the same as metadata.namespace"
+          deny:
+            conditions:
+              - key: "{{request.object.spec.chart.spec.sourceRef.namespace}}"
+                operator: NotEquals
+                value:  "{{request.object.metadata.namespace}}"
