@@ -192,7 +192,7 @@ spec:
       namespace: kyverno
 ```
 
-Then we setup [cluster policies](clusters/base/kyverno-policies/flux-multi-tenancy.yaml) 
+Then we setup [cluster policies](policy/kyverno-policies/flux-multi-tenancy.yaml) 
 (Kyverno custom resources) to enforce tenant isolation:
 
 ```yaml
