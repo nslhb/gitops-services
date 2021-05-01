@@ -27,6 +27,7 @@ metadata:
   labels:
     toolkit.fluxcd.io/tenant: devops
   name: linkerd-reconciler
+  namespace: linkerd
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -53,8 +54,8 @@ kind: ServiceAccount
 metadata:
   labels:
     toolkit.fluxcd.io/tenant: devops
-  name: devops
   name: linkerd-viz
+  namespace: linkerd-viz
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -63,6 +64,7 @@ metadata:
   labels:
     toolkit.fluxcd.io/tenant: devops
   name: linkerd-reconciler
+  namespace: linkerd-viz
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -73,5 +75,5 @@ subjects:
     name: gotk:linkerd:reconciler
   - kind: ServiceAccount
     name: devops
-    namespace: linkerd
+    namespace: linkerd-viz
 ---
