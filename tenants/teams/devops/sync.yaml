@@ -24,6 +24,7 @@ metadata:
 spec:
   interval: 5m0s
   prune: true
+  serviceAccountName: devops
   sourceRef:
     kind: GitRepository
     name: infra
