@@ -7,11 +7,11 @@ metadata:
   labels:
     toolkit.fluxcd.io/tenant: devops
   name: devops
-  namespace: kube-system
+  namespace: flux-system
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
+kind: RoleBinding
 metadata:
   labels:
     toolkit.fluxcd.io/tenant: devops
@@ -27,7 +27,7 @@ subjects:
     name: gotk:kube-system:reconciler
   - kind: ServiceAccount
     name: devops
-    namespace: kube-system
+    namespace: devops
 ---
 #########################################################################################
 #     Monitoring
@@ -42,17 +42,8 @@ metadata:
   name: monitoring
 
 ---
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  labels:
-    toolkit.fluxcd.io/tenant: devops
-  name: devops
-  namespace: monitoring
-
----
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
+kind: RoleBinding
 metadata:
   labels:
     toolkit.fluxcd.io/tenant: devops
@@ -68,7 +59,7 @@ subjects:
     name: gotk:monitoring:reconciler
   - kind: ServiceAccount
     name: devops
-    namespace: monitoring
+    namespace: flux-system
 ---
 #########################################################################################
 #     Logging
@@ -81,15 +72,6 @@ metadata:
     toolkit.fluxcd.io/tenant: devops
     linkerd.io/admission-webhooks: disabled
   name: logging
-
----
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  labels:
-    toolkit.fluxcd.io/tenant: devops
-  name: devops
-  namespace: logging
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -109,7 +91,7 @@ subjects:
     name: gotk:logging:reconciler
   - kind: ServiceAccount
     name: devops
-    namespace: logging
+    namespace: flux-system
 
 ---
 #########################################################################################
@@ -122,15 +104,6 @@ metadata:
   labels:
     toolkit.fluxcd.io/tenant: devops
   name: argo-rollouts
-
----
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  labels:
-    toolkit.fluxcd.io/tenant: devops
-  name: devops
-  namespace: argo-rollouts
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -150,6 +123,6 @@ subjects:
     name: gotk:argo-rollouts:reconciler
   - kind: ServiceAccount
     name: devops
-    namespace: argo-rollouts
+    namespace: flux-system
 
 ---
