@@ -19,9 +19,6 @@ metadata:
   namespace: apps
 spec:
   serviceAccountName: demo
-  dependsOn:
-    - name: linkerd
-      namespace: linkerd
   interval: 1m
   path: ./demo
   prune: true

@@ -4,5 +4,4 @@ metadata:
   name: devops
   namespace: flux-system
 spec:
-  serviceAccountName: devops
   path: ./clusters/services/us-east-1

@@ -17,3 +17,6 @@ spec:
         annotations:
           external-dns.alpha.kubernetes.io/aws-region: ap-south-1
           external-dns.alpha.kubernetes.io/set-identifier: ap-south-1
+  dependsOn:
+    - name: linkerd
+      namespace: linkerd
