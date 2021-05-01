@@ -22,7 +22,7 @@ metadata:
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
+kind: ClusterRoleBinding
 metadata:
   labels:
     toolkit.fluxcd.io/tenant: devops
@@ -54,7 +54,7 @@ kind: ServiceAccount
 metadata:
   labels:
     toolkit.fluxcd.io/tenant: devops
-  name: linkerd-viz
+  name: devops
   namespace: linkerd-viz
 
 ---
