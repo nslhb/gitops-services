@@ -22,6 +22,7 @@ spec:
         namespaces:
           - argo-rollouts
           - monitoring
+          - linkerd
     validate:
       message: "Liveness and readiness probes are required"
       pattern:
