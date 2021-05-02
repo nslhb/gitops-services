@@ -127,7 +127,7 @@ kind: ClusterRoleBinding
 metadata:
   labels:
     toolkit.fluxcd.io/tenant: devops
-  name: devops-reconciler
+  name: logging-reconciler
   namespace: logging
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -168,7 +168,7 @@ kind: ClusterRoleBinding
 metadata:
   labels:
     toolkit.fluxcd.io/tenant: devops
-  name: devops-reconciler
+  name: argo-reconciler
   namespace: argo-rollouts
 roleRef:
   apiGroup: rbac.authorization.k8s.io
