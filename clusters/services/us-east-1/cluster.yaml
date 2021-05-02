@@ -28,6 +28,9 @@ vpc:
         id: "subnet-0df685203f1522e82"
         cidr: "10.18.216.0/21"
 
+kubernetesNetworkConfig:
+  serviceIPv4CIDR: "172.18.0.0/16"
+
 iam:
   withOIDC: true
   fargatePodExecutionRolePermissionsBoundary: arn:aws:iam::832807087073:policy/Default-Boundary-Policy

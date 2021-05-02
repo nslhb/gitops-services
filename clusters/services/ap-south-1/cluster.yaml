@@ -28,6 +28,9 @@ vpc:
         id: "subnet-0a3f7abd03caf8e2e"
         cidr: "10.8.224.0/21"
 
+kubernetesNetworkConfig:
+  serviceIPv4CIDR: "172.8.0.0/16"
+
 iam:
   withOIDC: true
   fargatePodExecutionRolePermissionsBoundary: arn:aws:iam::832807087073:policy/Default-Boundary-Policy
@@ -53,7 +56,7 @@ iam:
     - metadata:
         name: grafana
         namespace: monitoring
-        labels: {aws-usage: "application"}
+        labels: { aws-usage: "application" }
       attachPolicyARNs:
         - "arn:aws:iam::aws:policy/CloudWatchReadOnlyAccess"
       roleName: cloudwatch-ap-south-1
@@ -63,9 +66,14 @@ iam:
       roleName: ebs-csi-driver-ap-south-1
       wellKnownPolicies:
         ebsCSIController: true
+
 nodeGroups:
   - name: system
-    instanceType: "t3a.large"
+    instancesDistribution:
+      maxPrice: 0.017
+      instanceTypes: [ "t4g.large", "a1.large" ]
+      onDemandPercentageAboveBaseCapacity: 0
+      spotInstancePools: 2
     desiredCapacity: 1
     minSize: 0
     maxSize: 1
@@ -170,23 +178,10 @@ nodeGroups:
     taints:
       Edge: "true:NoSchedule"
 
-# removed fargate profiles since they are running costlier
-#fargateProfiles:
-#  - name: coredns
-#    selectors:
-#      - namespace: kube-system
-#        labels:
-#          eks.amazonaws.com/component: coredns
-#          k8s-app: kube-dns
-#  - name: kube-downscaler
-#    selectors:
-#      - namespace: kube-system
-#        labels:
-#          application: kube-downscaler
-
 cloudWatch:
   clusterLogging:
     enableTypes: [ "authenticator" ]
 
 addons:
   - name: vpc-cni
+    version:
