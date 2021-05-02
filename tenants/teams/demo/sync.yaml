@@ -9,7 +9,7 @@ spec:
   ref:
     branch: apps
   secretRef:
-    name: git
+    name: flux-system
   timeout: 20s
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
