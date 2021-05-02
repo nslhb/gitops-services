@@ -18,6 +18,9 @@ spec:
         - Pod
     exclude:
       resources:
+        selector:
+          matchLabels:
+            app: kube-prometheus-stack-admission-patch
         namespaces:
           - kube-system
           - flux-system
