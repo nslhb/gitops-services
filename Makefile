@@ -57,17 +57,18 @@ identity:
 	eksctl --region $(REGION) create iamidentitymapping --cluster $(CLUSTER) --group system:masters  --username iam:{{SessionName}} --arn $$(aws iam list-roles  --query 'Roles[?starts_with(RoleName, `AWSReservedSSO_AWSPowerUserAccess`) == `true`].Arn' --output text |  awk -F'/' '{ print $$1 "/" $$4}')
 
 flux:
-	@flux bootstrap github \
+	@GITHUB_TOKEN=$(GITHUB_TOKEN) flux bootstrap github \
 		  --context=$(CTX)  \
 		  --owner=nslhb \
 		  --repository=services.nslhub.com \
 		  --branch=main \
+		  --token-auth \
 		  --path=clusters/$(CLUSTER)/$(REGION) \
 		  --toleration-keys=CriticalAddonsOnly \
 		  --components-extra=image-reflector-controller,image-automation-controller
 
-flux/source:
-	@flux create source git infra --url=ssh://git@github.com/nslhb/gitops-devops.git --branch=main
+#flux/source:
+#	@flux create source git infra --url=ssh://git@github.com/nslhb/gitops-devops.git --branch=main
 
 cleanup:
 	@kubectl delete mutatingwebhookconfigurations  kube-prometheus-stack-admission
@@ -85,4 +86,4 @@ down:
 up:
 	for nss in apps flux-system kube-system kyverno linkerd linkerd-viz monitoring; do kubectl annotate ns $$nss downscaler/force-uptime=true; done
 
-eks: echo create dump addons ng sa identity flux
+eks: echo create dump addons ng sa identity
