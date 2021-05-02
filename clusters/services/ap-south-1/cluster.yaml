@@ -29,7 +29,7 @@ vpc:
         cidr: "10.8.224.0/21"
 
 kubernetesNetworkConfig:
-  serviceIPv4CIDR: "172.8.0.0/16"
+  serviceIPv4CIDR: "172.17.0.0/16"
 
 iam:
   withOIDC: true
@@ -69,11 +69,7 @@ iam:
 
 nodeGroups:
   - name: system
-    instancesDistribution:
-      maxPrice: 0.017
-      instanceTypes: [ "t4g.large", "a1.large" ]
-      onDemandPercentageAboveBaseCapacity: 0
-      spotInstancePools: 2
+    instanceType: "t3a.large"
     desiredCapacity: 1
     minSize: 0
     maxSize: 1
@@ -101,8 +97,37 @@ nodeGroups:
     ssh:
       allow: true
       publicKeyName: bottlerocketkey
+  - name: monitoring
+    instancesDistribution:
+      maxPrice: 0.030
+      instanceTypes: [ "r3.large","r4.large", "r5ad.large", "r5d.large", "r5a.large" ]
+      onDemandPercentageAboveBaseCapacity: 0
+      spotAllocationStrategy: "capacity-optimized-prioritized"
+    desiredCapacity: 1
+    minSize: 0
+    maxSize: 3
+    volumeType: gp3
+    volumeSize: 10
+    volumeEncrypted: true
+    volumeKmsKeyID: 97f38a15-a525-49d6-beb7-7e768066c762
+    privateNetworking: true
+    amiFamily: Bottlerocket
+    disableIMDSv1: true
+    iam:
+      instanceProfileARN: arn:aws:iam::832807087073:instance-profile/EKS-Default-SSM-AD-Role-ip
+      instanceRoleARN: arn:aws:iam::832807087073:role/EKS-Default-SSM-AD-Role
+    labels:
+      workload: monitoring
+      eks.amazonaws.com/compute-type: ec2
+    tags:
+      k8s.io/cluster-autoscaler/enabled: "true"
+      k8s.io/cluster-autoscaler/services: "owned"
+      k8s.io/cluster-autoscaler/node-template/label/workload: monitoring
+      k8s.io/cluster-autoscaler/node-template/taint/monitoring: NoSchedule
+    taints:
+      monitoring: "true:NoSchedule"
   - name: linkerd
-    instanceType: "c5.large"
+    instanceType: "t3a.medium"
     desiredCapacity: 1
     minSize: 0
     maxSize: 3
@@ -127,33 +152,8 @@ nodeGroups:
       k8s.io/cluster-autoscaler/node-template/taint/linkerd: NoSchedule
     taints:
       linkerd: "true:NoSchedule"
-  - name: monitoring
-    instanceType: "r5a.large"
-    desiredCapacity: 1
-    minSize: 0
-    maxSize: 3
-    volumeType: gp3
-    volumeSize: 10
-    volumeEncrypted: true
-    volumeKmsKeyID: 97f38a15-a525-49d6-beb7-7e768066c762
-    privateNetworking: true
-    amiFamily: Bottlerocket
-    disableIMDSv1: true
-    iam:
-      instanceProfileARN: arn:aws:iam::832807087073:instance-profile/EKS-Default-SSM-AD-Role-ip
-      instanceRoleARN: arn:aws:iam::832807087073:role/EKS-Default-SSM-AD-Role
-    labels:
-      workload: monitoring
-      eks.amazonaws.com/compute-type: ec2
-    tags:
-      k8s.io/cluster-autoscaler/enabled: "true"
-      k8s.io/cluster-autoscaler/services: "owned"
-      k8s.io/cluster-autoscaler/node-template/label/workload: monitoring
-      k8s.io/cluster-autoscaler/node-template/taint/monitoring: NoSchedule
-    taints:
-      monitoring: "true:NoSchedule"
   - name: edge
-    instanceType: "t3.medium"
+    instanceType: "t3a.medium"
     desiredCapacity: 1
     minSize: 0
     maxSize: 3
@@ -184,4 +184,3 @@ cloudWatch:
 
 addons:
   - name: vpc-cni
-    version:

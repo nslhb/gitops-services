@@ -2,6 +2,19 @@ CLUSTER ?= services
 REGION ?= ap-south-1
 CTX ?= $(shell kubectl config current-context)
 
+echo:
+	@echo "cluster $(CLUSTER) in $(REGION) with context $(CTX)"
+
+dns:
+	# create a dummy vpc first
+	# create private hosted zone
+	# authorize in dev account
+	aws route53 associate-vpc-with-hosted-zone --vpc VPCRegion=ap-south-1,VPCId=vpc-003978caf25a1d7ce --region ap-south-1 --hosted-zone-id Z0850381TEAQKXGLOB6E
+	# switch to newtork account and associate
+	aws route53 create-vpc-association-authorization  --vpc VPCRegion=ap-south-1,VPCId=vpc-003978caf25a1d7ce --region ap-south-1 --hosted-zone-id Z0850381TEAQKXGLOB6E
+	# switch to dev account, remove the dummy vpc from route53 association
+	# remote the dummy vpc
+
 init:
 	@aws ec2 describe-subnets --query  "Subnets[?Tags[?Key == 'Name' && contains(Value, 'App')][]].SubnetArn" | jq -r '.[]' | xargs -I {} aws resourcegroupstaggingapi   tag-resources --resource-arn-list {} --tags kubernetes.io/role/internal-elb=1
 	@aws ec2 describe-subnets --query  "Subnets[?Tags[?Key == 'Name' && contains(Value, 'App')][]].SubnetArn" | jq -r '.[]' | xargs -I {} aws resourcegroupstaggingapi   tag-resources --resource-arn-list {} --tags kubernetes.io/cluster/$(CLUSTER)=shared
@@ -9,8 +22,9 @@ init:
 	@aws ec2 describe-subnets --query  "Subnets[?Tags[?Key == 'Name' && contains(Value, 'Web')][]].SubnetArn" | jq -r '.[]' | xargs -I {} aws resourcegroupstaggingapi   tag-resources --resource-arn-list {} --tags kubernetes.io/cluster/$(CLUSTER)=shared
 
 create:
-#	@eksctl --region $(REGION) create cluster --config-file=clusters/$(CLUSTER_NAME)/cluster.yaml
-	@eksctl upgrade cluster --config-file=clusters/$(CLUSTER)/$(REGION)/cluster.yaml --approve
+	if eksctl get cluster --name $(CLUSTER) -o json > /dev/null 2>&1 ; then \
+  	eksctl upgrade cluster --config-file=clusters/$(CLUSTER)/$(REGION)/cluster.yaml --approve; else \
+  	eksctl create cluster --config-file=clusters/$(CLUSTER)/$(REGION)/cluster.yaml; fi
 
 dump:
 	@eksctl utils write-kubeconfig --cluster services
@@ -53,9 +67,7 @@ flux:
 		  --components-extra=image-reflector-controller,image-automation-controller
 
 flux/source:
-	@flux create source git infra \
-         --url=ssh://git@github.com/nslhb/gitops-devops.git \
-         --branch=main
+	@flux create source git infra --url=ssh://git@github.com/nslhb/gitops-devops.git --branch=main
 
 cleanup:
 	@kubectl delete mutatingwebhookconfigurations  kube-prometheus-stack-admission
@@ -63,21 +75,6 @@ cleanup:
 	@kubectl delete mutatingwebhookconfigurations  linkerd-proxy-injector-webhook-config
 	@kubectl delete apiservice v1beta1.custom.metrics.k8s.io  v1beta1.metrics.k8s.io  v1beta1.external.metrics.k8s.io
 	@kubectl delete apiservice v2beta1.helm.toolkit.fluxcd.io v1beta1.kustomize.toolkit.fluxcd.io
-
-echo:
-	@echo "cluster $(CLUSTER) in $(REGION) with context $(CTX)"
-
-dns:
-	# create a dummy vpc first
-	# create private hosted zone
-	# authorize in dev account
-	aws route53 associate-vpc-with-hosted-zone --vpc VPCRegion=ap-south-1,VPCId=vpc-003978caf25a1d7ce --region ap-south-1 --hosted-zone-id Z0850381TEAQKXGLOB6E
-	# switch to newtork account and associate
-	aws route53 create-vpc-association-authorization  --vpc VPCRegion=ap-south-1,VPCId=vpc-003978caf25a1d7ce --region ap-south-1 --hosted-zone-id Z0850381TEAQKXGLOB6E
-	# switch to dev account, remove the dummy vpc from route53 association
-	# remote the dummy vpc
-
-
 
 down:
 	for nss in apps flux-system kube-system kyverno linkerd linkerd-viz monitoring; do \
@@ -87,3 +84,5 @@ down:
 
 up:
 	for nss in apps flux-system kube-system kyverno linkerd linkerd-viz monitoring; do kubectl annotate ns $$nss downscaler/force-uptime=true; done
+
+eks: echo create dump addons ng sa identity flux
