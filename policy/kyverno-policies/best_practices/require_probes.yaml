@@ -20,7 +20,7 @@ spec:
     exclude:
       resources:
         namespaces:
-          - monitoring
+          - argo-rollouts
     validate:
       message: "Liveness and readiness probes are required"
       pattern:

@@ -20,7 +20,7 @@ spec:
       resources:
         namespaces:
           - linkerd
-          - monitoring
+#          - monitoring
     validate:
       message: "Root filesystem must be read-only"
       pattern:
