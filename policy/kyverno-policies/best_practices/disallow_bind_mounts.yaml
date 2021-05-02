@@ -18,6 +18,10 @@ spec:
       resources: 
         kinds: 
         - Pod
+    exclude:
+      resources:
+        namespaces:
+          - monitoring
     validate: 
       message: "Host path volumes are not allowed"
       pattern: 

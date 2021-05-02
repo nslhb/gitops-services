@@ -16,6 +16,10 @@ spec:
       resources:
         kinds:
         - Pod
+    exclude:
+      resources:
+        namespaces:
+          - monitoring
     validate:
       message: "Use of host PID and IPC namespaces is not allowed"
       pattern:
