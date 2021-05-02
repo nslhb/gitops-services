@@ -9,7 +9,7 @@ spec:
     branch: main
   secretRef:
     name: paas
-  url: ssh://git@github.com/nslhb/gitops-paas
+  url: https://github.com/nslhb/gitops-paas.git
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
