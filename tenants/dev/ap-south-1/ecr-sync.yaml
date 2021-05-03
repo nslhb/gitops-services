@@ -90,7 +90,7 @@ spec:
                     --docker-password="$(</token/ecr-token)"
               securityContext:
                 allowPrivilegeEscalation: false
-                runAsNonRoot: true
+                runAsNonRoot: false
                 readOnlyRootFilesystem: true
           tolerations:
             - key: CriticalAddonsOnly
