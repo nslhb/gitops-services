@@ -51,6 +51,17 @@ iam:
       wellKnownPolicies:
         autoScaler: true
     - metadata:
+        name: grafana
+        namespace: monitoring
+        labels: { aws-usage: "application" }
+      attachPolicy:
+        Statement:
+          - Effect: Allow
+            Action:
+              - sts:AssumeRole
+            Resource: "arn:aws:iam::*:role/CloudWatch-CrossAccountSharing*"
+      roleName: nsl-grafana
+    - metadata:
         name: ebs-csi-driver
         namespace: kube-system
       roleName: ebs-csi-driver-ap-south-1
