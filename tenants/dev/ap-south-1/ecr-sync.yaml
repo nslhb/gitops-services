@@ -88,6 +88,10 @@ spec:
                     --docker-server="$ECR_REGISTRY" \
                     --docker-username=AWS \
                     --docker-password="$(</token/ecr-token)"
+              securityContext:
+                allowPrivilegeEscalation: false
+                runAsNonRoot: true
+                readOnlyRootFilesystem: true
           tolerations:
             - key: CriticalAddonsOnly
               operator: Exists
