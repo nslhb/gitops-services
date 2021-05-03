@@ -68,7 +68,7 @@ kind: Namespace
 metadata:
   labels:
     toolkit.fluxcd.io/tenant: devops
-    linkerd.io/admission-webhooks: disabled
+    linkerd.io/inject: enabled
   name: monitoring
 
 ---
@@ -109,7 +109,7 @@ kind: Namespace
 metadata:
   labels:
     toolkit.fluxcd.io/tenant: devops
-    linkerd.io/admission-webhooks: disabled
+    linkerd.io/inject: enabled
   name: logging
 
 ---
@@ -151,6 +151,9 @@ kind: Namespace
 metadata:
   labels:
     toolkit.fluxcd.io/tenant: devops
+    linkerd.io/inject: enabled
+  annotations:
+    linkerd.io/inject: enabled
   name: argo-rollouts
 
 ---
