@@ -19,6 +19,7 @@ spec:
     exclude:
       resources:
         namespaces:
+          - kube-system
           - linkerd
           - linkerd-viz
           - monitoring

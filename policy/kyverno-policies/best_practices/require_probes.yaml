@@ -20,6 +20,7 @@ spec:
     exclude:
       resources:
         namespaces:
+          - kube-system
           - argo-rollouts
           - monitoring
           - linkerd

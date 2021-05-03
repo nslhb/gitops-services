@@ -16,6 +16,10 @@ spec:
       resources:
         kinds:
         - Pod
+    exclude:
+      resources:
+        namespaces:
+          - kube-system
     validate:
       message: "Running as root is not allowed. Set runAsNonRoot to true, or use runAsUser"
       anyPattern:

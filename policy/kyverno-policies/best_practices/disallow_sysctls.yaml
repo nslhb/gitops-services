@@ -15,6 +15,10 @@ spec:
       resources:
         kinds:
         - Pod
+    exclude:
+      resources:
+        namespaces:
+          - kube-system
     validate:
       message: "Changes to kernel paramaters are not allowed"
       pattern:

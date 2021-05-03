@@ -22,7 +22,8 @@ spec:
       resources:
         namespaces:
           - monitoring
-    validate: 
+          - kube-system
+    validate:
       message: "Host path volumes are not allowed"
       pattern: 
         spec: 

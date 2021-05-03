@@ -18,6 +18,10 @@ spec:
       resources:
         kinds:
         - Pod
+    exclude:
+      resources:
+        namespaces:
+          - kube-system
     validate:
       message: "New capabilities cannot be added"
       pattern:

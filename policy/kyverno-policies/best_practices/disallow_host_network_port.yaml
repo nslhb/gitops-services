@@ -18,6 +18,7 @@ spec:
       resources:
         namespaces:
           - monitoring
+          - kube-system
     validate:
       message: "Use of hostNetwork is not allowed"
       pattern:
@@ -28,6 +29,10 @@ spec:
       resources:
         kinds:
         - Pod
+    exclude:
+      resources:
+        namespaces:
+          - kube-system
     validate:
       message: "Use of hostPort is not allowed"
       pattern:

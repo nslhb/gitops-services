@@ -44,7 +44,7 @@ spec:
         - Namespace
         selector:
           matchLabels:
-            policy-rollout: ALL
+            policy-rollout: enforce
     generate:
       kind: LimitRange
       name: default-limitrange

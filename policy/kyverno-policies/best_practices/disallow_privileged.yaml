@@ -23,6 +23,7 @@ spec:
             - monitoring
             - linkerd
             - linkerd-viz
+            - kube-system
       validate:
         message: "Privileged mode is not allowed. Set privileged to false"
         pattern:
@@ -41,6 +42,7 @@ spec:
             - monitoring
             - linkerd
             - linkerd-viz
+            - kube-system
       validate:
         message: "Privileged mode is not allowed. Set allowPrivilegeEscalation to false"
         pattern:
