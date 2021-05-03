@@ -7,7 +7,6 @@ kind: Namespace
 metadata:
   labels:
     toolkit.fluxcd.io/tenant: devops
-    linkerd.io/admission-webhooks: disabled
   name: linkerd
 
 ---
@@ -44,6 +43,7 @@ kind: Namespace
 metadata:
   labels:
     toolkit.fluxcd.io/tenant: devops
+    linkerd.io/inject: enabled
   annotations:
     linkerd.io/inject: enabled
   name: linkerd-viz
