@@ -19,3 +19,15 @@ spec:
   dependsOn:
     - name: linkerd
       namespace: linkerd
+  postBuild:
+    substitute:
+      color: "green"
+---
+apiVersion: image.toolkit.fluxcd.io/v1alpha2
+kind: ImageUpdateAutomation
+metadata:
+  name: flux-system
+  namespace: flux-system
+spec:
+  update:
+    path: ./tenants/services/ap-south-1
