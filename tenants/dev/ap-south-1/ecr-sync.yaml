@@ -1,36 +1,3 @@
-kind: ClusterRole
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: ecr-credentials-sync
-rules:
-  - apiGroups: [""]
-    resources:
-      - secrets
-    verbs:
-      - delete
-      - create
----
-kind: ClusterRoleBinding
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: ecr-credentials-sync
-subjects:
-  - kind: ServiceAccount
-    name: ecr-credentials-sync
-roleRef:
-  kind: ClusterRole
-  name: ecr-credentials-sync
-  apiGroup: ""
----
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: ecr-credentials-sync
-  namespace: flux-system
-  # Uncomment and edit if using IRSA
-  # annotations:
-  #   eks.amazonaws.com/role-arn: <role arn>
----
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
@@ -45,7 +12,7 @@ spec:
     spec:
       template:
         spec:
-          serviceAccountName: ecr-credentials-sync
+          serviceAccountName: devops
           restartPolicy: Never
           volumes:
             - name: token
