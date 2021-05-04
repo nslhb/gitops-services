@@ -25,19 +25,3 @@ spec:
     kind: GitRepository
     name: paas
   validation: client
-
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
-kind: Kustomization
-metadata:
-  name: img-test
-  namespace: flux-system
-spec:
-  interval: 1m
-  path: ./img-test
-  prune: true
-  serviceAccountName: devops
-  sourceRef:
-    kind: GitRepository
-    name: gitops-paas
-  validation: client
