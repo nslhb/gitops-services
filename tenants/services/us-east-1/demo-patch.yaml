@@ -7,21 +7,13 @@ spec:
   images:
     - name: ghcr.io/nslhb/rollouts-demo
       newTag: yellow # {"$imagepolicy": "apps:rollouts-demo:tag"}
-  patchesStrategicMerge:
-    - apiVersion: networking.k8s.io/v1
-      kind: Ingress
-      metadata:
-        name: rollouts-demo-ingress
-        namespace: apps
-        annotations:
-          external-dns.alpha.kubernetes.io/aws-region: us-east-1
-          external-dns.alpha.kubernetes.io/set-identifier: us-east-1
   dependsOn:
     - name: linkerd
       namespace: linkerd
   postBuild:
     substitute:
       color: "yellow"
+      REGION: "ap-south-1"
 ---
 apiVersion: image.toolkit.fluxcd.io/v1alpha2
 kind: ImageUpdateAutomation
