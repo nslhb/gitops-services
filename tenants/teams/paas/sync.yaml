@@ -36,7 +36,7 @@ spec:
   interval: 1m
   path: ./img-test
   prune: true
-  serviceAccountName: flux-system
+  serviceAccountName: devops
   sourceRef:
     kind: GitRepository
     name: gitops-paas
