@@ -47,7 +47,7 @@ coredns:
 
 ng:
 	@eksctl create nodegroup --config-file=clusters/$(CLUSTER)/$(REGION)/cluster.yaml
-	@eksctl delete nodegroup --config-file=clusters/$(CLUSTER)/$(REGION)/cluster.yaml --only-missing
+	@eksctl delete nodegroup --config-file=clusters/$(CLUSTER)/$(REGION)/cluster.yaml --only-missing --approve
 
 sa:
 	@eksctl create iamserviceaccount --config-file=clusters/$(CLUSTER)/$(REGION)/cluster.yaml --approve --override-existing-serviceaccounts

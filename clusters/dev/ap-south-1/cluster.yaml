@@ -113,7 +113,7 @@ nodeGroups:
       k8s.io/cluster-autoscaler/node-template/taint/monitoring: NoSchedule
     taints:
       monitoring: "true:NoSchedule"
-  - name: common
+  - name: common-1
     instanceType: "t3a.large"
     desiredCapacity: 1
     minSize: 0
@@ -123,7 +123,7 @@ nodeGroups:
     volumeEncrypted: true
     volumeKmsKeyID: a3456af4-c4de-4938-837d-86d5615d75d7
     privateNetworking: true
-    amiFamily: Bottlerocket
+#    amiFamily: Bottlerocket
     disableIMDSv1: true
     iam:
       instanceProfileARN: arn:aws:iam::755502957828:instance-profile/EKS-Default-SSM-AD-Role-ip
