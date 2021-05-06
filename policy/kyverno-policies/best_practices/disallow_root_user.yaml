@@ -21,6 +21,7 @@ spec:
         namespaces:
           - kube-system
           - flux-system
+          - ambassador
     validate:
       message: "Running as root is not allowed. Set runAsNonRoot to true, or use runAsUser"
       anyPattern:

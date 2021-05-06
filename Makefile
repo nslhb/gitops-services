@@ -95,13 +95,13 @@ flux/resume:
 	flux resume ks demo -n apps
 
 up: flux/resume
-	for nss in apps linkerd linkerd-viz monitoring; do \
-  	    kubectl annotate ns $$nss downscaler/uptime- ; done
+	for nss in paas linkerd linkerd-viz monitoring; do \
+  	    kubectl annotate ns $$nss downscaler/uptime- ; \
 		kubectl annotate ns $$nss downscaler/force-uptime=true; done
 
 auto:
 	for nss in apps linkerd linkerd-viz monitoring; do \
-		kubectl annotate ns $$nss downscaler/uptime- ; done
+		kubectl annotate ns $$nss downscaler/uptime- ; \
 		kubectl annotate ns $$nss downscaler/force-uptime-; done
 
 eks: echo create dump addons ng sa identity
