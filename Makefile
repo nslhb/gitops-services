@@ -77,13 +77,31 @@ cleanup:
 	@kubectl delete apiservice v1beta1.custom.metrics.k8s.io  v1beta1.metrics.k8s.io  v1beta1.external.metrics.k8s.io
 	@kubectl delete apiservice v2beta1.helm.toolkit.fluxcd.io v1beta1.kustomize.toolkit.fluxcd.io
 
-down:
-	for nss in apps flux-system kube-system kyverno linkerd linkerd-viz monitoring; do \
+flux/suspend:
+	flux suspend ks linkerd -n linkerd
+	flux suspend ks monitoring -n monitoring
+	flux suspend ks logging -n logging
+	flux suspend ks demo -n apps
+
+down: flux/suspend
+	for nss in apps linkerd linkerd-viz monitoring logging; do \
   	    kubectl annotate ns $$nss downscaler/force-uptime- ; \
-  	    kubectl annotate ns $$nss downscaler/uptime- ; \
   		kubectl annotate ns $$nss downscaler/uptime='Mon-Fri 08:30-08:30 Asia/Kolkata'; done
 
-up:
-	for nss in apps flux-system kube-system kyverno linkerd linkerd-viz monitoring; do kubectl annotate ns $$nss downscaler/force-uptime=true; done
+flux/resume:
+	flux resume ks linkerd -n linkerd
+	flux resume ks monitoring -n monitoring
+	flux resume ks logging -n logging
+	flux resume ks demo -n apps
+
+up: flux/resume
+	for nss in apps linkerd linkerd-viz monitoring; do \
+  	    kubectl annotate ns $$nss downscaler/uptime- ; done
+		kubectl annotate ns $$nss downscaler/force-uptime=true; done
+
+auto:
+	for nss in apps linkerd linkerd-viz monitoring; do \
+		kubectl annotate ns $$nss downscaler/uptime- ; done
+		kubectl annotate ns $$nss downscaler/force-uptime-; done
 
 eks: echo create dump addons ng sa identity
