@@ -62,7 +62,7 @@ iam:
       wellKnownPolicies:
         ebsCSIController: true
 nodeGroups:
-  - name: system
+  - name: system-1910
     instanceType: "a1.xlarge"
     desiredCapacity: 1
     minSize: 1
@@ -88,7 +88,7 @@ nodeGroups:
       k8s.io/cluster-autoscaler/node-template/taint/CriticalAddonsOnly: NoSchedule
     taints:
       CriticalAddonsOnly: "true:NoSchedule"
-  - name: monitoring
+  - name: monitoring-1910
     instanceType: "r6g.large"
     desiredCapacity: 1
     minSize: 0
@@ -113,7 +113,7 @@ nodeGroups:
       k8s.io/cluster-autoscaler/node-template/taint/monitoring: NoSchedule
     taints:
       monitoring: "true:NoSchedule"
-  - name: common-1
+  - name: common-1910
     instanceType: "t3a.large"
     desiredCapacity: 1
     minSize: 0
@@ -123,7 +123,7 @@ nodeGroups:
     volumeEncrypted: true
     volumeKmsKeyID: a3456af4-c4de-4938-837d-86d5615d75d7
     privateNetworking: true
-#    amiFamily: Bottlerocket
+    amiFamily: Bottlerocket
     disableIMDSv1: true
     iam:
       instanceProfileARN: arn:aws:iam::755502957828:instance-profile/EKS-Default-SSM-AD-Role-ip
@@ -136,23 +136,10 @@ nodeGroups:
       k8s.io/cluster-autoscaler/services: "owned"
       k8s.io/cluster-autoscaler/node-template/label/workload: public
 
-
-fargateProfiles:
-  - name: coredns
-    selectors:
-      - namespace: kube-system
-        labels:
-          eks.amazonaws.com/component: coredns
-          k8s-app: kube-dns
-  - name: kube-downscaler
-    selectors:
-      - namespace: kube-system
-        labels:
-          application: kube-downscaler
-
 cloudWatch:
   clusterLogging:
     enableTypes: [ "authenticator" ]
 
 addons:
   - name: vpc-cni
+    version: latest
