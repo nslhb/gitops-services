@@ -24,3 +24,5 @@ bin/
 
 # .user home directory
 .user/
+**/node_modules
+**/dist
