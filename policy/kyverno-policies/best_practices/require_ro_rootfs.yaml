@@ -23,7 +23,7 @@ spec:
           - linkerd
           - linkerd-viz
           - monitoring
-          - ambassador
+          - ci
     validate:
       message: "Root filesystem must be read-only"
       pattern:

@@ -24,7 +24,7 @@ spec:
             - linkerd
             - linkerd-viz
             - kube-system
-            - ambassador
+            - ci
       validate:
         message: "Privileged mode is not allowed. Set privileged to false"
         pattern:
@@ -44,7 +44,7 @@ spec:
             - linkerd
             - linkerd-viz
             - kube-system
-            - ambassador
+            - ci
       validate:
         message: "Privileged mode is not allowed. Set allowPrivilegeEscalation to false"
         pattern:
