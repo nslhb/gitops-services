@@ -100,7 +100,7 @@ up: flux/resume
 		kubectl annotate ns $$nss downscaler/force-uptime=true; done
 
 auto:
-	for nss in apps linkerd linkerd-viz monitoring; do \
+	for nss in $$(kubectl get ns | awk '{print $$1}'); do \
 		kubectl annotate ns $$nss downscaler/uptime- ; \
 		kubectl annotate ns $$nss downscaler/force-uptime-; done
 
