@@ -4,6 +4,7 @@ kind: Namespace
 metadata:
   labels:
     toolkit.fluxcd.io/tenant: paas
+    linkerd.io/inject: enabled
   annotations:
     linkerd.io/inject: enabled
   name: paas
@@ -22,7 +23,6 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   labels:
-    linkerd.io/inject: enabled
     toolkit.fluxcd.io/tenant: paas
   name: paas-reconciler
   namespace: paas
@@ -45,6 +45,7 @@ kind: Namespace
 metadata:
   labels:
     toolkit.fluxcd.io/tenant: keycloak
+    linkerd.io/inject: enabled
   annotations:
     linkerd.io/inject: enabled
   name: keycloak
@@ -63,7 +64,6 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   labels:
-    linkerd.io/inject: enabled
     toolkit.fluxcd.io/tenant: keycloak
   name: keycloak-reconciler
   namespace: keycloak
