@@ -3,8 +3,7 @@ kind: Kustomization
 resources:
   - ../../teams/devops
   - ../../teams/paas
-  - ../../teams/devops/linkerd.yaml
-  - ../../teams/devops/ecr-sync.yaml
+  - ecr-sync.yaml
 patchesStrategicMerge:
   - devops-patch.yaml
   - paas-patch.yaml
