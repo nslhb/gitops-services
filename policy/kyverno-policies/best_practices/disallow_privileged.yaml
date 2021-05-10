@@ -25,6 +25,7 @@ spec:
             - linkerd-viz
             - kube-system
             - ci
+            - keycloak
       validate:
         message: "Privileged mode is not allowed. Set privileged to false"
         pattern:
@@ -45,6 +46,7 @@ spec:
             - linkerd-viz
             - kube-system
             - ci
+            - keycloak
       validate:
         message: "Privileged mode is not allowed. Set allowPrivilegeEscalation to false"
         pattern:
