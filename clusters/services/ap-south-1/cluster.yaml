@@ -67,7 +67,19 @@ iam:
       roleName: ebs-csi-driver-ap-south-1
       wellKnownPolicies:
         ebsCSIController: true
-
+    - metadata:
+        name: ci
+        namespace: ci
+      roleName: action-runner
+      attachPolicy:
+        Statement:
+          - Effect: Allow
+            Action:
+              - secretsmanager:ListSecrets
+              - secretsmanager:DescribeSecret
+              - secretsmanager:GetSecretValue
+            Resource:
+            - "arn:aws:secretsmanager:ap-south-1:832807087073:secret:github-private-key-NKaEyf"
 nodeGroups:
   - name: system-1910
     instanceType: "t3a.large"
