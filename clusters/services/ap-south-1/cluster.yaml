@@ -165,8 +165,12 @@ nodeGroups:
       k8s.io/cluster-autoscaler/node-template/taint/linkerd: NoSchedule
     taints:
       linkerd: "true:NoSchedule"
-  - name: edge-1910
-    instanceType: "t3a.medium"
+  - name: edge-1910-1
+    instancesDistribution:
+      maxPrice: 0.13
+      instanceTypes: [ "t3a.2xlarge","t3.2xlarge", "m5a.2xlarge", "m5.2xlarge", "m5ad.2xlarge" ]
+      onDemandPercentageAboveBaseCapacity: 0
+      spotAllocationStrategy: "capacity-optimized-prioritized"
     desiredCapacity: 1
     minSize: 0
     maxSize: 3
