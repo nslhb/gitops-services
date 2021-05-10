@@ -24,6 +24,7 @@ spec:
           - linkerd-viz
           - monitoring
           - ci
+          - keycloak
     validate:
       message: "Root filesystem must be read-only"
       pattern:
