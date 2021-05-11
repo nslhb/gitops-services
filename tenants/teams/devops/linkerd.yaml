@@ -33,7 +33,7 @@ roleRef:
 subjects:
   - apiGroup: rbac.authorization.k8s.io
     kind: User
-    name: gotk:devops:reconciler
+    name: gotk:linkerd:reconciler
   - kind: ServiceAccount
     name: devops
     namespace: linkerd
@@ -72,7 +72,7 @@ roleRef:
 subjects:
   - apiGroup: rbac.authorization.k8s.io
     kind: User
-    name: gotk:devops:reconciler
+    name: gotk:linkerd:reconciler
   - kind: ServiceAccount
     name: devops
     namespace: linkerd-viz
