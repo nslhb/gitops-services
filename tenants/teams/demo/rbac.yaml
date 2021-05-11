@@ -33,7 +33,7 @@ roleRef:
 subjects:
 - apiGroup: rbac.authorization.k8s.io
   kind: User
-  name: gotk:apps:reconciler
+  name: gotk:demo:reconciler
 - kind: ServiceAccount
   name: demo
   namespace: apps
