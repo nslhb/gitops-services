@@ -36,7 +36,7 @@ subjects:
     name: gotk:linkerd:reconciler
   - kind: ServiceAccount
     name: devops
-    namespace: lux-system
+    namespace: flux-system
 ---
 apiVersion: v1
 kind: Namespace
