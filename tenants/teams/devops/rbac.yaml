@@ -24,7 +24,7 @@ roleRef:
 subjects:
   - apiGroup: rbac.authorization.k8s.io
     kind: User
-    name: gotk:kube-system:reconciler
+    name: gotk:devops:reconciler
   - kind: ServiceAccount
     name: devops
     namespace: flux-system
@@ -54,7 +54,7 @@ roleRef:
 subjects:
   - apiGroup: rbac.authorization.k8s.io
     kind: User
-    name: gotk:kube-system:reconciler
+    name: gotk:devops:reconciler
   - kind: ServiceAccount
     name: devops
     namespace: kube-system
@@ -95,7 +95,7 @@ roleRef:
 subjects:
   - apiGroup: rbac.authorization.k8s.io
     kind: User
-    name: gotk:monitoring:reconciler
+    name: gotk:devops:reconciler
   - kind: ServiceAccount
     name: devops
     namespace: monitoring
@@ -136,7 +136,7 @@ roleRef:
 subjects:
   - apiGroup: rbac.authorization.k8s.io
     kind: User
-    name: gotk:logging:reconciler
+    name: gotk:devops:reconciler
   - kind: ServiceAccount
     name: devops
     namespace: logging
@@ -180,7 +180,7 @@ roleRef:
 subjects:
   - apiGroup: rbac.authorization.k8s.io
     kind: User
-    name: gotk:argo-rollouts:reconciler
+    name: gotk:devops:reconciler
   - kind: ServiceAccount
     name: devops
     namespace: argo-rollouts
