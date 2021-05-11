@@ -20,7 +20,7 @@ metadata:
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
+kind: ClusterRoleBinding
 metadata:
   labels:
     toolkit.fluxcd.io/tenant: paas
@@ -37,9 +37,6 @@ subjects:
 - kind: ServiceAccount
   name: paas
   namespace: paas
-- kind: ServiceAccount
-  name: paas
-  namespace: keycloak
 ---
 apiVersion: v1
 kind: Namespace
