@@ -80,6 +80,11 @@ iam:
               - secretsmanager:GetSecretValue
             Resource:
             - "arn:aws:secretsmanager:ap-south-1:832807087073:secret:github-private-key-NKaEyf"
+          - Effect: Allow
+            Action:
+              - s3:*
+            Resource:
+              - "arn:aws:s3:::nsl-artifacts"
 nodeGroups:
   - name: system-1910
     instanceType: "t3a.large"
