@@ -4,7 +4,7 @@ kind: ClusterConfig
 metadata:
   name: services
   region: ap-south-1
-  version: "1.19"
+  version: "1.20"
 
 vpc:
   id: "vpc-0e0ccffca59ba6525"
@@ -86,11 +86,11 @@ iam:
             Resource:
               - "arn:aws:s3:::nsl-artifacts"
 nodeGroups:
-  - name: system-1910
+  - name: system-120
     instanceType: "t3a.large"
     desiredCapacity: 1
-    minSize: 0
-    maxSize: 1
+    minSize: 1
+    maxSize: 3
     volumeType: gp3
     volumeSize: 10
     volumeEncrypted: true
@@ -115,7 +115,7 @@ nodeGroups:
     ssh:
       allow: true
       publicKeyName: bottlerocketkey
-  - name: monitoring-1910
+  - name: monitoring-120
     instancesDistribution:
       maxPrice: 0.030
       instanceTypes: [ "r3.large","r4.large", "r5ad.large", "r5d.large", "r5a.large" ]
@@ -144,7 +144,7 @@ nodeGroups:
       k8s.io/cluster-autoscaler/node-template/taint/monitoring: NoSchedule
     taints:
       monitoring: "true:NoSchedule"
-  - name: linkerd-1910
+  - name: linkerd-120
     instanceType: "t3a.medium"
     desiredCapacity: 1
     minSize: 0
@@ -170,7 +170,7 @@ nodeGroups:
       k8s.io/cluster-autoscaler/node-template/taint/linkerd: NoSchedule
     taints:
       linkerd: "true:NoSchedule"
-  - name: edge-1910-1
+  - name: edge-20
     instancesDistribution:
       maxPrice: 0.13
       instanceTypes: [ "t3a.2xlarge","t3.2xlarge", "m5a.2xlarge", "m5.2xlarge", "m5ad.2xlarge" ]

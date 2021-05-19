@@ -4,7 +4,7 @@ kind: ClusterConfig
 metadata:
   name: services
   region: us-east-1
-  version: "1.19"
+  version: "1.20"
 
 vpc:
   id: "vpc-0d9e76bd7b471527d"
@@ -57,11 +57,11 @@ iam:
       wellKnownPolicies:
         ebsCSIController: true
 nodeGroups:
-  - name: system
+  - name: system-120
     instanceType: "a1.xlarge"
     desiredCapacity: 1
     minSize: 1
-    maxSize: 1
+    maxSize: 3
     volumeType: gp3
     volumeSize: 10
     volumeEncrypted: true
@@ -86,11 +86,12 @@ nodeGroups:
     ssh:
       allow: true
       publicKeyName: bottlerocketkey
-  - name: monitoring
+  - name: monitoring-120
     instancesDistribution:
       maxPrice: 0.05
       instanceTypes: [ "t4g.xlarge", "m6g.xlarge",  "r6g.xlarge" ]
       onDemandPercentageAboveBaseCapacity: 0
+      spotAllocationStrategy: "capacity-optimized-prioritized"
     desiredCapacity: 1
     minSize: 0
     maxSize: 3
@@ -114,7 +115,7 @@ nodeGroups:
       k8s.io/cluster-autoscaler/node-template/taint/monitoring: NoSchedule
     taints:
       monitoring: "true:NoSchedule"
-  - name: linkerd
+  - name: linkerd-120
     instancesDistribution:
       maxPrice: 0.05
       instanceTypes: [ "t4g.large","a1.xlarge", "c6g.large", "m6g.large" ]
@@ -147,7 +148,7 @@ nodeGroups:
     ssh:
       allow: true
       publicKeyName: bottlerocketkey
-  - name: edge
+  - name: edge-120
     instanceType: "t4g.medium"
     desiredCapacity: 1
     minSize: 0

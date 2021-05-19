@@ -22,7 +22,7 @@ init:
 	@aws ec2 describe-subnets --query  "Subnets[?Tags[?Key == 'Name' && contains(Value, 'Web')][]].SubnetArn" | jq -r '.[]' | xargs -I {} aws resourcegroupstaggingapi   tag-resources --resource-arn-list {} --tags kubernetes.io/cluster/$(CLUSTER)=shared
 
 create:
-	if eksctl get cluster --name $(CLUSTER) -o json > /dev/null 2>&1 ; then \
+	if eksctl get cluster --name $(CLUSTER) --region $(REGION) -o json > /dev/null 2>&1 ; then \
   	eksctl upgrade cluster --config-file=clusters/$(CLUSTER)/$(REGION)/cluster.yaml --approve; else \
   	eksctl create cluster --config-file=clusters/$(CLUSTER)/$(REGION)/cluster.yaml; fi
 
