@@ -21,17 +21,17 @@ jobs:
         uses: engineerd/setup-kind@v0.5.0
       - name: Install Flux in Kubernetes Kind
         run: flux install
-      - name: Add cluster
-        run: |
-          ./scripts/add-cluster.sh test ap-south-1
-      - name: Setup cluster reconciliation
-        run: |
-          flux create source git flux-system \
-          --url=${{ github.event.repository.html_url }} \
-          --branch=${GITHUB_REF#refs/heads/}
-          flux create kustomization flux-system \
-          --source=flux-system \
-          --path=./clusters/test/ap-south-1
+#      - name: Add cluster
+#        run: |
+#          ./scripts/add-cluster.sh test ap-south-1
+#      - name: Setup cluster reconciliation
+#        run: |
+#          flux create source git flux-system \
+#          --url=${{ github.event.repository.html_url }} \
+#          --branch=${GITHUB_REF#refs/heads/}
+#          flux create kustomization flux-system \
+#          --source=flux-system \
+#          --path=./clusters/test/ap-south-1
       - name: Verify cluster reconciliation
         run: |
           kubectl -n flux-system wait kustomization/kyverno --for=condition=ready --timeout=1m
