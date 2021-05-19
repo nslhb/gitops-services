@@ -13,7 +13,9 @@ jobs:
         uses: actions/checkout@v2
       - name: Setup tools
         uses: ./.github/actions/tools
-      - name: Fetch latest version
+      - name: Setup Flux CLI
+        uses: fluxcd/flux2/action@main
+      - name: Fetch kyverno latest version
         id: version
         run: |
           REPO="https://github.com/kyverno/kyverno.git"
@@ -28,15 +30,25 @@ jobs:
         run: |
           export URL="https://raw.githubusercontent.com/kyverno/kyverno/${{ steps.version.outputs.NUMBER }}/definitions/release/install.yaml"
           yq e '.resources[0]=strenv(URL)' -i kyverno/kustomization.yaml
+      - name: Check for flux updates
+        id: update
+        run: |
+          flux install --export > ./clusters/dev/ap-south-1/flux-system/gotk-components.yaml
+          flux install --export > ./clusters/services/ap-south-1/flux-system/gotk-components.yaml
+          flux install --export > ./clusters/services/us-east-1/flux-system/gotk-components.yaml
+          VERSION="$(flux -v)"
+          echo "::set-output name=flux_version::$VERSION"
+
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
-          token: ${{ secrets.BOT_GITHUB_TOKEN }}
-          branch: update-kyverno
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: update-system
           committer: GitHub <noreply@github.com>
           author: fluxcdbot <fluxcdbot@users.noreply.github.com>
           signoff: true
-          commit-message: Update kyverno to ${{ steps.version.outputs.NUMBER }}
-          title: Update kyverno to ${{ steps.version.outputs.NUMBER }}
+          commit-message: auto update
+          title: Update flux ${{ steps.update.outputs.flux_version }}/ kyverno ${{ steps.version.outputs.NUMBER }}
           body: |
+            flux ${{ steps.update.outputs.flux_version }}
             kyverno ${{ steps.version.outputs.NUMBER }}
