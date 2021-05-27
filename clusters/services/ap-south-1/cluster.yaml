@@ -85,6 +85,7 @@ iam:
               - s3:*
             Resource:
               - "arn:aws:s3:::nsl-artifacts"
+              - "arn:aws:s3:::nsl-artifacts/*"
 nodeGroups:
   - name: system-120
     instanceType: "t3a.large"
