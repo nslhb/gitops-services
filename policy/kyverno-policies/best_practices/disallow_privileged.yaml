@@ -47,6 +47,7 @@ spec:
             - kube-system
             - ci
             - keycloak
+            - logging
       validate:
         message: "Privileged mode is not allowed. Set allowPrivilegeEscalation to false"
         pattern:
