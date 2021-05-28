@@ -23,5 +23,6 @@ spec:
   serviceAccountName: tf
   sourceRef:
     kind: GitRepository
-    name: paas
+    name: tf
+    namespace: paas
   validation: client
