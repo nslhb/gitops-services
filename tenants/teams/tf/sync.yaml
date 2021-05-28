@@ -2,13 +2,13 @@ apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: GitRepository
 metadata:
   name: tf
-  namespace: tf
+  namespace: paas
 spec:
   interval: 1m
   ref:
     branch: main
   secretRef:
-    name: tf
+    name: paas
   url: https://github.com/nslhb/gitops-tf.git
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
@@ -23,5 +23,5 @@ spec:
   serviceAccountName: tf
   sourceRef:
     kind: GitRepository
-    name: tf
+    name: paas
   validation: client
