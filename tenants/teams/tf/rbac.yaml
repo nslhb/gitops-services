@@ -35,8 +35,8 @@ subjects:
   kind: User
   name: gotk:tf:reconciler
 - kind: ServiceAccount
-  name: tf
-  namespace: tf
+  name: paas
+  namespace: paas
 ---
 # apiVersion: v1
 # kind: Namespace
