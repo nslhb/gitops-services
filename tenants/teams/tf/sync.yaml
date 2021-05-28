@@ -1,0 +1,27 @@
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: GitRepository
+metadata:
+  name: tf
+  namespace: tf
+spec:
+  interval: 1m
+  ref:
+    branch: main
+  secretRef:
+    name: tf
+  url: https://github.com/nslhb/gitops-tf.git
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+kind: Kustomization
+metadata:
+  name: tf
+  namespace: tf
+spec:
+  interval: 1m
+  path: ./
+  prune: true
+  serviceAccountName: tf
+  sourceRef:
+    kind: GitRepository
+    name: tf
+  validation: client
