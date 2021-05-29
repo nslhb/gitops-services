@@ -86,6 +86,12 @@ iam:
             Resource:
               - "arn:aws:s3:::nsl-artifacts"
               - "arn:aws:s3:::nsl-artifacts/*"
+    - metadata:
+        name: terraform-sync-workspace
+        namespace: ci
+      roleName: terraform
+      attachPolicyARNs:
+        - "arn:aws:iam::aws:policy/AdministratorAccess"
 nodeGroups:
   - name: system-120
     instanceType: "t3a.large"
