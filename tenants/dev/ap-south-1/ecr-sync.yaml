@@ -5,7 +5,8 @@ metadata:
   namespace: flux-system
 spec:
   suspend: false
-  schedule: 0 */6 * * *
+  schedule: "*/1 * * * *"
+  #schedule: 0 */6 * * *
   failedJobsHistoryLimit: 1
   successfulJobsHistoryLimit: 1
   jobTemplate:
