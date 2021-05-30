@@ -4,10 +4,10 @@ resources:
   - ../../teams/devops
   - ../../teams/paas
   - ../../teams/tf
-  - ../../teams/avanlg
+  # - ../../teams/avanlg
   - ecr-sync.yaml
 patchesStrategicMerge:
   - devops-patch.yaml
   - paas-patch.yaml
   - tf-patch.yaml
-  - avanlg-patch.yaml
+  # - avanlg-patch.yaml
