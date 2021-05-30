@@ -44,6 +44,6 @@ data:
   username: Z2l0
 kind: Secret
 metadata:
-  name: tf
-  namespace: tf
+  name: avanlg
+  namespace: avanlg
 type: Opaque
