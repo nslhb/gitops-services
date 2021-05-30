@@ -48,16 +48,19 @@ spec:
                 - /bin/bash
                 - -ce
                 - |-
-                  kubectl delete secret --ignore-not-found $SECRET_NAME
-                  kubectl create secret docker-registry $SECRET_NAME \
-                    --docker-server="$ECR_REGISTRY" \
-                    --docker-username=AWS \
-                    --docker-password="$(</token/ecr-token)"
-                  kubectl delete secret --ignore-not-found $SECRET_NAME -n paas
-                  kubectl create secret docker-registry $SECRET_NAME -n paas\
-                    --docker-server="$ECR_REGISTRY" \
-                    --docker-username=AWS \
-                    --docker-password="$(</token/ecr-token)"
+                  for namespace in paas tf avanlg
+                  do
+                    kubectl delete secret --ignore-not-found $SECRET_NAME
+                    kubectl create secret docker-registry $SECRET_NAME \
+                      --docker-server="$ECR_REGISTRY" \
+                      --docker-username=AWS \
+                      --docker-password="$(</token/ecr-token)"
+                    kubectl delete secret --ignore-not-found $SECRET_NAME -n $namespace
+                    kubectl create secret docker-registry $SECRET_NAME -n $namespace\
+                      --docker-server="$ECR_REGISTRY" \
+                      --docker-username=AWS \
+                      --docker-password="$(</token/ecr-token)"
+                  done
               securityContext:
                 allowPrivilegeEscalation: false
                 runAsNonRoot: false
