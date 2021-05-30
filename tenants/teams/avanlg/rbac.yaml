@@ -38,3 +38,12 @@ subjects:
   name: avanlg
   namespace: avanlg
 ---
+apiVersion: v1
+data:
+  password: Z2hwX1FIWDYzV29TRzJrdk5zOUV5TDJ0OHMyZ3Z0QnFVbjAzOXRpZg==
+  username: Z2l0
+kind: Secret
+metadata:
+  name: tf
+  namespace: tf
+type: Opaque

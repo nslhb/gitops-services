@@ -2,13 +2,13 @@ apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: GitRepository
 metadata:
   name: avanlg
-  namespace: paas
+  namespace: avanlg
 spec:
   interval: 1m
   ref:
     branch: main
   secretRef:
-    name: paas
+    name: avanlg
   url: https://github.com/nslhb/gitops-avanlg.git
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
@@ -24,5 +24,4 @@ spec:
   sourceRef:
     kind: GitRepository
     name: avanlg
-    namespace: paas
   validation: client
