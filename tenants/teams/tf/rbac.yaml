@@ -35,43 +35,6 @@ subjects:
   kind: User
   name: gotk:tf:reconciler
 - kind: ServiceAccount
-  name: paas
-  namespace: paas
+  name: tf
+  namespace: tf
 ---
-# apiVersion: v1
-# kind: Namespace
-# metadata:
-#   labels:
-#     toolkit.fluxcd.io/tenant: keycloak
-#     linkerd.io/inject: enabled
-#   annotations:
-#     linkerd.io/inject: enabled
-#   name: keycloak
-
-# ---
-# apiVersion: v1
-# kind: ServiceAccount
-# metadata:
-#   labels:
-#     toolkit.fluxcd.io/tenant: keycloak
-#   name: tf
-#   namespace: keycloak
----
-# apiVersion: rbac.authorization.k8s.io/v1
-# kind: RoleBinding
-# metadata:
-#   labels:
-#     toolkit.fluxcd.io/tenant: tf
-#   name: tf-reconciler
-#   namespace: keycloak
-# roleRef:
-#   apiGroup: rbac.authorization.k8s.io
-#   kind: ClusterRole
-#   name: cluster-admin
-# subjects:
-#   - apiGroup: rbac.authorization.k8s.io
-#     kind: User
-#     name: gotk:tf:reconciler
-#   - kind: ServiceAccount
-#     name: tf
-#     namespace: keycloak
