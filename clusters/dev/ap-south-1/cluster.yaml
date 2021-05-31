@@ -20,9 +20,9 @@ vpc:
       ap-south-1b:
         id: "subnet-0c1ee00495e8fa8e2"
         cidr: "10.100.64.0/19"
-      ap-south-1c:
-        id: "subnet-014228877d6c932a6"
-        cidr: "10.100.128.0/19"
+#      ap-south-1c:
+#        id: "subnet-014228877d6c932a6"
+#        cidr: "10.100.128.0/19"
     public:
       ap-south-1a:
         id: "subnet-03ad4d9406c822c9b"
@@ -30,9 +30,9 @@ vpc:
       ap-south-1b:
         id: "subnet-0ea11e9a3ea1bf0a4"
         cidr: "10.100.224.0/21"
-      ap-south-1c:
-        id: "subnet-0ca9b2d007b987baf"
-        cidr: "10.100.232.0/21"
+#      ap-south-1c:
+#        id: "subnet-0ca9b2d007b987baf"
+#        cidr: "10.100.232.0/21"
 iam:
   withOIDC: true
   fargatePodExecutionRolePermissionsBoundary: arn:aws:iam::755502957828:policy/Default-Boundary-Policy
@@ -69,7 +69,7 @@ iam:
         - "arn:aws:iam::aws:policy/AdministratorAccess"
 
 nodeGroups:
-  - name: system-120
+  - name: system-120-2
     instanceType: "a1.xlarge"
     desiredCapacity: 1
     minSize: 1
@@ -95,7 +95,7 @@ nodeGroups:
       k8s.io/cluster-autoscaler/node-template/taint/CriticalAddonsOnly: NoSchedule
     taints:
       CriticalAddonsOnly: "true:NoSchedule"
-  - name: monitoring-120
+  - name: monitoring-120-2
     instancesDistribution:
       maxPrice: 0.2
       instanceTypes: [ "r6g.xlarge", "m6g.xlarge",  "t4g.xlarge" ]
@@ -124,7 +124,7 @@ nodeGroups:
       k8s.io/cluster-autoscaler/node-template/taint/monitoring: NoSchedule
     taints:
       monitoring: "true:NoSchedule"
-  - name: linkerd-120
+  - name: linkerd-120-2
     instancesDistribution:
       maxPrice: 0.05
       instanceTypes: [ "t4g.large","a1.xlarge", "c6g.large", "m6g.large" ]
@@ -154,7 +154,7 @@ nodeGroups:
       k8s.io/cluster-autoscaler/node-template/taint/linkerd: NoSchedule
     taints:
       linkerd: "true:NoSchedule"
-  - name: common-120
+  - name: common-120-2
     instancesDistribution:
       maxPrice: 0.28
       instanceTypes: [ "c4.4xlarge","c5.4xlarge", "c5a.4xlarge", "c5n.4xlarge", "m5a.4xlarge", "m5.4xlarge" ]
@@ -164,7 +164,7 @@ nodeGroups:
     minSize: 0
     maxSize: 20
     volumeType: gp3
-    volumeSize: 10
+    volumeSize: 50
     volumeEncrypted: true
     volumeKmsKeyID: a3456af4-c4de-4938-837d-86d5615d75d7
     privateNetworking: true
