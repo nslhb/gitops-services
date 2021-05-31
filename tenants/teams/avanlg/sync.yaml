@@ -1,27 +1,27 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: GitRepository
 metadata:
-  name: tf
-  namespace: tf
+  name: avanlg
+  namespace: avanlg
 spec:
   interval: 1m
   ref:
     branch: main
   secretRef:
-    name: tf
-  url: https://github.com/nslhb/gitops-tf.git
+    name: avanlg
+  url: https://github.com/nslhb/gitops-avanlg.git
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:
-  name: tf
-  namespace: tf
+  name: avanlg
+  namespace: avanlg
 spec:
   interval: 1m
   path: ./
   prune: true
-  serviceAccountName: tf
+  serviceAccountName: avanlg
   sourceRef:
     kind: GitRepository
-    name: tf
+    name: avanlg
   validation: client
