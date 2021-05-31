@@ -92,6 +92,30 @@ iam:
       roleName: terraform
       attachPolicyARNs:
         - "arn:aws:iam::aws:policy/AdministratorAccess"
+    - metadata:
+        name: loki
+        namespace: logging
+      roleName: loki-ap-south-1
+      attachPolicy:
+        Statement:
+          - Effect: Allow
+            Action:
+              - s3:ListBucket
+              - s3:PutObject
+              - s3:GetObject
+              - s3:DeleteObject
+            Resource:
+              - "arn:aws:s3:::tfnsl-services-application-logs"
+              - "arn:aws:s3:::tfnsl-services-application-logs/*"
+          - Effect: Allow
+            Action:
+            - kms:Encrypt
+            - kms:Decrypt
+            - kms:ReEncrypt*
+            - kms:GenerateDataKey*
+            - kms:DescribeKey
+            Resource:
+              - "arn:aws:kms:ap-south-1:832807087073:key/a5169c54-c5ab-4c58-aac1-78d66a221c7f"
 nodeGroups:
   - name: system-120
     instanceType: "t3a.large"
