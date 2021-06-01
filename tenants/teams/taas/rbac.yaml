@@ -33,7 +33,7 @@ roleRef:
 subjects:
 - apiGroup: rbac.authorization.k8s.io
   kind: User
-  name: gotk:tf:reconciler
+  name: gotk:taas:reconciler
 - kind: ServiceAccount
   name: taas
   namespace: taas
