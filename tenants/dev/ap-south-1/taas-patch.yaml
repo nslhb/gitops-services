@@ -1,8 +1,13 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: GitRepository
 metadata:
+<<<<<<< HEAD
   name: taas
   namespace: taas
+=======
+  name: tf
+  namespace: tf
+>>>>>>> 6670ef72592d2c02ba08170352c7df36edeccf00
 spec:
   ref:
     branch: dev
@@ -10,8 +15,13 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:
+<<<<<<< HEAD
   name: taas
   namespace: taas
+=======
+  name: tf
+  namespace: tf
+>>>>>>> 6670ef72592d2c02ba08170352c7df36edeccf00
 spec:
   postBuild:
     substitute:

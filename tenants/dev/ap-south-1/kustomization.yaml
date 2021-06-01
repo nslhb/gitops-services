@@ -11,5 +11,10 @@ patchesStrategicMerge:
   - devops-patch.yaml
   - paas-patch.yaml
   - tf-patch.yaml
+<<<<<<< HEAD
   - taas-patch.yaml
   - avanlg-patch.yaml
+=======
+  - avanlg-patch.yaml
+  - taas-patch.yaml
+>>>>>>> 6670ef72592d2c02ba08170352c7df36edeccf00
