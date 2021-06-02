@@ -3,13 +3,13 @@ kind: Kustomization
 resources:
   - ../../teams/devops
   - ../../teams/paas
-  - ../../teams/tf
+  #- ../../teams/tf
   - ../../teams/avanlg
   - ../../teams/taas
   - ecr-sync.yaml
 patchesStrategicMerge:
   - devops-patch.yaml
   - paas-patch.yaml
-  - tf-patch.yaml
+  #- tf-patch.yaml
   - taas-patch.yaml
   - avanlg-patch.yaml
