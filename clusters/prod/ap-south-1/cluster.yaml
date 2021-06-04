@@ -15,23 +15,13 @@ vpc:
     public:
       ap-south-1a:
         id: "subnet-093de4c9c0df7aa06"
-#        cidr: "10.100.0.0/19"
       ap-south-1b:
         id: "subnet-0f11661aa8337a066"
-#        cidr: "10.100.64.0/19"
-#      ap-south-1c:
-#        id: "subnet-014228877d6c932a6"
-#        cidr: "10.100.128.0/19"
     private:
       ap-south-1a:
         id: "subnet-009a3d4c0147e8e0c"
-#        cidr: "10.100.216.0/21"
       ap-south-1b:
         id: "subnet-000e508c6619a9f97"
-#        cidr: "10.100.224.0/21"
-#      ap-south-1c:
-#        id: "subnet-0ca9b2d007b987baf"
-#        cidr: "10.100.232.0/21"
 iam:
   withOIDC: true
   fargatePodExecutionRolePermissionsBoundary: arn:aws:iam::901688089596:policy/Default-Boundary-Policy
