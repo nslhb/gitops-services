@@ -46,7 +46,7 @@ coredns:
 		-n kube-system downscaler/downtime-replicas-
 
 ng:
-	@eksctl create nodegroup --config-file=clusters/$(CLUSTER)/$(REGION)/cluster.yaml
+	@eksctl --skip-outdated-addons-check=true create nodegroup --config-file=clusters/$(CLUSTER)/$(REGION)/cluster.yaml
 	@eksctl delete nodegroup --config-file=clusters/$(CLUSTER)/$(REGION)/cluster.yaml --only-missing --approve
 
 sa:
