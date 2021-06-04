@@ -57,7 +57,7 @@ iam:
       attachPolicyARNs:
         - "arn:aws:iam::aws:policy/AdministratorAccess"
 nodeGroups:
-  - name: system-120-1
+  - name: system-120-2
     instanceType: "t4g.large"
     desiredCapacity: 1
     minSize: 1
@@ -76,12 +76,12 @@ nodeGroups:
       workload: system
     tags:
       k8s.io/cluster-autoscaler/enabled: "true"
-      k8s.io/cluster-autoscaler/services: "owned"
+      k8s.io/cluster-autoscaler/prod: "owned"
       k8s.io/cluster-autoscaler/node-template/label/workload: system
       k8s.io/cluster-autoscaler/node-template/taint/CriticalAddonsOnly: NoSchedule
     taints:
       CriticalAddonsOnly: "true:NoSchedule"
-  - name: monitoring-120
+  - name: monitoring-120-2
     instanceType: r6g.xlarge
     desiredCapacity: 1
     minSize: 1
@@ -100,12 +100,12 @@ nodeGroups:
       workload: monitoring
     tags:
       k8s.io/cluster-autoscaler/enabled: "true"
-      k8s.io/cluster-autoscaler/services: "owned"
+      k8s.io/cluster-autoscaler/prod: "owned"
       k8s.io/cluster-autoscaler/node-template/label/workload: monitoring
       k8s.io/cluster-autoscaler/node-template/taint/monitoring: NoSchedule
     taints:
       monitoring: "true:NoSchedule"
-  - name: tf-120
+  - name: tf-120-2
     instanceType: m5.4xlarge
     desiredCapacity: 1
     minSize: 1
@@ -124,12 +124,12 @@ nodeGroups:
       workload: tf
     tags:
       k8s.io/cluster-autoscaler/enabled: "true"
-      k8s.io/cluster-autoscaler/services: "owned"
+      k8s.io/cluster-autoscaler/prod: "owned"
       k8s.io/cluster-autoscaler/node-template/label/workload: tf
       k8s.io/cluster-autoscaler/node-template/taint/tf: NoSchedule
     taints:
       tf: "true:NoSchedule"
-  - name: paas-120
+  - name: paas-120-2
     instanceType: m5.4xlarge
     desiredCapacity: 3
     minSize: 0
@@ -148,7 +148,7 @@ nodeGroups:
       workload: paas
     tags:
       k8s.io/cluster-autoscaler/enabled: "true"
-      k8s.io/cluster-autoscaler/services: "owned"
+      k8s.io/cluster-autoscaler/prod: "owned"
       k8s.io/cluster-autoscaler/node-template/label/workload: paas
       k8s.io/cluster-autoscaler/node-template/taint/paas: NoSchedule
     taints:
