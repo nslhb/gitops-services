@@ -4,9 +4,7 @@ kind: Namespace
 metadata:
   labels:
     toolkit.fluxcd.io/tenant: paas
-    linkerd.io/inject: enabled
-  annotations:
-    linkerd.io/inject: enabled
+    istio-injection: enabled
   name: paas
 
 ---
@@ -43,9 +41,7 @@ kind: Namespace
 metadata:
   labels:
     toolkit.fluxcd.io/tenant: keycloak
-    linkerd.io/inject: enabled
-  annotations:
-    linkerd.io/inject: enabled
+    istio-injection: enabled
   name: keycloak
 
 ---

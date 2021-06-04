@@ -4,9 +4,7 @@ kind: Namespace
 metadata:
   labels:
     toolkit.fluxcd.io/tenant: tf
-    linkerd.io/inject: enabled
-  annotations:
-    linkerd.io/inject: enabled
+    istio-injection: enabled
   name: tf
 
 ---

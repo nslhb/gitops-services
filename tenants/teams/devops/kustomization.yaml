@@ -3,4 +3,4 @@ kind: Kustomization
 resources:
   - rbac.yaml
   - sync.yaml
-  - linkerd.yaml
+  - istio.yaml
