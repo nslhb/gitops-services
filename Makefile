@@ -27,7 +27,7 @@ create:
   	eksctl create cluster --config-file=clusters/$(CLUSTER)/$(REGION)/cluster.yaml; fi
 
 dump:
-	@eksctl utils write-kubeconfig --cluster services
+	@eksctl utils write-kubeconfig --cluster $(CLUSTER)
 
 addons:
 	@eksctl utils update-kube-proxy --config-file=clusters/$(CLUSTER)/$(REGION)/cluster.yaml --approve
@@ -57,15 +57,7 @@ identity:
 	eksctl --region $(REGION) create iamidentitymapping --cluster $(CLUSTER) --group system:masters  --username iam:{{SessionName}} --arn $$(aws iam list-roles  --query 'Roles[?starts_with(RoleName, `AWSReservedSSO_AWSPowerUserAccess`) == `true`].Arn' --output text |  awk -F'/' '{ print $$1 "/" $$4}')
 
 flux:
-	@GITHUB_TOKEN=$(GITHUB_TOKEN) flux bootstrap github \
-		  --context=$(CTX)  \
-		  --owner=nslhb \
-		  --repository=services.nslhub.com \
-		  --branch=main \
-		  --token-auth \
-		  --path=clusters/$(CLUSTER)/$(REGION) \
-		  --toleration-keys=CriticalAddonsOnly \
-		  --components-extra=image-reflector-controller,image-automation-controller
+	@eksctl enable flux -f clusters/$(CLUSTER)/$(REGION)/cluster.yaml
 
 #flux/source:
 #	@flux create source git infra --url=ssh://git@github.com/nslhb/gitops-devops.git --branch=main
