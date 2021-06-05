@@ -8,7 +8,6 @@ metadata:
 
 vpc:
   id: "vpc-003978caf25a1d7ce"
-  cidr: "10.100.0.0/16"
   clusterEndpoints:
     publicAccess: true
     privateAccess: true
@@ -16,23 +15,17 @@ vpc:
     private:
       ap-south-1a:
         id: "subnet-090c9cf2f159f2cd2"
-        cidr: "10.100.0.0/19"
       ap-south-1b:
         id: "subnet-0c1ee00495e8fa8e2"
-        cidr: "10.100.64.0/19"
 #      ap-south-1c:
 #        id: "subnet-014228877d6c932a6"
-#        cidr: "10.100.128.0/19"
     public:
       ap-south-1a:
         id: "subnet-03ad4d9406c822c9b"
-        cidr: "10.100.216.0/21"
       ap-south-1b:
         id: "subnet-0ea11e9a3ea1bf0a4"
-        cidr: "10.100.224.0/21"
 #      ap-south-1c:
 #        id: "subnet-0ca9b2d007b987baf"
-#        cidr: "10.100.232.0/21"
 iam:
   withOIDC: true
   fargatePodExecutionRolePermissionsBoundary: arn:aws:iam::755502957828:policy/Default-Boundary-Policy
@@ -67,6 +60,21 @@ iam:
       roleName: terraform
       attachPolicyARNs:
         - "arn:aws:iam::aws:policy/AdministratorAccess"
+    - metadata:
+        name: kubernetes-external-secrets
+        namespace: kube-system
+      roleName: external-secrets
+      attachPolicy:
+        Statement:
+          - Effect: Allow
+            Action:
+              - secretsmanager:GetResourcePolicy
+              - secretsmanager:GetSecretValue
+              - secretsmanager:DescribeSecret
+              - secretsmanager:ListSecretVersionIds
+              - ssm:GetParameter
+            Resource:
+              - "*"
 nodeGroups:
   - name: system-120-2
     instanceType: "a1.xlarge"
@@ -79,17 +87,15 @@ nodeGroups:
     volumeKmsKeyID: a3456af4-c4de-4938-837d-86d5615d75d7
     privateNetworking: true
     amiFamily: Bottlerocket
-    ami: auto-ssm
     disableIMDSv1: true
     iam:
       instanceProfileARN: arn:aws:iam::755502957828:instance-profile/EKS-Default-SSM-AD-Role-ip
       instanceRoleARN: arn:aws:iam::755502957828:role/EKS-Default-SSM-AD-Role
     labels:
       workload: system
-      eks.amazonaws.com/compute-type: ec2
     tags:
       k8s.io/cluster-autoscaler/enabled: "true"
-      k8s.io/cluster-autoscaler/services: "owned"
+      k8s.io/cluster-autoscaler/dev: "owned"
       k8s.io/cluster-autoscaler/node-template/label/workload: system
       k8s.io/cluster-autoscaler/node-template/taint/CriticalAddonsOnly: NoSchedule
     taints:
@@ -111,10 +117,9 @@ nodeGroups:
       instanceRoleARN: arn:aws:iam::755502957828:role/EKS-Default-SSM-AD-Role
     labels:
       workload: monitoring
-      eks.amazonaws.com/compute-type: ec2
     tags:
       k8s.io/cluster-autoscaler/enabled: "true"
-      k8s.io/cluster-autoscaler/services: "owned"
+      k8s.io/cluster-autoscaler/dev: "owned"
       k8s.io/cluster-autoscaler/node-template/label/workload: monitoring
       k8s.io/cluster-autoscaler/node-template/taint/monitoring: NoSchedule
     taints:
@@ -130,7 +135,6 @@ nodeGroups:
     volumeKmsKeyID: a3456af4-c4de-4938-837d-86d5615d75d7
     privateNetworking: true
     amiFamily: Bottlerocket
-    ami: auto-ssm
     disableIMDSv1: true
     iam:
       instanceProfileARN: arn:aws:iam::755502957828:instance-profile/EKS-Default-SSM-AD-Role-ip
@@ -140,7 +144,7 @@ nodeGroups:
       eks.amazonaws.com/compute-type: ec2
     tags:
       k8s.io/cluster-autoscaler/enabled: "true"
-      k8s.io/cluster-autoscaler/services: "owned"
+      k8s.io/cluster-autoscaler/dev: "owned"
       k8s.io/cluster-autoscaler/node-template/label/part-of: Linkerd
       k8s.io/cluster-autoscaler/node-template/taint/linkerd: NoSchedule
     taints:
@@ -169,7 +173,7 @@ nodeGroups:
       eks.amazonaws.com/compute-type: ec2
     tags:
       k8s.io/cluster-autoscaler/enabled: "true"
-      k8s.io/cluster-autoscaler/services: "owned"
+      k8s.io/cluster-autoscaler/dev: "owned"
       k8s.io/cluster-autoscaler/node-template/label/workload: public
 
 cloudWatch:
