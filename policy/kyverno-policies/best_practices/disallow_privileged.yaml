@@ -42,6 +42,7 @@ spec:
           namespaces:
             - monitoring
             - kube-system
+            - istio-system
             - ci
             - keycloak
             - logging
