@@ -19,3 +19,4 @@ spec:
       cluster_region: "ap-south-1"
       account_id: "832807087073"
       env: "services"
+      logging: "server"
