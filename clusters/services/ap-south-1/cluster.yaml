@@ -69,21 +69,13 @@ iam:
         Statement:
           - Effect: Allow
             Action:
-              - secretsmanager:ListSecrets
-              - secretsmanager:DescribeSecret
-              - secretsmanager:GetSecretValue
+              - ecr:*
             Resource:
-            - "arn:aws:secretsmanager:ap-south-1:832807087073:secret:github-private-key-NKaEyf"
-          - Effect: Allow
-            Action:
-              - s3:*
-            Resource:
-              - "arn:aws:s3:::nsl-artifacts"
-              - "arn:aws:s3:::nsl-artifacts/*"
+              - "*"
     - metadata:
         name: terraform-sync-workspace
         namespace: kube-system
-      roleName: terraform
+      roleName: terraform-ap-south-1
       attachPolicyARNs:
         - "arn:aws:iam::aws:policy/AdministratorAccess"
     - metadata:
@@ -113,7 +105,7 @@ iam:
     - metadata:
         name: kubernetes-external-secrets
         namespace: kube-system
-      roleName: external-secrets
+      roleName: external-secrets-ap-south-1
       attachPolicy:
         Statement:
           - Effect: Allow
@@ -125,8 +117,11 @@ iam:
               - ssm:GetParameter
             Resource:
               - "*"
+            Condition:
+              StringEquals:
+                aws:RequestedRegion: "ap-south-1"
 nodeGroups:
-  - name: system-120
+  - name: system-120-1
     instanceType: "t3a.large"
     desiredCapacity: 1
     minSize: 1
@@ -155,7 +150,7 @@ nodeGroups:
     ssh:
       allow: true
       publicKeyName: bottlerocketkey
-  - name: monitoring-120
+  - name: monitoring-120-1
     instancesDistribution:
       maxPrice: 0.030
       instanceTypes: [ "r3.large","r4.large", "r5ad.large", "r5d.large", "r5a.large" ]
@@ -184,33 +179,7 @@ nodeGroups:
       k8s.io/cluster-autoscaler/node-template/taint/monitoring: NoSchedule
     taints:
       monitoring: "true:NoSchedule"
-  - name: linkerd-120
-    instanceType: "t3a.medium"
-    desiredCapacity: 1
-    minSize: 0
-    maxSize: 3
-    volumeType: gp3
-    volumeSize: 10
-    volumeEncrypted: true
-    volumeKmsKeyID: 97f38a15-a525-49d6-beb7-7e768066c762
-    privateNetworking: true
-    amiFamily: Bottlerocket
-    ami: auto-ssm
-    disableIMDSv1: true
-    iam:
-      instanceProfileARN: arn:aws:iam::832807087073:instance-profile/EKS-Default-SSM-AD-Role-ip
-      instanceRoleARN: arn:aws:iam::832807087073:role/EKS-Default-SSM-AD-Role
-    labels:
-      part-of: Linkerd
-      eks.amazonaws.com/compute-type: ec2
-    tags:
-      k8s.io/cluster-autoscaler/enabled: "true"
-      k8s.io/cluster-autoscaler/services: "owned"
-      k8s.io/cluster-autoscaler/node-template/label/part-of: Linkerd
-      k8s.io/cluster-autoscaler/node-template/taint/linkerd: NoSchedule
-    taints:
-      linkerd: "true:NoSchedule"
-  - name: edge-120
+  - name: edge-120-1
     instancesDistribution:
       maxPrice: 0.13
       instanceTypes: [ "t3a.2xlarge","t3.2xlarge", "m5a.2xlarge", "m5.2xlarge", "m5ad.2xlarge" ]
@@ -237,8 +206,6 @@ nodeGroups:
       k8s.io/cluster-autoscaler/services: "owned"
       k8s.io/cluster-autoscaler/node-template/label/workload: public
       k8s.io/cluster-autoscaler/node-template/taint/Edge: NoSchedule
-    taints:
-      Edge: "true:NoSchedule"
 
 cloudWatch:
   clusterLogging:
@@ -246,3 +213,20 @@ cloudWatch:
 
 addons:
   - name: vpc-cni
+    version: latest
+  - name: coredns
+    version: latest
+  - name: kube-proxy
+    version: latest
+
+gitops:
+  flux:
+    gitProvider: github
+    flags:
+      owner: nslhb
+      repository: services.nslhub.com
+      branch: main
+      namespace: flux-system
+      path: ./clusters/services/ap-south-1
+      toleration-keys: CriticalAddonsOnly
+      components-extra: "image-reflector-controller,image-automation-controller"

@@ -7,9 +7,6 @@ spec:
   images:
     - name: ghcr.io/nslhb/rollouts-demo
       newTag: yellow # {"$imagepolicy": "apps:rollouts-demo:tag"}
-  dependsOn:
-    - name: linkerd
-      namespace: linkerd
   postBuild:
     substitute:
       color: "yellow"

@@ -23,7 +23,6 @@ spec:
           - kube-system
           - argo-rollouts
           - monitoring
-          - linkerd
           - paas
     validate:
       message: "Liveness and readiness probes are required"

@@ -21,8 +21,6 @@ spec:
         resources:
           namespaces:
             - monitoring
-            - linkerd
-            - linkerd-viz
             - kube-system
             - ci
             - keycloak
@@ -42,8 +40,6 @@ spec:
         resources:
           namespaces:
             - monitoring
-            - linkerd
-            - linkerd-viz
             - kube-system
             - ci
             - keycloak

@@ -5,3 +5,9 @@ metadata:
   namespace: flux-system
 spec:
   path: ./clusters/dev/ap-south-1
+  postBuild:
+    substitute:
+      cluster_region: "ap-south-1"
+      account_id: "832807087073"
+      env: "services"
+

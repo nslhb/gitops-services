@@ -5,62 +5,35 @@ CTX ?= $(shell kubectl config current-context)
 echo:
 	@echo "cluster $(CLUSTER) in $(REGION) with context $(CTX)"
 
-dns:
-	# create a dummy vpc first
-	# create private hosted zone
-	# authorize in dev account
-	aws route53 associate-vpc-with-hosted-zone --vpc VPCRegion=ap-south-1,VPCId=vpc-003978caf25a1d7ce --region ap-south-1 --hosted-zone-id Z0850381TEAQKXGLOB6E
-	# switch to newtork account and associate
-	aws route53 create-vpc-association-authorization  --vpc VPCRegion=ap-south-1,VPCId=vpc-003978caf25a1d7ce --region ap-south-1 --hosted-zone-id Z0850381TEAQKXGLOB6E
-	# switch to dev account, remove the dummy vpc from route53 association
-	# remote the dummy vpc
+subnet:
+	@aws ec2 describe-subnets --region $(REGION) --query  "Subnets[?Tags[?Key == 'Name' && contains(Value, 'App')][]].SubnetArn" | jq -r '.[]' | xargs -I {} aws resourcegroupstaggingapi   tag-resources  --region $(REGION) --resource-arn-list {} --tags kubernetes.io/role/internal-elb=1
+	@aws ec2 describe-subnets --region $(REGION) --query  "Subnets[?Tags[?Key == 'Name' && contains(Value, 'App')][]].SubnetArn" | jq -r '.[]' | xargs -I {} aws resourcegroupstaggingapi   tag-resources  --region $(REGION) --resource-arn-list {} --tags kubernetes.io/cluster/$(CLUSTER)=shared
+	@aws ec2 describe-subnets --region $(REGION) --query  "Subnets[?Tags[?Key == 'Name' && contains(Value, 'Web')][]].SubnetArn" | jq -r '.[]' | xargs -I {} aws resourcegroupstaggingapi   tag-resources  --region $(REGION) --resource-arn-list {} --tags kubernetes.io/role/elb=1
+	@aws ec2 describe-subnets --region $(REGION) --query  "Subnets[?Tags[?Key == 'Name' && contains(Value, 'Web')][]].SubnetArn" | jq -r '.[]' | xargs -I {} aws resourcegroupstaggingapi   tag-resources  --region $(REGION) --resource-arn-list {} --tags kubernetes.io/cluster/$(CLUSTER)=shared
 
-init:
-	@aws ec2 describe-subnets --query  "Subnets[?Tags[?Key == 'Name' && contains(Value, 'App')][]].SubnetArn" | jq -r '.[]' | xargs -I {} aws resourcegroupstaggingapi   tag-resources --resource-arn-list {} --tags kubernetes.io/role/internal-elb=1
-	@aws ec2 describe-subnets --query  "Subnets[?Tags[?Key == 'Name' && contains(Value, 'App')][]].SubnetArn" | jq -r '.[]' | xargs -I {} aws resourcegroupstaggingapi   tag-resources --resource-arn-list {} --tags kubernetes.io/cluster/$(CLUSTER)=shared
-	@aws ec2 describe-subnets --query  "Subnets[?Tags[?Key == 'Name' && contains(Value, 'Web')][]].SubnetArn" | jq -r '.[]' | xargs -I {} aws resourcegroupstaggingapi   tag-resources --resource-arn-list {} --tags kubernetes.io/role/elb=1
-	@aws ec2 describe-subnets --query  "Subnets[?Tags[?Key == 'Name' && contains(Value, 'Web')][]].SubnetArn" | jq -r '.[]' | xargs -I {} aws resourcegroupstaggingapi   tag-resources --resource-arn-list {} --tags kubernetes.io/cluster/$(CLUSTER)=shared
-
-create:
+cluster:
 	if eksctl get cluster --name $(CLUSTER) --region $(REGION) -o json > /dev/null 2>&1 ; then \
   	eksctl upgrade cluster --config-file=clusters/$(CLUSTER)/$(REGION)/cluster.yaml --approve; else \
   	eksctl create cluster --config-file=clusters/$(CLUSTER)/$(REGION)/cluster.yaml; fi
 
-dump:
+config:
 	@eksctl utils write-kubeconfig --cluster $(CLUSTER)
-
-addons:
-	@eksctl utils update-kube-proxy --config-file=clusters/$(CLUSTER)/$(REGION)/cluster.yaml --approve
-	@eksctl utils update-aws-node --config-file=clusters/$(CLUSTER)/$(REGION)/cluster.yaml --approve
-	@eksctl utils update-coredns --config-file=clusters/$(CLUSTER)/$(REGION)/cluster.yaml --approve
-
-coredns:
-	kubectl patch deployment coredns \
-        -n kube-system \
-        --type json \
-        -p='[{"op": "remove", "path": "/spec/template/metadata/annotations/eks.amazonaws.com~1compute-type"}]'
-	kubectl  patch deployment coredns \
-		-n kube-system \
-		-p='{"spec":{"template":{"spec":{"containers":[{ "name": "coredns","resources":{"limits":{"cpu":"250m","memory":"256Mi"},"requests":{"cpu":"250m","memory":"256Mi"}}}]}}}}'
-	kubectl annotate deployment coredns \
-		-n kube-system downscaler/downtime-replicas-
 
 ng:
 	@eksctl --skip-outdated-addons-check=true create nodegroup --config-file=clusters/$(CLUSTER)/$(REGION)/cluster.yaml
+	@eksctl --skip-outdated-addons-check=true upgrade nodegroup --config-file=clusters/$(CLUSTER)/$(REGION)/cluster.yaml
 	@eksctl delete nodegroup --config-file=clusters/$(CLUSTER)/$(REGION)/cluster.yaml --only-missing --approve
 
 sa:
 	@eksctl create iamserviceaccount --config-file=clusters/$(CLUSTER)/$(REGION)/cluster.yaml --approve --override-existing-serviceaccounts
+	@eksctl update iamserviceaccount --config-file=clusters/$(CLUSTER)/$(REGION)/cluster.yaml --approve
+	@eksctl delete iamserviceaccount --config-file=clusters/$(CLUSTER)/$(REGION)/cluster.yaml --approve --only-missing
 
 identity:
-#	@eksctl create iamidentitymapping --cluster $(CLUSTER) --service-name emr-containers --namespace default
 	eksctl --region $(REGION) create iamidentitymapping --cluster $(CLUSTER) --group system:masters  --username iam:{{SessionName}} --arn $$(aws iam list-roles  --query 'Roles[?starts_with(RoleName, `AWSReservedSSO_AWSPowerUserAccess`) == `true`].Arn' --output text |  awk -F'/' '{ print $$1 "/" $$4}')
 
 flux:
 	@eksctl enable flux -f clusters/$(CLUSTER)/$(REGION)/cluster.yaml
-
-#flux/source:
-#	@flux create source git infra --url=ssh://git@github.com/nslhb/gitops-devops.git --branch=main
 
 cleanup:
 	@kubectl delete mutatingwebhookconfigurations  kube-prometheus-stack-admission
@@ -70,18 +43,16 @@ cleanup:
 	@kubectl delete apiservice v2beta1.helm.toolkit.fluxcd.io v1beta1.kustomize.toolkit.fluxcd.io
 
 flux/suspend:
-	flux suspend ks linkerd -n linkerd
 	flux suspend ks monitoring -n monitoring
 	flux suspend ks logging -n logging
 	flux suspend ks demo -n apps
 
 down: flux/suspend
-	for nss in apps linkerd linkerd-viz monitoring logging; do \
+	for nss in apps monitoring logging; do \
   	    kubectl annotate ns $$nss downscaler/force-uptime- ; \
   		kubectl annotate ns $$nss downscaler/uptime='Mon-Fri 08:30-08:30 Asia/Kolkata'; done
 
 flux/resume:
-	flux resume ks linkerd -n linkerd
 	flux resume ks monitoring -n monitoring
 	flux resume ks logging -n logging
 	flux resume ks demo -n apps
@@ -96,4 +67,11 @@ auto:
 		kubectl annotate ns $$nss downscaler/uptime- ; \
 		kubectl annotate ns $$nss downscaler/force-uptime-; done
 
-eks: echo create dump addons ng sa identity
+eks: echo subnet cluster ng sa identity
+
+coredns:
+	kubectl patch deployment coredns -n kube-system --type json \
+        -p='[{"op": "remove", "path": "/spec/template/metadata/annotations/eks.amazonaws.com~1compute-type"}]'
+	kubectl  patch deployment coredns -n kube-system \
+		-p='{"spec":{"template":{"spec":{"containers":[{ "name": "coredns","resources":{"limits":{"cpu":"250m","memory":"256Mi"},"requests":{"cpu":"250m","memory":"256Mi"}}}]}}}}'
+	kubectl annotate deployment coredns -n kube-system downscaler/downtime-replicas-

@@ -20,8 +20,6 @@ spec:
       resources:
         namespaces:
           - kube-system
-          - linkerd
-          - linkerd-viz
           - monitoring
           - ci
           - keycloak
