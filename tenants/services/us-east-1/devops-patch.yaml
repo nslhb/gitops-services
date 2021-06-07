@@ -14,3 +14,7 @@ metadata:
   namespace: flux-system
 spec:
   path: ./overlays/us-east-1
+  postBuild:
+    substituteFrom:
+      - kind: ConfigMap
+        name: aws-environment
