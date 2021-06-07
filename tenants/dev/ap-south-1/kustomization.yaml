@@ -6,7 +6,6 @@ resources:
   - ../../teams/tf
   - ../../teams/avanlg
   - ../../teams/taas
-  - ../../teams/rabbitmq
   - ecr-sync.yaml
 patchesStrategicMerge:
   - devops-patch.yaml
@@ -14,5 +13,4 @@ patchesStrategicMerge:
   - tf-patch.yaml
   - taas-patch.yaml
   - avanlg-patch.yaml
-  - rabbitmq-patch.yaml
   
