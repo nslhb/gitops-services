@@ -23,3 +23,4 @@ configMapGenerator:
       - cluster_region="us-east-1"
       - account_id="832807087073"
       - cluster_name="services"
+      - logging="server"
