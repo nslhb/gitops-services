@@ -14,7 +14,7 @@ spec:
   url: https://github.com/nslhb/gitops-devops.git
 ---
 #########################################################################################
-#     Monitoring
+#     Devops
 #########################################################################################
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
@@ -22,6 +22,7 @@ metadata:
   name: devops
   namespace: flux-system
 spec:
+  force: true
   interval: 5m0s
   prune: true
   serviceAccountName: devops
