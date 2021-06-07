@@ -97,7 +97,7 @@ iam:
               - "*"
             Condition:
               StringEquals:
-                aws:RequestedRegion: "ap-south-1"
+                aws:RequestedRegion: "us-east-1"
 nodeGroups:
   - name: system-120-1
     instanceType: "a1.xlarge"
