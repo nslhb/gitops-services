@@ -8,6 +8,9 @@ patchesStrategicMerge:
   - devops-patch.yaml
   - demo-patch.yaml
 
+generatorOptions:
+  disableNameSuffixHash: true
+
 configMapGenerator:
   - name: aws-environment
     namespace: kube-system
