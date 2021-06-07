@@ -1,0 +1,27 @@
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: GitRepository
+metadata:
+  name: rabbitmq
+  namespace: rabbitmq
+spec:
+  interval: 1m
+  ref:
+    branch: main
+  secretRef:
+    name: rabbitmq
+  url: https://github.com/nslhb/gitops-paas.git
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+kind: Kustomization
+metadata:
+  name: rabbitmq
+  namespace: rabbitmq
+spec:
+  interval: 1m
+  path: ./
+  prune: true
+  serviceAccountName: rabbitmq
+  sourceRef:
+    kind: GitRepository
+    name: rabbitmq
+  validation: client
