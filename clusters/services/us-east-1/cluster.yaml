@@ -70,7 +70,7 @@ iam:
               - s3:DeleteObject
             Resource:
               - "arn:aws:s3:::tfnsl-services-application-logs"
-              - "arn:aws:s3:::tfnsl-services-application-logs/*"
+              - "arn:aws:s3:::tfnsl-services-application-logs/*/us-east-1/*"
           - Effect: Allow
             Action:
               - kms:Encrypt
