@@ -16,10 +16,10 @@ configMapGenerator:
     literals:
       - cluster_region="us-east-1"
       - account_id="832807087073"
-      - env="services"
+      - cluster_name="services"
   - name: aws-environment
     namespace: logging
     literals:
       - cluster_region="us-east-1"
       - account_id="832807087073"
-      - env="services"
+      - cluster_name="services"

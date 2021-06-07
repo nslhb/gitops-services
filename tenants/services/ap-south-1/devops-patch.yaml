@@ -14,9 +14,3 @@ metadata:
   namespace: flux-system
 spec:
   path: ./overlays/ap-south-1
-  postBuild:
-    substitute:
-      cluster_region: "ap-south-1"
-      account_id: "832807087073"
-      env: "services"
-      logging: "server"
