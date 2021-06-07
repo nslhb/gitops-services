@@ -23,6 +23,7 @@ spec:
             - monitoring
             - kube-system
             - istio-system
+            - linkerd-viz
             - ci
             - keycloak
       validate:
@@ -43,6 +44,7 @@ spec:
             - monitoring
             - kube-system
             - istio-system
+            - linkerd-viz
             - ci
             - keycloak
             - logging
