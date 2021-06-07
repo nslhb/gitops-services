@@ -13,7 +13,7 @@ metadata:
   name: devops
   namespace: flux-system
 spec:
-  path: ./overlays/base
+  path: ./overlays/us-east-1
   postBuild:
     substitute:
       cluster_region: "us-east-1"
