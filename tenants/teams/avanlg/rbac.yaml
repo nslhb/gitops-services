@@ -37,7 +37,7 @@ subjects:
   namespace: ava-nlg
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
+kind: ClusterRoleBinding
 metadata:
   labels:
     toolkit.fluxcd.io/tenant: ava-nlg
