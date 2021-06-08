@@ -49,6 +49,7 @@ spec:
             - ci
             - keycloak
             - logging
+            - tfinfra
       validate:
         message: "Privileged mode is not allowed. Set allowPrivilegeEscalation to false"
         pattern:

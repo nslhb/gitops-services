@@ -26,6 +26,7 @@ spec:
           - ci
           - keycloak
           - observability
+          - tfinfra
     validate:
       message: "Root filesystem must be read-only"
       pattern:
