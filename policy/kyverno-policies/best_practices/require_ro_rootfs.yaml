@@ -25,6 +25,7 @@ spec:
           - linkerd-viz
           - ci
           - keycloak
+          - observability
     validate:
       message: "Root filesystem must be read-only"
       pattern:

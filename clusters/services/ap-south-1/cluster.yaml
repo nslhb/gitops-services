@@ -121,7 +121,7 @@ iam:
               StringEquals:
                 aws:RequestedRegion: "ap-south-1"
 nodeGroups:
-  - name: system-120-2
+  - name: system-120-1
     instanceType: "t3a.large"
     desiredCapacity: 1
     minSize: 0
@@ -149,7 +149,7 @@ nodeGroups:
     ssh:
       allow: true
       publicKeyName: bottlerocketkey
-  - name: monitoring-120-2
+  - name: monitoring-120-1
     instancesDistribution:
       maxPrice: 0.030
       instanceTypes: [ "r3.large","r4.large", "r5ad.large", "r5d.large", "r5a.large" ]
@@ -177,7 +177,7 @@ nodeGroups:
       k8s.io/cluster-autoscaler/node-template/taint/monitoring: NoSchedule
     taints:
       monitoring: "true:NoSchedule"
-  - name: edge-120-3
+  - name: edge-120-1
     instancesDistribution:
       maxPrice: 0.13
       instanceTypes: [ "t3a.2xlarge","t3.2xlarge", "m5a.2xlarge", "m5.2xlarge", "m5ad.2xlarge" ]

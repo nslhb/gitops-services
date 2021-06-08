@@ -45,6 +45,7 @@ spec:
             - kube-system
             - istio-system
             - linkerd-viz
+            - observability
             - ci
             - keycloak
             - logging

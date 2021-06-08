@@ -20,7 +20,7 @@ config:
 	@eksctl utils write-kubeconfig --cluster $(CLUSTER)
 
 ng:
-	@#eksctl --skip-outdated-addons-check=true create nodegroup --config-file=clusters/$(CLUSTER)/$(REGION)/cluster.yaml
+	@eksctl --skip-outdated-addons-check=true create nodegroup --config-file=clusters/$(CLUSTER)/$(REGION)/cluster.yaml
 	@eksctl delete nodegroup --config-file=clusters/$(CLUSTER)/$(REGION)/cluster.yaml --only-missing --approve
 
 sa:
