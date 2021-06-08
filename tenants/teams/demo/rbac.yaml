@@ -5,6 +5,8 @@ metadata:
   labels:
     toolkit.fluxcd.io/tenant: demo
     istio-injection: enabled
+  annotations:
+    linkerd.io/inject: enabled
   name: apps
 
 ---
