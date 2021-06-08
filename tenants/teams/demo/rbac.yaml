@@ -4,6 +4,7 @@ kind: Namespace
 metadata:
   labels:
     toolkit.fluxcd.io/tenant: demo
+    istio-injection: enabled
   name: apps
 
 ---
