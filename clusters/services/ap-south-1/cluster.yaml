@@ -139,7 +139,6 @@ nodeGroups:
       instanceRoleARN: arn:aws:iam::832807087073:role/EKS-Default-SSM-AD-Role
     labels:
       workload: system
-      eks.amazonaws.com/compute-type: ec2
     tags:
       k8s.io/cluster-autoscaler/enabled: "true"
       k8s.io/cluster-autoscaler/services: "owned"
@@ -171,7 +170,6 @@ nodeGroups:
       instanceRoleARN: arn:aws:iam::832807087073:role/EKS-Default-SSM-AD-Role
     labels:
       workload: monitoring
-      eks.amazonaws.com/compute-type: ec2
     tags:
       k8s.io/cluster-autoscaler/enabled: "true"
       k8s.io/cluster-autoscaler/services: "owned"
@@ -200,7 +198,7 @@ nodeGroups:
       instanceRoleARN: arn:aws:iam::832807087073:role/EKS-Default-SSM-AD-Role
     labels:
       workload: public
-      eks.amazonaws.com/compute-type: ec2
+      falco: enabled
     tags:
       k8s.io/cluster-autoscaler/enabled: "true"
       k8s.io/cluster-autoscaler/services: "owned"
