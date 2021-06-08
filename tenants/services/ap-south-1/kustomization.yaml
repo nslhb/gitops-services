@@ -24,7 +24,7 @@ configMapGenerator:
       - cluster_region="ap-south-1"
       - account_id="832807087073"
       - cluster_name="services"
-      - log_bucket="true"
+      - log_bucket="tru"
   - name: aws-environment
     namespace: ci
     literals:
