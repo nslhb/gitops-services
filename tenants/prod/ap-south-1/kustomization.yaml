@@ -13,3 +13,22 @@ patchesStrategicMerge:
   - tf-patch.yaml
   - taas-patch.yaml
   - avanlg-patch.yaml
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+configMapGenerator:
+  - name: aws-environment
+    namespace: kube-system
+    literals:
+      - cluster_region="us-east-1"
+      - account_id="901688089596"
+      - cluster_name="prod"
+  - name: aws-environment
+    namespace: logging
+    literals:
+      - cluster_region="us-east-1"
+      - account_id="901688089596"
+      - cluster_name="prod"
+      - log_bucket="false"
+
