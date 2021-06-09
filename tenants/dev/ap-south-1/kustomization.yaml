@@ -6,7 +6,6 @@ resources:
   - ../../teams/tf
   - ../../teams/avanlg
   - ../../teams/taas
-  #- ../../teams/rabbitmq
   - ecr-sync.yaml
 patchesStrategicMerge:
   - devops-patch.yaml
@@ -14,5 +13,22 @@ patchesStrategicMerge:
   - tf-patch.yaml
   - taas-patch.yaml
   - avanlg-patch.yaml
-  #- rabbitmq-patch.yaml
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+configMapGenerator:
+  - name: aws-environment
+    namespace: kube-system
+    literals:
+      - cluster_region="ap-south-1"
+      - account_id="755502957828"
+      - cluster_name="dev"
+  - name: aws-environment
+    namespace: logging
+    literals:
+      - cluster_region="ap-south-1"
+      - account_id="755502957828"
+      - cluster_name="dev"
+      - log_bucket="false"
   

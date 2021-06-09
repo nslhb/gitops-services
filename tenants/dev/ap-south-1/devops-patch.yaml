@@ -1,13 +1,16 @@
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: GitRepository
+metadata:
+  name: infra
+  namespace: flux-system
+spec:
+  ref:
+    branch: main
+---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:
   name: devops
   namespace: flux-system
 spec:
-  path: ./clusters/dev/ap-south-1
-  postBuild:
-    substitute:
-      cluster_region: "ap-south-1"
-      account_id: "832807087073"
-      env: "services"
-
+  path: ./overlays/ap-south-1
