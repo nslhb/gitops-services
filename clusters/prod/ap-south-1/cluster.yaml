@@ -121,29 +121,6 @@ nodeGroups:
       k8s.io/cluster-autoscaler/node-template/taint/monitoring: NoSchedule
     taints:
       monitoring: "true:NoSchedule"
-  - name: common-120
-    instanceType: m5.4xlarge
-    desiredCapacity: 1
-    minSize: 1
-    maxSize: 3
-    volumeType: gp3
-    volumeSize: 200
-    volumeEncrypted: true
-    volumeKmsKeyID: ef15819c-c086-4aba-9430-d54af36d8b53
-    privateNetworking: true
-    amiFamily: Bottlerocket
-    disableIMDSv1: true
-    iam:
-      instanceProfileARN: arn:aws:iam::901688089596:instance-profile/EKS-Default-SSM-AD-Role-ip
-      instanceRoleARN: arn:aws:iam::901688089596:role/EKS-Default-SSM-AD-Role
-    labels:
-      workload: tf
-      falco: enabled
-    tags:
-      k8s.io/cluster-autoscaler/enabled: "true"
-      k8s.io/cluster-autoscaler/prod: "owned"
-      k8s.io/cluster-autoscaler/node-template/label/workload: tf
-      k8s.io/cluster-autoscaler/node-template/taint/tf: NoSchedule
   - name: compute-intensive-120
     instanceType: c5a.4xlarge
     desiredCapacity: 1
@@ -161,7 +138,7 @@ nodeGroups:
       instanceRoleARN: arn:aws:iam::901688089596:role/EKS-Default-SSM-AD-Role
     labels:
       falco: enabled
-      compute-intensive: true
+      compute: cpu-intensive
     tags:
       k8s.io/cluster-autoscaler/enabled: "true"
       k8s.io/cluster-autoscaler/prod: "owned"
@@ -183,7 +160,7 @@ nodeGroups:
       instanceRoleARN: arn:aws:iam::901688089596:role/EKS-Default-SSM-AD-Role
     labels:
       falco: enabled
-      memory-intensive: true
+      compute: memory-intensive
     tags:
       k8s.io/cluster-autoscaler/enabled: "true"
       k8s.io/cluster-autoscaler/prod: "owned"
@@ -205,7 +182,7 @@ nodeGroups:
       instanceRoleARN: arn:aws:iam::901688089596:role/EKS-Default-SSM-AD-Role
     labels:
       falco: enabled
-      general-compute: true      
+      compute: generic
     tags:
       k8s.io/cluster-autoscaler/enabled: "true"
       k8s.io/cluster-autoscaler/prod: "owned"
@@ -227,7 +204,7 @@ nodeGroups:
       instanceRoleARN: arn:aws:iam::901688089596:role/EKS-Default-SSM-AD-Role
     labels:
       falco: enabled
-      gpu-compute: true      
+      compute: gpu
     tags:
       k8s.io/cluster-autoscaler/enabled: "true"
       k8s.io/cluster-autoscaler/prod: "owned"
