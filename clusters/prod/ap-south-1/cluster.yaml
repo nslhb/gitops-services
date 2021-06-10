@@ -190,14 +190,14 @@ nodeGroups:
   - name: gpu-compute-120
     instanceType: g4dn.12xlarge
     desiredCapacity: 1
-    minSize: 2
+    minSize: 1
     maxSize: 3
     volumeType: gp3
     volumeSize: 200
     volumeEncrypted: true
     volumeKmsKeyID: ef15819c-c086-4aba-9430-d54af36d8b53
     privateNetworking: true
-    amiFamily: Bottlerocket
+#    amiFamily: Bottlerocket
     disableIMDSv1: true
     iam:
       instanceProfileARN: arn:aws:iam::901688089596:instance-profile/EKS-Default-SSM-AD-Role-ip
