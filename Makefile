@@ -1,6 +1,7 @@
 CLUSTER ?= services
 REGION ?= ap-south-1
 CTX ?= $(shell kubectl config current-context)
+NS ?= "istio-system linkerd-viz argo-rollouts monitoring observability logging apps paas taas tf"
 
 echo:
 	@echo "cluster $(CLUSTER) in $(REGION) with context $(CTX)"
@@ -41,25 +42,17 @@ cleanup:
 	@kubectl delete apiservice v1beta1.custom.metrics.k8s.io  v1beta1.metrics.k8s.io  v1beta1.external.metrics.k8s.io
 	@kubectl delete apiservice v2beta1.helm.toolkit.fluxcd.io v1beta1.kustomize.toolkit.fluxcd.io
 
-flux/suspend:
-	flux suspend ks monitoring -n monitoring
-	flux suspend ks logging -n logging
-	flux suspend ks demo -n apps
-
-down: flux/suspend
-	for nss in apps monitoring logging; do \
+down:
+	flux suspend ks tenants
+	for nss in $(NS); do \
   	    kubectl annotate ns $$nss downscaler/force-uptime- ; \
   		kubectl annotate ns $$nss downscaler/uptime='Mon-Fri 08:30-08:30 Asia/Kolkata'; done
 
-flux/resume:
-	flux resume ks monitoring -n monitoring
-	flux resume ks logging -n logging
-	flux resume ks demo -n apps
-
-up: flux/resume
-	for nss in paas linkerd linkerd-viz monitoring; do \
+up:
+	for nss in $(NS); do \
   	    kubectl annotate ns $$nss downscaler/uptime- ; \
 		kubectl annotate ns $$nss downscaler/force-uptime=true; done
+	flux resume ks tenants
 
 auto:
 	for nss in $$(kubectl get ns | awk '{print $$1}'); do \
