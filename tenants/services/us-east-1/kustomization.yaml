@@ -24,4 +24,11 @@ configMapGenerator:
       - account_id="832807087073"
       - cluster_name="services"
       - log_bucket="false"
+  - name: aws-environment
+    namespace: istio-system
+    literals:
+      - cluster_region="us-east-1"
+      - account_id="832807087073"
+      - cluster_name="services"
+      - log_bucket="false"
 

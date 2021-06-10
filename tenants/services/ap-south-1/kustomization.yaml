@@ -31,3 +31,9 @@ configMapGenerator:
       - cluster_region="ap-south-1"
       - account_id="832807087073"
       - cluster_name="services"
+  - name: aws-environment
+    namespace: istio-system
+    literals:
+      - cluster_region="ap-south-1"
+      - account_id="832807087073"
+      - cluster_name="services"
