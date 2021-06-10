@@ -78,7 +78,7 @@ nodeGroups:
     minSize: 1
     maxSize: 3
     volumeType: gp3
-    volumeSize: 10
+    volumeSize: 50
     volumeEncrypted: true
     volumeKmsKeyID: ef15819c-c086-4aba-9430-d54af36d8b53
     privateNetworking: true
@@ -102,7 +102,7 @@ nodeGroups:
     minSize: 1
     maxSize: 3
     volumeType: gp3
-    volumeSize: 10
+    volumeSize: 50
     volumeEncrypted: true
     volumeKmsKeyID: ef15819c-c086-4aba-9430-d54af36d8b53
     privateNetworking: true
@@ -126,7 +126,7 @@ nodeGroups:
     minSize: 1
     maxSize: 3
     volumeType: gp3
-    volumeSize: 10
+    volumeSize: 50
     volumeEncrypted: true
     volumeKmsKeyID: ef15819c-c086-4aba-9430-d54af36d8b53
     privateNetworking: true
