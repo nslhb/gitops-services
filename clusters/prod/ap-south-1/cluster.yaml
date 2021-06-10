@@ -142,13 +142,13 @@ nodeGroups:
       k8s.io/cluster-autoscaler/prod: "owned"
       k8s.io/cluster-autoscaler/node-template/label/workload: tf
       k8s.io/cluster-autoscaler/node-template/taint/tf: NoSchedule
-  - name: stateless-ci
+  - name: compute-intensive-120
     instanceType: c5a.4xlarge
     desiredCapacity: 1
     minSize: 1
     maxSize: 3
     volumeType: gp3
-    volumeSize: 10
+    volumeSize: 200
     volumeEncrypted: true
     volumeKmsKeyID: ef15819c-c086-4aba-9430-d54af36d8b53
     privateNetworking: true
@@ -158,12 +158,13 @@ nodeGroups:
       instanceProfileARN: arn:aws:iam::901688089596:instance-profile/EKS-Default-SSM-AD-Role-ip
       instanceRoleARN: arn:aws:iam::901688089596:role/EKS-Default-SSM-AD-Role
     labels:
-      workload: stateless-ci
+      falco: enabled
+      compute-intensive: true
     tags:
       k8s.io/cluster-autoscaler/enabled: "true"
       k8s.io/cluster-autoscaler/prod: "owned"
-      k8s.io/cluster-autoscaler/node-template/label/workload: stateless-ci
-  - name: stateless-mi
+      k8s.io/cluster-autoscaler/node-template/label/workload: compute-intensive
+  - name: memory-intensive-120
     instanceType: r5a.8xlarge
     desiredCapacity: 1
     minSize: 1
@@ -179,12 +180,13 @@ nodeGroups:
       instanceProfileARN: arn:aws:iam::901688089596:instance-profile/EKS-Default-SSM-AD-Role-ip
       instanceRoleARN: arn:aws:iam::901688089596:role/EKS-Default-SSM-AD-Role
     labels:
-      workload: stateless-mi
+      falco: enabled
+      memory-intensive: true
     tags:
       k8s.io/cluster-autoscaler/enabled: "true"
       k8s.io/cluster-autoscaler/prod: "owned"
-      k8s.io/cluster-autoscaler/node-template/label/workload: stateless-mi 
-  - name: stateless-gc
+      k8s.io/cluster-autoscaler/node-template/label/workload: memory-intensive
+  - name: general-compute-120 
     instanceType: m5a.8xlarge
     desiredCapacity: 1
     minSize: 1
@@ -200,12 +202,13 @@ nodeGroups:
       instanceProfileARN: arn:aws:iam::901688089596:instance-profile/EKS-Default-SSM-AD-Role-ip
       instanceRoleARN: arn:aws:iam::901688089596:role/EKS-Default-SSM-AD-Role
     labels:
-      workload: stateless-gc
+      falco: enabled
+      general-compute: true      
     tags:
       k8s.io/cluster-autoscaler/enabled: "true"
       k8s.io/cluster-autoscaler/prod: "owned"
-      k8s.io/cluster-autoscaler/node-template/label/workload: stateless-gc
-  - name: nsl-gpu
+      k8s.io/cluster-autoscaler/node-template/label/workload: general-compute
+  - name: gpu-compute-120
     instanceType: g4dn.12xlarge
     desiredCapacity: 1
     minSize: 2
@@ -221,11 +224,12 @@ nodeGroups:
       instanceProfileARN: arn:aws:iam::901688089596:instance-profile/EKS-Default-SSM-AD-Role-ip
       instanceRoleARN: arn:aws:iam::901688089596:role/EKS-Default-SSM-AD-Role
     labels:
-      workload: nsl-gpu
+      falco: enabled
+      gpu-compute: true      
     tags:
       k8s.io/cluster-autoscaler/enabled: "true"
       k8s.io/cluster-autoscaler/prod: "owned"
-      k8s.io/cluster-autoscaler/node-template/label/workload: nsl-gpu
+      k8s.io/cluster-autoscaler/node-template/label/workload: gpu-compute
 cloudWatch:
   clusterLogging:
     enableTypes: [ "authenticator" ]
