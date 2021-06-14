@@ -17,8 +17,8 @@ vpc:
         id: "subnet-090c9cf2f159f2cd2"
       ap-south-1b:
         id: "subnet-0c1ee00495e8fa8e2"
-#      ap-south-1c:
-#        id: "subnet-014228877d6c932a6"
+    #      ap-south-1c:
+    #        id: "subnet-014228877d6c932a6"
     public:
       ap-south-1a:
         id: "subnet-03ad4d9406c822c9b"
@@ -75,8 +75,20 @@ iam:
               - ssm:GetParameter
             Resource:
               - "*"
+    - metadata:
+        name: kube-bench
+        namespace: kube-system
+      roleName: kube-bench-ap-south-1
+      attachPolicy:
+        Statement:
+          - Effect: Allow
+            Action:
+              - securityhub:BatchImportFindings
+            Resource:
+              - "arn:aws:securityhub:us-east-1::product/aqua-security/kube-bench"
+
 nodeGroups:
-  - name: system-120-2
+  - name: system-120
     instanceType: "a1.xlarge"
     desiredCapacity: 1
     minSize: 1
@@ -93,14 +105,19 @@ nodeGroups:
       instanceRoleARN: arn:aws:iam::755502957828:role/EKS-Default-SSM-AD-Role
     labels:
       workload: system
+    securityGroups:
+      withLocal: false
     tags:
       k8s.io/cluster-autoscaler/enabled: "true"
       k8s.io/cluster-autoscaler/dev: "owned"
       k8s.io/cluster-autoscaler/node-template/label/workload: system
       k8s.io/cluster-autoscaler/node-template/taint/CriticalAddonsOnly: NoSchedule
+    ssh:
+      allow: true
+      publicKeyName: bottlerocket
     taints:
       CriticalAddonsOnly: "true:NoSchedule"
-  - name: monitoring-120-3
+  - name: monitoring-120
     instanceType: r6g.xlarge
     desiredCapacity: 1
     minSize: 0
@@ -117,6 +134,8 @@ nodeGroups:
       instanceRoleARN: arn:aws:iam::755502957828:role/EKS-Default-SSM-AD-Role
     labels:
       workload: monitoring
+    securityGroups:
+      withLocal: false
     tags:
       k8s.io/cluster-autoscaler/enabled: "true"
       k8s.io/cluster-autoscaler/dev: "owned"
@@ -124,7 +143,7 @@ nodeGroups:
       k8s.io/cluster-autoscaler/node-template/taint/monitoring: NoSchedule
     taints:
       monitoring: "true:NoSchedule"
-  - name: common-120-3
+  - name: common-120
     instancesDistribution:
       maxPrice: 0.28
       instanceTypes: [ "c4.4xlarge","c5.4xlarge", "c5a.4xlarge", "c5n.4xlarge", "m5a.4xlarge", "m5.4xlarge" ]
@@ -146,6 +165,8 @@ nodeGroups:
     labels:
       workload: public
       eks.amazonaws.com/compute-type: ec2
+    securityGroups:
+      withLocal: false
     tags:
       k8s.io/cluster-autoscaler/enabled: "true"
       k8s.io/cluster-autoscaler/dev: "owned"
