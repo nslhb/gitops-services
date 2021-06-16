@@ -65,6 +65,7 @@ spec:
                 allowPrivilegeEscalation: false
                 runAsNonRoot: false
                 readOnlyRootFilesystem: true
+          nodeSelector:
+            kubernetes.io/arch: amd64
           tolerations:
-            - key: CriticalAddonsOnly
-              operator: Exists
+            - operator: Exists
