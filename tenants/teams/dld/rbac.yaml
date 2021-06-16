@@ -54,6 +54,7 @@ subjects:
   - kind: ServiceAccount
     name: dld
     namespace: dld
+
 ---
 apiVersion: v1
 data:
