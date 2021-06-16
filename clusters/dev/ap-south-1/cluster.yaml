@@ -171,6 +171,29 @@ nodeGroups:
       k8s.io/cluster-autoscaler/enabled: "true"
       k8s.io/cluster-autoscaler/dev: "owned"
       k8s.io/cluster-autoscaler/node-template/label/workload: public
+  - name: gpu-compute-121
+    instanceType: g4dn.xlarge
+    desiredCapacity: 3
+    minSize: 0
+    maxSize: 8
+    volumeType: gp3
+    volumeSize: 125
+    volumeEncrypted: true
+    volumeKmsKeyID: a3456af4-c4de-4938-837d-86d5615d75d7
+    privateNetworking: true
+    disableIMDSv1: true
+    iam:
+      instanceProfileARN: arn:aws:iam::755502957828:instance-profile/EKS-Default-SSM-AD-Role-ip
+      instanceRoleARN: arn:aws:iam::755502957828:role/EKS-Default-SSM-AD-Role
+    labels:
+      falco: enabled
+      compute: gpu
+    tags:
+      k8s.io/cluster-autoscaler/enabled: "true"
+      k8s.io/cluster-autoscaler/dev: "owned"
+      k8s.io/cluster-autoscaler/node-template/label/workload: gpu-compute
+    taints:
+      dld: "true:NoSchedule"
 
 cloudWatch:
   clusterLogging:
