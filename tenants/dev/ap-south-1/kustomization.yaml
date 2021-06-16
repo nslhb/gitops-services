@@ -6,6 +6,7 @@ resources:
   - ../../teams/tf
   - ../../teams/avanlg
   - ../../teams/taas
+  - ../../teams/dld
   - ecr-sync.yaml
 patchesStrategicMerge:
   - devops-patch.yaml
@@ -13,6 +14,7 @@ patchesStrategicMerge:
   - tf-patch.yaml
   - taas-patch.yaml
   - avanlg-patch.yaml
+  - dld-patch.yaml
 
 generatorOptions:
   disableNameSuffixHash: true

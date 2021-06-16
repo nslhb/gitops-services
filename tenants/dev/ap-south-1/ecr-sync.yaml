@@ -48,7 +48,7 @@ spec:
                 - /bin/bash
                 - -ce
                 - |-
-                  for namespace in paas tf ava-nlg taas
+                  for namespace in paas tf ava-nlg taas dld
                   do
                     kubectl delete secret --ignore-not-found $SECRET_NAME
                     kubectl create secret docker-registry $SECRET_NAME \
