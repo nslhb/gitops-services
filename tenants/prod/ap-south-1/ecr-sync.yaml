@@ -19,7 +19,7 @@ spec:
               emptyDir:
                 medium: Memory
           initContainers:
-            - image: amazon/aws-cli
+            - image: amazon/aws-cli:2.2.12
               name: get-token
               imagePullPolicy: IfNotPresent
               env:
@@ -33,7 +33,7 @@ spec:
                 - -ce
                 - aws ecr get-login-password --region ${REGION} > /token/ecr-token
           containers:
-            - image: ghcr.io/nslhb/kubectl:latest
+            - image: bitnami/kubectl:latest
               name: create-secret
               imagePullPolicy: IfNotPresent
               env:
@@ -65,6 +65,7 @@ spec:
                 allowPrivilegeEscalation: false
                 runAsNonRoot: false
                 readOnlyRootFilesystem: true
+          nodeSelector:
+            kubernetes.io/arch: amd64
           tolerations:
-            - key: CriticalAddonsOnly
-              operator: Exists
+            - operator: Exists
