@@ -1,0 +1,233 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: prod
+  region: ap-south-1
+  version: "1.20"
+
+vpc:
+  id: "vpc-082e04294c9380fe9"
+  clusterEndpoints:
+    publicAccess: true
+    privateAccess: true
+  subnets:
+    public:
+      ap-south-1a:
+        id: "subnet-093de4c9c0df7aa06"
+      ap-south-1b:
+        id: "subnet-0f11661aa8337a066"
+    private:
+      ap-south-1a:
+        id: "subnet-009a3d4c0147e8e0c"
+      ap-south-1b:
+        id: "subnet-000e508c6619a9f97"
+iam:
+  withOIDC: true
+  fargatePodExecutionRolePermissionsBoundary: arn:aws:iam::901688089596:policy/Default-Boundary-Policy
+  serviceAccounts:
+    - metadata:
+        name: aws-load-balancer-controller
+        namespace: kube-system
+      roleName: load-balancer-ap-south-1
+      wellKnownPolicies:
+        awsLoadBalancerController: true
+    - metadata:
+        name: external-dns
+        namespace: kube-system
+      roleName: external-dns-ap-south-1
+      wellKnownPolicies:
+        externalDNS: true
+    - metadata:
+        name: cluster-autoscaler
+        namespace: kube-system
+      roleName: cluster-autoscaler-ap-south-1
+      wellKnownPolicies:
+        autoScaler: true
+    - metadata:
+        name: ebs-csi-driver
+        namespace: kube-system
+      roleName: ebs-csi-driver-ap-south-1
+      wellKnownPolicies:
+        ebsCSIController: true
+    - metadata:
+        name: terraform-sync-workspace
+        namespace: kube-system
+      roleName: terraform
+      attachPolicyARNs:
+        - "arn:aws:iam::aws:policy/AdministratorAccess"
+    - metadata:
+        name: kubernetes-external-secrets
+        namespace: kube-system
+      roleName: external-secrets
+      attachPolicy:
+        Statement:
+          - Effect: Allow
+            Action:
+              - secretsmanager:GetResourcePolicy
+              - secretsmanager:GetSecretValue
+              - secretsmanager:DescribeSecret
+              - secretsmanager:ListSecretVersionIds
+              - ssm:GetParameter
+            Resource:
+              - "*"
+nodeGroups:
+  - name: system-120-2
+    instanceType: "t4g.large"
+    desiredCapacity: 1
+    minSize: 1
+    maxSize: 3
+    volumeType: gp3
+    volumeSize: 50
+    volumeEncrypted: true
+    volumeKmsKeyID: ef15819c-c086-4aba-9430-d54af36d8b53
+    privateNetworking: true
+    amiFamily: Bottlerocket
+    disableIMDSv1: true
+    iam:
+      instanceProfileARN: arn:aws:iam::901688089596:instance-profile/EKS-Default-SSM-AD-Role-ip
+      instanceRoleARN: arn:aws:iam::901688089596:role/EKS-Default-SSM-AD-Role
+    labels:
+      workload: system
+    tags:
+      k8s.io/cluster-autoscaler/enabled: "true"
+      k8s.io/cluster-autoscaler/prod: "owned"
+      k8s.io/cluster-autoscaler/node-template/label/workload: system
+      k8s.io/cluster-autoscaler/node-template/taint/CriticalAddonsOnly: NoSchedule
+    taints:
+      CriticalAddonsOnly: "true:NoSchedule"
+  - name: monitoring-120-2
+    instanceType: r6g.xlarge
+    desiredCapacity: 1
+    minSize: 1
+    maxSize: 3
+    volumeType: gp3
+    volumeSize: 50
+    volumeEncrypted: true
+    volumeKmsKeyID: ef15819c-c086-4aba-9430-d54af36d8b53
+    privateNetworking: true
+    amiFamily: Bottlerocket
+    disableIMDSv1: true
+    iam:
+      instanceProfileARN: arn:aws:iam::901688089596:instance-profile/EKS-Default-SSM-AD-Role-ip
+      instanceRoleARN: arn:aws:iam::901688089596:role/EKS-Default-SSM-AD-Role
+    labels:
+      workload: monitoring
+    tags:
+      k8s.io/cluster-autoscaler/enabled: "true"
+      k8s.io/cluster-autoscaler/prod: "owned"
+      k8s.io/cluster-autoscaler/node-template/label/workload: monitoring
+      k8s.io/cluster-autoscaler/node-template/taint/monitoring: NoSchedule
+    taints:
+      monitoring: "true:NoSchedule"
+  - name: compute-intensive-120
+    instanceType: c5a.4xlarge
+    desiredCapacity: 1
+    minSize: 1
+    maxSize: 3
+    volumeType: gp3
+    volumeSize: 200
+    volumeEncrypted: true
+    volumeKmsKeyID: ef15819c-c086-4aba-9430-d54af36d8b53
+    privateNetworking: true
+    amiFamily: Bottlerocket
+    disableIMDSv1: true
+    iam:
+      instanceProfileARN: arn:aws:iam::901688089596:instance-profile/EKS-Default-SSM-AD-Role-ip
+      instanceRoleARN: arn:aws:iam::901688089596:role/EKS-Default-SSM-AD-Role
+    labels:
+      falco: enabled
+      compute: cpu-intensive
+    tags:
+      k8s.io/cluster-autoscaler/enabled: "true"
+      k8s.io/cluster-autoscaler/prod: "owned"
+      k8s.io/cluster-autoscaler/node-template/label/workload: compute-intensive
+  - name: memory-intensive-120
+    instanceType: r5a.8xlarge
+    desiredCapacity: 1
+    minSize: 1
+    maxSize: 3
+    volumeType: gp3
+    volumeSize: 200
+    volumeEncrypted: true
+    volumeKmsKeyID: ef15819c-c086-4aba-9430-d54af36d8b53
+    privateNetworking: true
+    amiFamily: Bottlerocket
+    disableIMDSv1: true
+    iam:
+      instanceProfileARN: arn:aws:iam::901688089596:instance-profile/EKS-Default-SSM-AD-Role-ip
+      instanceRoleARN: arn:aws:iam::901688089596:role/EKS-Default-SSM-AD-Role
+    labels:
+      falco: enabled
+      compute: memory-intensive
+    tags:
+      k8s.io/cluster-autoscaler/enabled: "true"
+      k8s.io/cluster-autoscaler/prod: "owned"
+      k8s.io/cluster-autoscaler/node-template/label/workload: memory-intensive
+  - name: general-compute-120 
+    instanceType: m5a.8xlarge
+    desiredCapacity: 1
+    minSize: 1
+    maxSize: 3
+    volumeType: gp3
+    volumeSize: 200
+    volumeEncrypted: true
+    volumeKmsKeyID: ef15819c-c086-4aba-9430-d54af36d8b53
+    privateNetworking: true
+    amiFamily: Bottlerocket
+    disableIMDSv1: true
+    iam:
+      instanceProfileARN: arn:aws:iam::901688089596:instance-profile/EKS-Default-SSM-AD-Role-ip
+      instanceRoleARN: arn:aws:iam::901688089596:role/EKS-Default-SSM-AD-Role
+    labels:
+      falco: enabled
+      compute: generic
+    tags:
+      k8s.io/cluster-autoscaler/enabled: "true"
+      k8s.io/cluster-autoscaler/prod: "owned"
+      k8s.io/cluster-autoscaler/node-template/label/workload: general-compute
+  - name: gpu-compute-120
+    instanceType: g4dn.12xlarge
+    desiredCapacity: 1
+    minSize: 1
+    maxSize: 3
+    volumeType: gp3
+    volumeSize: 200
+    volumeEncrypted: true
+    volumeKmsKeyID: ef15819c-c086-4aba-9430-d54af36d8b53
+    privateNetworking: true
+#    amiFamily: Bottlerocket
+    disableIMDSv1: true
+    iam:
+      instanceProfileARN: arn:aws:iam::901688089596:instance-profile/EKS-Default-SSM-AD-Role-ip
+      instanceRoleARN: arn:aws:iam::901688089596:role/EKS-Default-SSM-AD-Role
+    labels:
+      falco: enabled
+      compute: gpu
+    tags:
+      k8s.io/cluster-autoscaler/enabled: "true"
+      k8s.io/cluster-autoscaler/prod: "owned"
+      k8s.io/cluster-autoscaler/node-template/label/workload: gpu-compute
+cloudWatch:
+  clusterLogging:
+    enableTypes: [ "authenticator" ]
+
+addons:
+  - name: vpc-cni
+    version: latest
+  - name: coredns
+    version: latest
+  - name: kube-proxy
+    version: latest
+
+gitops:
+  flux:
+    gitProvider: github
+    flags:
+      owner: nslhb
+      repository: services.nslhub.com
+      branch: main
+      namespace: flux-system
+      path: clusters/prod/ap-south-1
+      toleration-keys: CriticalAddonsOnly
+      components-extra: "image-reflector-controller,image-automation-controller"

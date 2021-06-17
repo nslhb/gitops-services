@@ -1,0 +1,27 @@
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: GitRepository
+metadata:
+  name: taas
+  namespace: taas
+spec:
+  interval: 1m
+  ref:
+    branch: main
+  secretRef:
+    name: taas
+  url: https://github.com/nslhb/gitops-taas.git
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+kind: Kustomization
+metadata:
+  name: taas
+  namespace: taas
+spec:
+  interval: 1m
+  path: ./
+  prune: true
+  serviceAccountName: taas
+  sourceRef:
+    kind: GitRepository
+    name: taas
+  validation: client

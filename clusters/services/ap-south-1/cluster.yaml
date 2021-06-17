@@ -1,0 +1,236 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: services
+  region: ap-south-1
+  version: "1.20"
+
+vpc:
+  id: "vpc-0e0ccffca59ba6525"
+  clusterEndpoints:
+    publicAccess: true
+    privateAccess: true
+  subnets:
+    private:
+      ap-south-1a:
+        id: "subnet-00f7e0ce61b65419a"
+      ap-south-1b:
+        id: "subnet-0b2d5546b6ed22566"
+    public:
+      ap-south-1a:
+        id: "subnet-048d248e611b48e23"
+      ap-south-1b:
+        id: "subnet-0a3f7abd03caf8e2e"
+iam:
+  withOIDC: true
+  fargatePodExecutionRolePermissionsBoundary: arn:aws:iam::832807087073:policy/Default-Boundary-Policy
+  serviceAccounts:
+    - metadata:
+        name: aws-load-balancer-controller
+        namespace: kube-system
+      roleName: load-balancer-ap-south-1
+      wellKnownPolicies:
+        awsLoadBalancerController: true
+    - metadata:
+        name: external-dns
+        namespace: kube-system
+      roleName: external-dns-ap-south-1
+      wellKnownPolicies:
+        externalDNS: true
+    - metadata:
+        name: cluster-autoscaler
+        namespace: kube-system
+      roleName: cluster-autoscaler-ap-south-1
+      wellKnownPolicies:
+        autoScaler: true
+    - metadata:
+        name: grafana
+        namespace: monitoring
+        labels: { aws-usage: "application" }
+      attachPolicy:
+        Statement:
+          - Effect: Allow
+            Action:
+              - sts:AssumeRole
+            Resource: "arn:aws:iam::*:role/CloudWatch-CrossAccountSharing*"
+      roleName: nsl-grafana
+    - metadata:
+        name: ebs-csi-driver
+        namespace: kube-system
+      roleName: ebs-csi-driver-ap-south-1
+      wellKnownPolicies:
+        ebsCSIController: true
+    - metadata:
+        name: ci
+        namespace: ci
+      roleName: action-runner
+      attachPolicy:
+        Statement:
+          - Effect: Allow
+            Action:
+              - ecr:*
+            Resource:
+              - "*"
+    - metadata:
+        name: terraform-sync-workspace
+        namespace: kube-system
+      roleName: terraform-ap-south-1
+      attachPolicyARNs:
+        - "arn:aws:iam::aws:policy/AdministratorAccess"
+    - metadata:
+        name: loki
+        namespace: logging
+      roleName: loki-ap-south-1
+      attachPolicy:
+        Statement:
+          - Effect: Allow
+            Action:
+              - s3:ListBucket
+              - s3:PutObject
+              - s3:GetObject
+              - s3:DeleteObject
+            Resource:
+              - "arn:aws:s3:::tfnsl-services-application-logs"
+              - "arn:aws:s3:::tfnsl-services-application-logs/*/ap-south-1/*"
+          - Effect: Allow
+            Action:
+            - kms:Encrypt
+            - kms:Decrypt
+            - kms:ReEncrypt*
+            - kms:GenerateDataKey*
+            - kms:DescribeKey
+            Resource:
+              - "arn:aws:kms:ap-south-1:832807087073:key/a5169c54-c5ab-4c58-aac1-78d66a221c7f"
+    - metadata:
+        name: kubernetes-external-secrets
+        namespace: kube-system
+      roleName: external-secrets-ap-south-1
+      attachPolicy:
+        Statement:
+          - Effect: Allow
+            Action:
+              - secretsmanager:GetResourcePolicy
+              - secretsmanager:GetSecretValue
+              - secretsmanager:DescribeSecret
+              - secretsmanager:ListSecretVersionIds
+              - ssm:GetParameter
+            Resource:
+              - "*"
+            Condition:
+              StringEquals:
+                aws:RequestedRegion: "ap-south-1"
+nodeGroups:
+  - name: system-120-1
+    instanceType: "t3a.large"
+    desiredCapacity: 1
+    minSize: 0
+    maxSize: 3
+    volumeType: gp3
+    volumeSize: 10
+    volumeEncrypted: true
+    volumeKmsKeyID: 97f38a15-a525-49d6-beb7-7e768066c762
+    privateNetworking: true
+    amiFamily: Bottlerocket
+    ami: auto-ssm
+    disableIMDSv1: true
+    securityGroups:
+      withLocal: true
+    iam:
+      instanceProfileARN: arn:aws:iam::832807087073:instance-profile/EKS-Default-SSM-AD-Role-ip
+      instanceRoleARN: arn:aws:iam::832807087073:role/EKS-Default-SSM-AD-Role
+    labels:
+      workload: system
+    tags:
+      k8s.io/cluster-autoscaler/enabled: "true"
+      k8s.io/cluster-autoscaler/services: "owned"
+      k8s.io/cluster-autoscaler/node-template/label/workload: system
+      k8s.io/cluster-autoscaler/node-template/taint/CriticalAddonsOnly: NoSchedule
+    taints:
+      CriticalAddonsOnly: "true:NoSchedule"
+    ssh:
+      allow: true
+      publicKeyName: bottlerocketkey
+  - name: monitoring-120-2
+    instancesDistribution:
+      maxPrice: 0.030
+      instanceTypes: [ "r3.large","r4.large", "r5ad.large", "r5d.large", "r5a.large" ]
+      onDemandPercentageAboveBaseCapacity: 0
+      spotAllocationStrategy: "capacity-optimized-prioritized"
+    desiredCapacity: 1
+    minSize: 0
+    maxSize: 3
+    volumeType: gp3
+    volumeSize: 10
+    volumeEncrypted: true
+    volumeKmsKeyID: 97f38a15-a525-49d6-beb7-7e768066c762
+    privateNetworking: true
+    amiFamily: Bottlerocket
+    disableIMDSv1: true
+    securityGroups:
+      withLocal: false
+    iam:
+      instanceProfileARN: arn:aws:iam::832807087073:instance-profile/EKS-Default-SSM-AD-Role-ip
+      instanceRoleARN: arn:aws:iam::832807087073:role/EKS-Default-SSM-AD-Role
+    labels:
+      workload: monitoring
+    tags:
+      k8s.io/cluster-autoscaler/enabled: "true"
+      k8s.io/cluster-autoscaler/services: "owned"
+      k8s.io/cluster-autoscaler/node-template/label/workload: monitoring
+      k8s.io/cluster-autoscaler/node-template/taint/monitoring: NoSchedule
+    taints:
+      monitoring: "true:NoSchedule"
+  - name: edge-120-2
+    instancesDistribution:
+      maxPrice: 0.13
+      instanceTypes: [ "t3a.2xlarge","t3.2xlarge", "m5a.2xlarge", "m5.2xlarge", "m5ad.2xlarge" ]
+      onDemandPercentageAboveBaseCapacity: 0
+      spotAllocationStrategy: "capacity-optimized-prioritized"
+    desiredCapacity: 1
+    minSize: 0
+    maxSize: 3
+    volumeType: gp3
+    volumeSize: 10
+    volumeEncrypted: true
+    volumeKmsKeyID: 97f38a15-a525-49d6-beb7-7e768066c762
+    privateNetworking: true
+    amiFamily: Bottlerocket
+    disableIMDSv1: true
+    securityGroups:
+      withLocal: false
+    iam:
+      instanceProfileARN: arn:aws:iam::832807087073:instance-profile/EKS-Default-SSM-AD-Role-ip
+      instanceRoleARN: arn:aws:iam::832807087073:role/EKS-Default-SSM-AD-Role
+    labels:
+      workload: public
+      falco: enabled
+    tags:
+      k8s.io/cluster-autoscaler/enabled: "true"
+      k8s.io/cluster-autoscaler/services: "owned"
+      k8s.io/cluster-autoscaler/node-template/label/workload: public
+      k8s.io/cluster-autoscaler/node-template/taint/Edge: NoSchedule
+
+cloudWatch:
+  clusterLogging:
+    enableTypes: [ "authenticator" ]
+
+addons:
+  - name: vpc-cni
+    version: latest
+  - name: coredns
+    version: latest
+  - name: kube-proxy
+    version: latest
+
+gitops:
+  flux:
+    gitProvider: github
+    flags:
+      owner: nslhb
+      repository: services.nslhub.com
+      branch: main
+      namespace: flux-system
+      path: ./clusters/services/ap-south-1
+      toleration-keys: CriticalAddonsOnly
+      components-extra: "image-reflector-controller,image-automation-controller"

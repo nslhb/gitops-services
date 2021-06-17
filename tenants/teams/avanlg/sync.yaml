@@ -1,0 +1,27 @@
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: GitRepository
+metadata:
+  name: ava-nlg
+  namespace: ava-nlg
+spec:
+  interval: 1m
+  ref:
+    branch: main
+  secretRef:
+    name: ava-nlg
+  url: https://github.com/nslhb/gitops-avanlg.git
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+kind: Kustomization
+metadata:
+  name: ava-nlg
+  namespace: ava-nlg
+spec:
+  interval: 1m
+  path: ./
+  prune: true
+  serviceAccountName: ava-nlg
+  sourceRef:
+    kind: GitRepository
+    name: ava-nlg
+  validation: client

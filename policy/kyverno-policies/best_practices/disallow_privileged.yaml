@@ -1,0 +1,59 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: disallow-privileged
+  annotations:
+    policies.kyverno.io/category: Security
+    policies.kyverno.io/description: Privileged containers are defined as any
+      container where the container uid 0 is mapped to the host’s uid 0.
+      A process within a privileged container can get unrestricted host access.
+      With `securityContext.allowPrivilegeEscalation` enabled, a process can
+      gain privileges from its parent.
+spec:
+  validationFailureAction: enforce
+  rules:
+    - name: validate-privileged
+      match:
+        resources:
+          kinds:
+            - Pod
+      exclude:
+        resources:
+          namespaces:
+            - monitoring
+            - kube-system
+            - istio-system
+            - linkerd-viz
+            - ci
+            - keycloak
+      validate:
+        message: "Privileged mode is not allowed. Set privileged to false"
+        pattern:
+          spec:
+            containers:
+              - =(securityContext):
+                  =(privileged): false
+    - name: validate-allowPrivilegeEscalation
+      match:
+        resources:
+          kinds:
+            - Pod
+      exclude:
+        resources:
+          namespaces:
+            - monitoring
+            - kube-system
+            - istio-system
+            - linkerd-viz
+            - observability
+            - ci
+            - keycloak
+            - logging
+            - tf
+      validate:
+        message: "Privileged mode is not allowed. Set allowPrivilegeEscalation to false"
+        pattern:
+          spec:
+            containers:
+              - securityContext:
+                  allowPrivilegeEscalation: false
