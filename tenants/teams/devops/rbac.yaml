@@ -1,35 +1,4 @@
 #########################################################################################
-#     Flux-system
-#########################################################################################
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  labels:
-    toolkit.fluxcd.io/tenant: devops
-  name: devops
-  namespace: flux-system
-
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  labels:
-    toolkit.fluxcd.io/tenant: devops
-  name: flux-reconciler
-  namespace: flux-system
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: cluster-admin
-subjects:
-  - apiGroup: rbac.authorization.k8s.io
-    kind: User
-    name: gotk:devops:reconciler
-  - kind: ServiceAccount
-    name: devops
-    namespace: flux-system
----
-#########################################################################################
 #     Kube-system
 #########################################################################################
 apiVersion: v1
@@ -39,25 +8,6 @@ metadata:
     toolkit.fluxcd.io/tenant: devops
   name: devops
   namespace: kube-system
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  labels:
-    toolkit.fluxcd.io/tenant: devops
-  name: kube-system-reconciler
-  namespace: kube-system
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: cluster-admin
-subjects:
-  - apiGroup: rbac.authorization.k8s.io
-    kind: User
-    name: gotk:devops:reconciler
-  - kind: ServiceAccount
-    name: devops
-    namespace: kube-system
 ---
 #########################################################################################
 #     Monitoring
@@ -80,25 +30,6 @@ metadata:
   namespace: monitoring
 
 ---
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  labels:
-    toolkit.fluxcd.io/tenant: devops
-  name: monitoring-reconciler
-  namespace: monitoring
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: cluster-admin
-subjects:
-  - apiGroup: rbac.authorization.k8s.io
-    kind: User
-    name: gotk:devops:reconciler
-  - kind: ServiceAccount
-    name: devops
-    namespace: monitoring
----
 #########################################################################################
 #     Logging
 #########################################################################################
@@ -118,27 +49,6 @@ metadata:
     toolkit.fluxcd.io/tenant: devops
   name: devops
   namespace: logging
-
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  labels:
-    toolkit.fluxcd.io/tenant: devops
-  name: logging-reconciler
-  namespace: logging
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: cluster-admin
-subjects:
-  - apiGroup: rbac.authorization.k8s.io
-    kind: User
-    name: gotk:devops:reconciler
-  - kind: ServiceAccount
-    name: devops
-    namespace: logging
-
 ---
 #########################################################################################
 #     Argo Rollouts
@@ -159,26 +69,6 @@ metadata:
     toolkit.fluxcd.io/tenant: devops
   name: devops
   namespace: argo-rollouts
-
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  labels:
-    toolkit.fluxcd.io/tenant: devops
-  name: argo-reconciler
-  namespace: argo-rollouts
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: cluster-admin
-subjects:
-  - apiGroup: rbac.authorization.k8s.io
-    kind: User
-    name: gotk:devops:reconciler
-  - kind: ServiceAccount
-    name: devops
-    namespace: argo-rollouts
 ---
 #########################################################################################
 #     Observability
@@ -190,7 +80,6 @@ metadata:
   labels:
     toolkit.fluxcd.io/tenant: devops
   name: observability
-
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -199,15 +88,13 @@ metadata:
     toolkit.fluxcd.io/tenant: devops
   name: devops
   namespace: observability
-
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   labels:
     toolkit.fluxcd.io/tenant: devops
-  name: observability
-  namespace: observability
+  name: flux-reconciler
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -218,5 +105,19 @@ subjects:
     name: gotk:devops:reconciler
   - kind: ServiceAccount
     name: devops
+    namespace: flux-system
+  - kind: ServiceAccount
+    name: devops
+    namespace: kube-system
+  - kind: ServiceAccount
+    name: devops
+    namespace: monitoring
+  - kind: ServiceAccount
+    name: devops
+    namespace: logging
+  - kind: ServiceAccount
+    name: devops
+    namespace: argo-rollouts
+  - kind: ServiceAccount
+    name: devops
     namespace: observability
----
