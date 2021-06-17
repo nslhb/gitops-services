@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: rollouts-demo-ingress
+  namespace: apps
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/group.name: default
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
+#    alb.ingress.kubernetes.io/backend-protocol: HTTPS
+#    external-dns.alpha.kubernetes.io/aws-region: ${REGION}
+#    external-dns.alpha.kubernetes.io/set-identifier: ${REGION}
+
+spec:
+  rules:
+    - host: nslhub.click
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: rollouts-demo-root
+                port:
+                  name: use-annotation

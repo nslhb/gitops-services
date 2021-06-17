@@ -1,0 +1,26 @@
+---
+apiVersion: image.toolkit.fluxcd.io/v1alpha2
+kind: ImageRepository
+metadata:
+  name: rollouts-demo
+  namespace: apps
+spec:
+  image: ghcr.io/nslhb/rollouts-demo
+  interval: 1m0s
+
+---
+apiVersion: image.toolkit.fluxcd.io/v1alpha2
+kind: ImagePolicy
+metadata:
+  name: rollouts-demo
+  namespace: apps
+spec:
+  imageRepositoryRef:
+    name: rollouts-demo
+  filterTags:
+    pattern: '^${color}-(?P<timestamp>.*)-(?P<sha>.*)$'
+    extract: '$timestamp'
+  policy:
+    numerical:
+      order: asc
+---
