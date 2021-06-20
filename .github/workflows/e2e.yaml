@@ -19,7 +19,7 @@ jobs:
       - name: Setup Flux
         uses: ./.github/actions/flux
       - name: Setup Kubernetes
-        uses: helm/kind-action@v1.1.0
+        uses: nslhb/kind-action@main
         with:
           version: v0.11.1
       - name: Install Flux in Kubernetes Kind
