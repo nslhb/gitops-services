@@ -2,7 +2,7 @@ name: e2e
 
 on:
   workflow_dispatch:
-  push:
+  pull_request:
     paths:
       - clusters/dev/ap-south-1/flux-system/*
       - policy/kyverno/*
