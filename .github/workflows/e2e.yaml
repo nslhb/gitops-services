@@ -11,7 +11,7 @@ jobs:
   kubernetes:
     strategy:
       matrix:
-        arch: [ "ubuntu-latest","self-hosted" ]
+        arch: [ "ubuntu-latest","ARM64" ]
     runs-on: ${{ matrix.arch }}
     steps:
       - name: Checkout
