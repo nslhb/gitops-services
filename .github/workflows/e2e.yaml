@@ -9,10 +9,10 @@ on:
 
 jobs:
   kubernetes:
-#    strategy:
-#      matrix:
-#        arch: [ ["ubuntu-latest"], ["self-hosted", "linux", "ARM64"] ]
-    runs-on: [self-hosted, linux, ARM64]
+    strategy:
+      matrix:
+        runner: [ ["ubuntu-latest"], ["self-hosted", "linux", "ARM64"] ]
+    runs-on: ${{ matrix.runner }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
