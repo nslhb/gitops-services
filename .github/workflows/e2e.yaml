@@ -20,6 +20,8 @@ jobs:
         uses: ./.github/actions/flux
       - name: Setup Kubernetes
         uses: engineerd/setup-kind@v0.5.0
+        with:
+          version: v0.11.1
       - name: Install Flux in Kubernetes Kind
         run: flux install
       - run: echo clusters/dev/tenants.yaml > .sourceignore
