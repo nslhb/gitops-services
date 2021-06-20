@@ -4,8 +4,8 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - clusters/dev/ap-south-1/flux-system
-      - policy/kyverno
+      - clusters/dev/ap-south-1/flux-system/*
+      - policy/kyverno/*
 
 jobs:
   kubernetes:
