@@ -39,7 +39,7 @@ configMapGenerator:
       - cluster_name="prod"
       - log_bucket="false"
   - name: aws-environment
-    namespace: prod
+    namespace: istio-system
     literals:
       - cluster_region="ap-south-1"
       - account_id="901688089596"
