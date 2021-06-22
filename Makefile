@@ -39,6 +39,7 @@ fg:
 
 identity:
 	eksctl --region $(REGION) create iamidentitymapping --cluster $(CLUSTER) --group system:masters  --username iam:{{SessionName}} --arn $$(aws iam list-roles  --query 'Roles[?starts_with(RoleName, `AWSReservedSSO_AWSPowerUserAccess`) == `true`].Arn' --output text |  awk -F'/' '{ print $$1 "/" $$4}')
+	eksctl --region $(REGION) create iamidentitymapping --cluster $(CLUSTER) --group view  --username iam:{{SessionName}} --arn $$(aws iam list-roles  --query 'Roles[?starts_with(RoleName, `AWSReservedSSO_AWSReadOnlyAccess`) == `true`].Arn' --output text |  awk -F'/' '{ print $$1 "/" $$4}')
 
 flux:
 	@eksctl enable flux -f clusters/$(CLUSTER)/$(REGION)/cluster.yaml
