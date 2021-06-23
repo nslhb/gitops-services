@@ -82,9 +82,8 @@ iam:
               - securityhub:BatchImportFindings
             Resource:
               - "arn:aws:securityhub:ap-south-1::product/aqua-security/kube-bench"
-
-nodeGroups:
-  - name: system-120-1
+managedNodeGroups:
+  - name: system-120-2
     instanceType: "a1.xlarge"
     desiredCapacity: 1
     minSize: 1
@@ -99,7 +98,6 @@ nodeGroups:
     subnets:
       - iap-south-1b
     iam:
-      instanceProfileARN: arn:aws:iam::415505189627:instance-profile/EKS-Default-SSM-AD-Role-ip
       instanceRoleARN: arn:aws:iam::415505189627:role/EKS-Default-SSM-AD-Role
     labels:
       workload: system
@@ -114,7 +112,7 @@ nodeGroups:
       - key: CriticalAddonsOnly
         value: "true"
         effect: "NoSchedule"
-  - name: monitoring-120-1
+  - name: monitoring-120-2
     instanceType: r6g.xlarge
     desiredCapacity: 1
     minSize: 0
@@ -129,7 +127,6 @@ nodeGroups:
     subnets:
       - iap-south-1b
     iam:
-      instanceProfileARN: arn:aws:iam::415505189627:instance-profile/EKS-Default-SSM-AD-Role-ip
       instanceRoleARN: arn:aws:iam::415505189627:role/EKS-Default-SSM-AD-Role
     labels:
       workload: monitoring
@@ -144,6 +141,36 @@ nodeGroups:
       - key: monitoring
         value: "true"
         effect: "NoSchedule"
+  - name: gpu-compute-120-2
+    instanceType: g4dn.xlarge
+    desiredCapacity: 1
+    minSize: 0
+    maxSize: 3
+    volumeType: gp3
+    volumeSize: 125
+    volumeEncrypted: true
+    volumeKmsKeyID: e6f92ae8-f738-438d-9031-7d12bc3ef0af
+    privateNetworking: true
+    disableIMDSv1: true
+    subnets:
+      - iap-south-1b
+    iam:
+      instanceRoleARN: arn:aws:iam::415505189627:role/EKS-Default-SSM-AD-Role
+    labels:
+      falco: enabled
+      compute: gpu
+    securityGroups:
+      withLocal: false
+    tags:
+      k8s.io/cluster-autoscaler/enabled: "true"
+      k8s.io/cluster-autoscaler/demo: "owned"
+      k8s.io/cluster-autoscaler/node-template/label/workload: gpu-compute
+    taints:
+      - key: dld
+        value: "true"
+        effect: "NoSchedule"
+
+nodeGroups:
   - name: common-120-1
     instancesDistribution:
       maxPrice: 0.28
@@ -174,35 +201,6 @@ nodeGroups:
       k8s.io/cluster-autoscaler/enabled: "true"
       k8s.io/cluster-autoscaler/demo: "owned"
       k8s.io/cluster-autoscaler/node-template/label/workload: public
-  - name: gpu-compute-120-1
-    instanceType: g4dn.xlarge
-    desiredCapacity: 1
-    minSize: 0
-    maxSize: 3
-    volumeType: gp3
-    volumeSize: 125
-    volumeEncrypted: true
-    volumeKmsKeyID: e6f92ae8-f738-438d-9031-7d12bc3ef0af
-    privateNetworking: true
-    disableIMDSv1: true
-    subnets:
-      - iap-south-1b
-    iam:
-      instanceProfileARN: arn:aws:iam::415505189627:instance-profile/EKS-Default-SSM-AD-Role-ip
-      instanceRoleARN: arn:aws:iam::415505189627:role/EKS-Default-SSM-AD-Role
-    labels:
-      falco: enabled
-      compute: gpu
-    securityGroups:
-      withLocal: false
-    tags:
-      k8s.io/cluster-autoscaler/enabled: "true"
-      k8s.io/cluster-autoscaler/demo: "owned"
-      k8s.io/cluster-autoscaler/node-template/label/workload: gpu-compute
-    taints:
-      - key: dld
-        value: "true"
-        effect: "NoSchedule"
 
 cloudWatch:
   clusterLogging:
