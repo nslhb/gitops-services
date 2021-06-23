@@ -1,0 +1,20 @@
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: GitRepository
+metadata:
+  name: tf
+  namespace: tf
+spec:
+  ref:
+    branch: demo
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+kind: Kustomization
+metadata:
+  name: tf
+  namespace: tf
+spec:
+  postBuild:
+    substitute:
+      cluster_region: "ap-south-1"
+      account_id: "415505189627"
+      env: "demo"
