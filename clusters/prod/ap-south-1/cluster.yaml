@@ -198,9 +198,9 @@ nodeGroups:
     privateNetworking: true
 #    amiFamily: Bottlerocket
     disableIMDSv1: true
-    LaunchTemplate: 
-      LaunchTemplateId: lt-00944130132711414 
-      Version: "$Latest"
+    launchTemplate:
+      id: lt-00944130132711414
+      version: 3
     iam:
       instanceProfileARN: arn:aws:iam::901688089596:instance-profile/EKS-Default-SSM-AD-Role-ip
       instanceRoleARN: arn:aws:iam::901688089596:role/EKS-Default-SSM-AD-Role
