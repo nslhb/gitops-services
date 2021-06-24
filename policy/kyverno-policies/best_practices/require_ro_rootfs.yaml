@@ -27,6 +27,7 @@ spec:
           - keycloak
           - observability
           - tf
+          - apps
     validate:
       message: "Root filesystem must be read-only"
       pattern:
