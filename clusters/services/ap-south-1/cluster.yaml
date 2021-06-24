@@ -146,8 +146,8 @@ iam:
             Resource:
               - "arn:aws:kms:ap-south-1:832807087073:key/a5169c54-c5ab-4c58-aac1-78d66a221c7f"
 
-nodeGroups:
-  - name: system-120
+managedNodeGroups:
+  - name: system-120-1
     instanceType: "t3a.large"
     desiredCapacity: 1
     minSize: 0
@@ -161,11 +161,9 @@ nodeGroups:
     disableIMDSv1: true
     securityGroups:
       withLocal: false
-      withShared: true
       attachIDs:
         - sg-053ff52ca3cfbe9be
     iam:
-      instanceProfileARN: arn:aws:iam::832807087073:instance-profile/EKS-Default-SSM-AD-Role-ip
       instanceRoleARN: arn:aws:iam::832807087073:role/EKS-Default-SSM-AD-Role
     labels:
       workload: system
@@ -181,15 +179,11 @@ nodeGroups:
     ssh:
       allow: true
       publicKeyName: bottlerocketkey
-  - name: monitoring-120
-    instancesDistribution:
-      maxPrice: 0.060
-      instanceTypes: [ "r3.xlarge","r4.xlarge", "r5n.xlarge", "r5ad.xlarge", "r5d.xlarge", "r5a.xlarge" ]
-      onDemandPercentageAboveBaseCapacity: 0
-      spotAllocationStrategy: "capacity-optimized-prioritized"
+  - name: rasa-120-0
+    instanceType: "t3a.2xlarge"
     desiredCapacity: 1
     minSize: 0
-    maxSize: 3
+    maxSize: 2
     volumeType: gp3
     volumeSize: 10
     volumeEncrypted: true
@@ -199,23 +193,19 @@ nodeGroups:
     disableIMDSv1: true
     securityGroups:
       withLocal: false
-      withShared: true
       attachIDs:
         - sg-053ff52ca3cfbe9be
     iam:
-      instanceProfileARN: arn:aws:iam::832807087073:instance-profile/EKS-Default-SSM-AD-Role-ip
       instanceRoleARN: arn:aws:iam::832807087073:role/EKS-Default-SSM-AD-Role
     labels:
-      workload: monitoring
+      workload: rasa
     tags:
       k8s.io/cluster-autoscaler/enabled: "true"
       k8s.io/cluster-autoscaler/services: "owned"
-      k8s.io/cluster-autoscaler/node-template/label/workload: monitoring
-      k8s.io/cluster-autoscaler/node-template/taint/monitoring: NoSchedule
-    taints:
-      - key: monitoring
-        value: "true"
-        effect: "NoSchedule"
+      k8s.io/cluster-autoscaler/node-template/label/workload: rasa
+
+
+nodeGroups:
   - name: ci-120
     instancesDistribution:
       maxPrice: 0.065
