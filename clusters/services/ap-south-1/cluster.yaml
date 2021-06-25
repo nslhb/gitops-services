@@ -47,7 +47,8 @@ iam:
     - metadata:
         name: grafana
         namespace: monitoring
-        labels: { aws-usage: "application" }
+        labels:
+          aws-usage: "application"
       attachPolicy:
         Statement:
           - Effect: Allow
@@ -120,24 +121,49 @@ iam:
             Condition:
               StringEquals:
                 aws:RequestedRegion: "ap-south-1"
-nodeGroups:
+    - metadata:
+        name: prow-controller-manager
+        namespace: ci
+      roleName: prow-controller-manager
+      attachPolicy:
+        Statement:
+          - Effect: Allow
+            Action:
+              - s3:ListBucket
+              - s3:PutObject
+              - s3:GetObject
+              - s3:DeleteObject
+            Resource:
+              - "arn:aws:s3:::tfnsl-services-assets-catalogue"
+              - "arn:aws:s3:::tfnsl-services-assets-catalogue/*"
+          - Effect: Allow
+            Action:
+              - kms:Encrypt
+              - kms:Decrypt
+              - kms:ReEncrypt*
+              - kms:GenerateDataKey*
+              - kms:DescribeKey
+            Resource:
+              - "arn:aws:kms:ap-south-1:832807087073:key/a5169c54-c5ab-4c58-aac1-78d66a221c7f"
+
+managedNodeGroups:
   - name: system-120-1
     instanceType: "t3a.large"
     desiredCapacity: 1
     minSize: 0
-    maxSize: 3
+    maxSize: 2
     volumeType: gp3
     volumeSize: 10
     volumeEncrypted: true
     volumeKmsKeyID: 97f38a15-a525-49d6-beb7-7e768066c762
     privateNetworking: true
     amiFamily: Bottlerocket
-    ami: auto-ssm
     disableIMDSv1: true
     securityGroups:
-      withLocal: true
+      withLocal: false
+      attachIDs:
+        - sg-053ff52ca3cfbe9be
     iam:
-      instanceProfileARN: arn:aws:iam::832807087073:instance-profile/EKS-Default-SSM-AD-Role-ip
       instanceRoleARN: arn:aws:iam::832807087073:role/EKS-Default-SSM-AD-Role
     labels:
       workload: system
@@ -147,10 +173,76 @@ nodeGroups:
       k8s.io/cluster-autoscaler/node-template/label/workload: system
       k8s.io/cluster-autoscaler/node-template/taint/CriticalAddonsOnly: NoSchedule
     taints:
-      CriticalAddonsOnly: "true:NoSchedule"
+      - key: CriticalAddonsOnly
+        value: "true"
+        effect: "NoSchedule"
     ssh:
       allow: true
       publicKeyName: bottlerocketkey
+  - name: rasa-120-1
+    instanceType: "t3a.2xlarge"
+    desiredCapacity: 1
+    minSize: 0
+    maxSize: 2
+    volumeType: gp3
+    volumeSize: 20
+    volumeEncrypted: true
+    volumeKmsKeyID: 97f38a15-a525-49d6-beb7-7e768066c762
+    privateNetworking: true
+    amiFamily: Bottlerocket
+    disableIMDSv1: true
+    securityGroups:
+      withLocal: false
+      attachIDs:
+        - sg-053ff52ca3cfbe9be
+    iam:
+      instanceRoleARN: arn:aws:iam::832807087073:role/EKS-Default-SSM-AD-Role
+    labels:
+      workload: rasa
+    tags:
+      k8s.io/cluster-autoscaler/enabled: "true"
+      k8s.io/cluster-autoscaler/services: "owned"
+      k8s.io/cluster-autoscaler/node-template/label/workload: rasa
+    taints:
+      - key: rasa
+        value: "true"
+        effect: "NoSchedule"
+
+nodeGroups:
+  - name: arm-ci-120
+    instancesDistribution:
+      maxPrice: 0.065
+      instanceTypes: [ "t4g.xlarge", "m6g.xlarge",  "r6g.xlarge" ]
+      onDemandPercentageAboveBaseCapacity: 0
+      spotAllocationStrategy: "capacity-optimized-prioritized"
+    desiredCapacity: 1
+    minSize: 0
+    maxSize: 1
+    volumeType: gp3
+    volumeSize: 10
+    volumeEncrypted: true
+    volumeKmsKeyID: 97f38a15-a525-49d6-beb7-7e768066c762
+    privateNetworking: true
+    amiFamily: Bottlerocket
+    disableIMDSv1: true
+    securityGroups:
+      withLocal: false
+      attachIDs:
+        - sg-053ff52ca3cfbe9be
+    iam:
+      instanceProfileARN: arn:aws:iam::832807087073:instance-profile/EKS-Default-SSM-AD-Role-ip
+      instanceRoleARN: arn:aws:iam::832807087073:role/EKS-Default-SSM-AD-Role
+    labels:
+      workload: ci
+      falco: enabled
+    tags:
+      k8s.io/cluster-autoscaler/enabled: "true"
+      k8s.io/cluster-autoscaler/services: "owned"
+      k8s.io/cluster-autoscaler/node-template/label/workload: ci
+    taints:
+      - key: ci
+        value: "true"
+        effect: "NoSchedule"
   - name: monitoring-120-2
     instancesDistribution:
       maxPrice: 0.030
@@ -169,6 +261,8 @@ nodeGroups:
     disableIMDSv1: true
     securityGroups:
       withLocal: false
+      attachIDs:
+        - sg-053ff52ca3cfbe9be
     iam:
       instanceProfileARN: arn:aws:iam::832807087073:instance-profile/EKS-Default-SSM-AD-Role-ip
       instanceRoleARN: arn:aws:iam::832807087073:role/EKS-Default-SSM-AD-Role
@@ -180,36 +274,16 @@ nodeGroups:
       k8s.io/cluster-autoscaler/node-template/label/workload: monitoring
       k8s.io/cluster-autoscaler/node-template/taint/monitoring: NoSchedule
     taints:
-      monitoring: "true:NoSchedule"
-  - name: edge-120-2
-    instancesDistribution:
-      maxPrice: 0.13
-      instanceTypes: [ "t3a.2xlarge","t3.2xlarge", "m5a.2xlarge", "m5.2xlarge", "m5ad.2xlarge" ]
-      onDemandPercentageAboveBaseCapacity: 0
-      spotAllocationStrategy: "capacity-optimized-prioritized"
-    desiredCapacity: 1
-    minSize: 0
-    maxSize: 3
-    volumeType: gp3
-    volumeSize: 10
-    volumeEncrypted: true
-    volumeKmsKeyID: 97f38a15-a525-49d6-beb7-7e768066c762
-    privateNetworking: true
-    amiFamily: Bottlerocket
-    disableIMDSv1: true
-    securityGroups:
-      withLocal: false
-    iam:
-      instanceProfileARN: arn:aws:iam::832807087073:instance-profile/EKS-Default-SSM-AD-Role-ip
-      instanceRoleARN: arn:aws:iam::832807087073:role/EKS-Default-SSM-AD-Role
-    labels:
-      workload: public
-      falco: enabled
-    tags:
-      k8s.io/cluster-autoscaler/enabled: "true"
-      k8s.io/cluster-autoscaler/services: "owned"
-      k8s.io/cluster-autoscaler/node-template/label/workload: public
-      k8s.io/cluster-autoscaler/node-template/taint/Edge: NoSchedule
+      - key: monitoring
+        value: "true"
+        effect: "NoSchedule"
+
+fargateProfiles:
+  - name: demo
+    selectors:
+      - namespace: apps
+        labels:
+          app: rollouts-demo
 
 cloudWatch:
   clusterLogging:
