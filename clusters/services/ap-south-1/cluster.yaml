@@ -207,14 +207,9 @@ managedNodeGroups:
       - key: rasa
         value: "true"
         effect: "NoSchedule"
-
-nodeGroups:
-  - name: arm-ci-120
-    instancesDistribution:
-      maxPrice: 0.065
-      instanceTypes: [ "t4g.xlarge", "m6g.xlarge",  "r6g.xlarge" ]
-      onDemandPercentageAboveBaseCapacity: 0
-      spotAllocationStrategy: "capacity-optimized-prioritized"
+  - name: arm-ci-120-1
+    spot: true
+    instanceTypes: [ "t4g.xlarge", "m6g.xlarge",  "r6g.xlarge" ]
     desiredCapacity: 1
     minSize: 0
     maxSize: 1
@@ -230,7 +225,6 @@ nodeGroups:
       attachIDs:
         - sg-053ff52ca3cfbe9be
     iam:
-      instanceProfileARN: arn:aws:iam::832807087073:instance-profile/EKS-Default-SSM-AD-Role-ip
       instanceRoleARN: arn:aws:iam::832807087073:role/EKS-Default-SSM-AD-Role
     labels:
       workload: ci
@@ -243,12 +237,8 @@ nodeGroups:
       - key: ci
         value: "true"
         effect: "NoSchedule"
-  - name: monitoring-120-2
-    instancesDistribution:
-      maxPrice: 0.030
-      instanceTypes: [ "r3.large","r4.large", "r5ad.large", "r5d.large", "r5a.large" ]
-      onDemandPercentageAboveBaseCapacity: 0
-      spotAllocationStrategy: "capacity-optimized-prioritized"
+  - name: monitoring-120-1
+    instanceTypes: [ "r3.large","r4.large", "r5ad.large", "r5d.large", "r5a.large" ]
     desiredCapacity: 1
     minSize: 0
     maxSize: 3
@@ -264,7 +254,6 @@ nodeGroups:
       attachIDs:
         - sg-053ff52ca3cfbe9be
     iam:
-      instanceProfileARN: arn:aws:iam::832807087073:instance-profile/EKS-Default-SSM-AD-Role-ip
       instanceRoleARN: arn:aws:iam::832807087073:role/EKS-Default-SSM-AD-Role
     labels:
       workload: monitoring
