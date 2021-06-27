@@ -26,6 +26,7 @@ spec:
             - linkerd-viz
             - ci
             - keycloak
+            - apps
       validate:
         message: "Privileged mode is not allowed. Set privileged to false"
         pattern:
@@ -50,6 +51,7 @@ spec:
             - keycloak
             - logging
             - tf
+            - apps
       validate:
         message: "Privileged mode is not allowed. Set allowPrivilegeEscalation to false"
         pattern:

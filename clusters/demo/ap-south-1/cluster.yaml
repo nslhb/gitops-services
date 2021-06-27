@@ -1,0 +1,227 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: demo
+  region: ap-south-1
+  version: "1.20"
+
+vpc:
+  id: "vpc-003978caf25a1d7ce"
+  clusterEndpoints:
+    publicAccess: true
+    privateAccess: true
+  subnets:
+    private:
+      iap-south-1a:
+        id: "subnet-0a2b785cd9e048db5"
+      iap-south-1b:
+        id: "subnet-0dbd6b6864d55f601"
+    public:
+      ap-south-1a:
+        id: "subnet-03ad4d9406c822c9b"
+      ap-south-1b:
+        id: "subnet-0ea11e9a3ea1bf0a4"
+iam:
+  withOIDC: true
+  fargatePodExecutionRolePermissionsBoundary: arn:aws:iam::415505189627:policy/Default-Boundary-Policy
+  serviceAccounts:
+    - metadata:
+        name: aws-load-balancer-controller
+        namespace: kube-system
+      roleName: load-balancer-ap-south-1
+      wellKnownPolicies:
+        awsLoadBalancerController: true
+    - metadata:
+        name: external-dns
+        namespace: kube-system
+      roleName: external-dns-ap-south-1
+      wellKnownPolicies:
+        externalDNS: true
+    - metadata:
+        name: cluster-autoscaler
+        namespace: kube-system
+      roleName: cluster-autoscaler-ap-south-1
+      wellKnownPolicies:
+        autoScaler: true
+    - metadata:
+        name: ebs-csi-driver
+        namespace: kube-system
+      roleName: ebs-csi-driver-ap-south-1
+      wellKnownPolicies:
+        ebsCSIController: true
+    - metadata:
+        name: terraform-sync-workspace
+        namespace: kube-system
+      roleName: terraform
+      attachPolicyARNs:
+        - "arn:aws:iam::aws:policy/AdministratorAccess"
+    - metadata:
+        name: kubernetes-external-secrets
+        namespace: kube-system
+      roleName: external-secrets
+      attachPolicy:
+        Statement:
+          - Effect: Allow
+            Action:
+              - secretsmanager:GetResourcePolicy
+              - secretsmanager:GetSecretValue
+              - secretsmanager:DescribeSecret
+              - secretsmanager:ListSecretVersionIds
+              - ssm:GetParameter
+            Resource:
+              - "*"
+    - metadata:
+        name: kube-bench
+        namespace: kube-system
+      roleName: kube-bench-ap-south-1
+      attachPolicy:
+        Statement:
+          - Effect: Allow
+            Action:
+              - securityhub:BatchImportFindings
+            Resource:
+              - "arn:aws:securityhub:ap-south-1::product/aqua-security/kube-bench"
+managedNodeGroups:
+  - name: system-120-2
+    instanceType: "a1.xlarge"
+    desiredCapacity: 1
+    minSize: 1
+    maxSize: 3
+    volumeType: gp3
+    volumeSize: 10
+    volumeEncrypted: true
+    volumeKmsKeyID: e6f92ae8-f738-438d-9031-7d12bc3ef0af
+    privateNetworking: true
+    amiFamily: Bottlerocket
+    disableIMDSv1: true
+    subnets:
+      - iap-south-1b
+    iam:
+      instanceRoleARN: arn:aws:iam::415505189627:role/EKS-Default-SSM-AD-Role
+    labels:
+      workload: system
+    securityGroups:
+      withLocal: false
+    tags:
+      k8s.io/cluster-autoscaler/enabled: "true"
+      k8s.io/cluster-autoscaler/demo: "owned"
+      k8s.io/cluster-autoscaler/node-template/label/workload: system
+      k8s.io/cluster-autoscaler/node-template/taint/CriticalAddonsOnly: NoSchedule
+    taints:
+      - key: CriticalAddonsOnly
+        value: "true"
+        effect: "NoSchedule"
+  - name: monitoring-120-2
+    instanceType: r6g.xlarge
+    desiredCapacity: 1
+    minSize: 0
+    maxSize: 3
+    volumeType: gp3
+    volumeSize: 10
+    volumeEncrypted: true
+    volumeKmsKeyID: e6f92ae8-f738-438d-9031-7d12bc3ef0af
+    privateNetworking: true
+    amiFamily: Bottlerocket
+    disableIMDSv1: true
+    subnets:
+      - iap-south-1b
+    iam:
+      instanceRoleARN: arn:aws:iam::415505189627:role/EKS-Default-SSM-AD-Role
+    labels:
+      workload: monitoring
+    securityGroups:
+      withLocal: false
+    tags:
+      k8s.io/cluster-autoscaler/enabled: "true"
+      k8s.io/cluster-autoscaler/demo: "owned"
+      k8s.io/cluster-autoscaler/node-template/label/workload: monitoring
+      k8s.io/cluster-autoscaler/node-template/taint/monitoring: NoSchedule
+    taints:
+      - key: monitoring
+        value: "true"
+        effect: "NoSchedule"
+  - name: gpu-compute-120-2
+    instanceType: g4dn.xlarge
+    desiredCapacity: 1
+    minSize: 0
+    maxSize: 3
+    volumeType: gp3
+    volumeSize: 125
+    volumeEncrypted: true
+    volumeKmsKeyID: e6f92ae8-f738-438d-9031-7d12bc3ef0af
+    privateNetworking: true
+    disableIMDSv1: true
+    subnets:
+      - iap-south-1b
+    iam:
+      instanceRoleARN: arn:aws:iam::415505189627:role/EKS-Default-SSM-AD-Role
+    labels:
+      falco: enabled
+      compute: gpu
+    securityGroups:
+      withLocal: false
+    tags:
+      k8s.io/cluster-autoscaler/enabled: "true"
+      k8s.io/cluster-autoscaler/demo: "owned"
+      k8s.io/cluster-autoscaler/node-template/label/workload: gpu-compute
+    taints:
+      - key: dld
+        value: "true"
+        effect: "NoSchedule"
+
+nodeGroups:
+  - name: common-120-1
+    instancesDistribution:
+      maxPrice: 0.28
+      instanceTypes: [ "c4.4xlarge","c5.4xlarge", "c5a.4xlarge", "c5n.4xlarge", "m5a.4xlarge", "m5.4xlarge" ]
+      onDemandPercentageAboveBaseCapacity: 25
+      spotAllocationStrategy: "capacity-optimized-prioritized"
+    desiredCapacity: 3
+    minSize: 0
+    maxSize: 20
+    volumeType: gp3
+    volumeSize: 50
+    volumeEncrypted: true
+    volumeKmsKeyID: e6f92ae8-f738-438d-9031-7d12bc3ef0af
+    privateNetworking: true
+    amiFamily: Bottlerocket
+    disableIMDSv1: true
+    subnets:
+      - iap-south-1b
+    iam:
+      instanceProfileARN: arn:aws:iam::415505189627:instance-profile/EKS-Default-SSM-AD-Role-ip
+      instanceRoleARN: arn:aws:iam::415505189627:role/EKS-Default-SSM-AD-Role
+    labels:
+      workload: public
+      eks.amazonaws.com/compute-type: ec2
+    securityGroups:
+      withLocal: false
+    tags:
+      k8s.io/cluster-autoscaler/enabled: "true"
+      k8s.io/cluster-autoscaler/demo: "owned"
+      k8s.io/cluster-autoscaler/node-template/label/workload: public
+
+cloudWatch:
+  clusterLogging:
+    enableTypes: [ "authenticator" ]
+
+addons:
+  - name: vpc-cni
+    version: latest
+  - name: coredns
+    version: latest
+  - name: kube-proxy
+    version: latest
+
+gitops:
+  flux:
+    gitProvider: github
+    flags:
+      owner: nslhb
+      repository: services.nslhub.com
+      branch: main
+      namespace: flux-system
+      path: ./clusters/demo/ap-south-1
+      toleration-keys: CriticalAddonsOnly
+      components-extra: "image-reflector-controller,image-automation-controller"
