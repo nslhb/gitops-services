@@ -1,0 +1,12 @@
+#!/bin/sh
+echo "$0 IS RUNNING"
+#if [ $(which docker) ] && [ $(docker --version) ]; then
+if [ $(which docker) ]; then
+  if [ -z "$(docker images -q zricethezav/gitleaks:latest)" ]; then	
+    docker pull zricethezav/gitleaks
+  fi
+  docker run -v `git rev-parse --show-toplevel`:/nsl-repo zricethezav/gitleaks:latest --path="/nsl-repo" -v
+else
+  echo "Error: Please Install Docker For NSL Sensitive Info Check"
+  exit 1
+fi

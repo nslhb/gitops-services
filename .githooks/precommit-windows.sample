@@ -1,0 +1,8 @@
+#!/bin/sh
+echo "$0 IS RUNNING"
+if [ $(gitleaks --version) ]; then
+  gitleaks --path=`git rev-parse --show-toplevel` -v --unstaged
+else
+  echo "Error: Please Install Gitleaks For NSL Sensitive Info Check"
+  exit 1 
+fi
