@@ -52,6 +52,7 @@ spec:
             - logging
             - tf
             - apps
+            - infra
       validate:
         message: "Privileged mode is not allowed. Set allowPrivilegeEscalation to false"
         pattern:
