@@ -27,6 +27,7 @@ spec:
             - ci
             - keycloak
             - apps
+            - observability
       validate:
         message: "Privileged mode is not allowed. Set privileged to false"
         pattern:
