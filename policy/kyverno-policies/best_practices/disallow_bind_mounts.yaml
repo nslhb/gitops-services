@@ -25,6 +25,7 @@ spec:
           - logging
           - kube-system
           - ci
+          - observability
     validate:
       message: "Host path volumes are not allowed"
       pattern: 
