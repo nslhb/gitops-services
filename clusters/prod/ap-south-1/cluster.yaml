@@ -82,7 +82,7 @@ iam:
               - securityhub:BatchImportFindings
             Resource:
               - "arn:aws:securityhub:us-east-1::product/aqua-security/kube-bench"
-              -
+
 managedNodeGroups:
   - name: system-1202
     instanceType: "t4g.xlarge"
