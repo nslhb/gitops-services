@@ -96,11 +96,11 @@ iam:
               - "arn:aws:s3:::tfnsl-services-application-logs/*/ap-south-1/*"
           - Effect: Allow
             Action:
-            - kms:Encrypt
-            - kms:Decrypt
-            - kms:ReEncrypt*
-            - kms:GenerateDataKey*
-            - kms:DescribeKey
+              - kms:Encrypt
+              - kms:Decrypt
+              - kms:ReEncrypt*
+              - kms:GenerateDataKey*
+              - kms:DescribeKey
             Resource:
               - "arn:aws:kms:ap-south-1:832807087073:key/a5169c54-c5ab-4c58-aac1-78d66a221c7f"
     - metadata:
@@ -145,9 +145,20 @@ iam:
               - kms:DescribeKey
             Resource:
               - "arn:aws:kms:ap-south-1:832807087073:key/a5169c54-c5ab-4c58-aac1-78d66a221c7f"
+    - metadata:
+        name: kube-bench
+        namespace: kube-system
+      roleName: kube-bench-ap-south-1
+      attachPolicy:
+        Statement:
+          - Effect: Allow
+            Action:
+              - securityhub:BatchImportFindings
+            Resource:
+              - "arn:aws:securityhub:us-east-1::product/aqua-security/kube-bench"
 
 managedNodeGroups:
-  - name: system-120-1
+  - name: system-120-0
     instanceType: "t3a.large"
     desiredCapacity: 1
     minSize: 0
@@ -179,65 +190,7 @@ managedNodeGroups:
     ssh:
       allow: true
       publicKeyName: bottlerocketkey
-  - name: rasa-120-1
-    instanceType: "t3a.2xlarge"
-    desiredCapacity: 1
-    minSize: 0
-    maxSize: 2
-    volumeType: gp3
-    volumeSize: 20
-    volumeEncrypted: true
-    volumeKmsKeyID: 97f38a15-a525-49d6-beb7-7e768066c762
-    privateNetworking: true
-    amiFamily: Bottlerocket
-    disableIMDSv1: true
-    securityGroups:
-      withLocal: false
-      attachIDs:
-        - sg-053ff52ca3cfbe9be
-    iam:
-      instanceRoleARN: arn:aws:iam::832807087073:role/EKS-Default-SSM-AD-Role
-    labels:
-      workload: rasa
-    tags:
-      k8s.io/cluster-autoscaler/enabled: "true"
-      k8s.io/cluster-autoscaler/services: "owned"
-      k8s.io/cluster-autoscaler/node-template/label/workload: rasa
-    taints:
-      - key: rasa
-        value: "true"
-        effect: "NoSchedule"
-  - name: arm-ci-120-1
-    spot: true
-    instanceTypes: [ "t4g.xlarge", "m6g.xlarge",  "r6g.xlarge" ]
-    desiredCapacity: 1
-    minSize: 0
-    maxSize: 1
-    volumeType: gp3
-    volumeSize: 10
-    volumeEncrypted: true
-    volumeKmsKeyID: 97f38a15-a525-49d6-beb7-7e768066c762
-    privateNetworking: true
-    amiFamily: Bottlerocket
-    disableIMDSv1: true
-    securityGroups:
-      withLocal: false
-      attachIDs:
-        - sg-053ff52ca3cfbe9be
-    iam:
-      instanceRoleARN: arn:aws:iam::832807087073:role/EKS-Default-SSM-AD-Role
-    labels:
-      workload: ci
-      falco: enabled
-    tags:
-      k8s.io/cluster-autoscaler/enabled: "true"
-      k8s.io/cluster-autoscaler/services: "owned"
-      k8s.io/cluster-autoscaler/node-template/label/workload: ci
-    taints:
-      - key: ci
-        value: "true"
-        effect: "NoSchedule"
-  - name: monitoring-120-1
+  - name: monitoring-120-0
     instanceTypes: [ "r3.large","r4.large", "r5ad.large", "r5d.large", "r5a.large" ]
     desiredCapacity: 1
     minSize: 0
@@ -264,6 +217,40 @@ managedNodeGroups:
       k8s.io/cluster-autoscaler/node-template/taint/monitoring: NoSchedule
     taints:
       - key: monitoring
+        value: "true"
+        effect: "NoSchedule"
+  - name: arm-ci-120-1
+    spot: true
+    instanceType: "t4g.xlarge"
+    desiredCapacity: 1
+    minSize: 0
+    maxSize: 1
+    volumeType: gp3
+    volumeSize: 10
+    volumeEncrypted: true
+    volumeKmsKeyID: 97f38a15-a525-49d6-beb7-7e768066c762
+    privateNetworking: true
+    amiFamily: Bottlerocket
+    disableIMDSv1: true
+    securityGroups:
+      withLocal: false
+      attachIDs:
+        - sg-053ff52ca3cfbe9be
+    bottlerocket:
+      settings:
+        kernel.sysctl:
+          user.max_user_namespaces: "16384"
+    iam:
+      instanceRoleARN: arn:aws:iam::832807087073:role/EKS-Default-SSM-AD-Role
+    labels:
+      workload: ci
+      falco: enabled
+    tags:
+      k8s.io/cluster-autoscaler/enabled: "true"
+      k8s.io/cluster-autoscaler/services: "owned"
+      k8s.io/cluster-autoscaler/node-template/label/workload: ci
+    taints:
+      - key: ci
         value: "true"
         effect: "NoSchedule"
 
