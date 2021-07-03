@@ -28,6 +28,7 @@ spec:
           - observability
           - tf
           - apps
+          - infra
     validate:
       message: "Root filesystem must be read-only"
       pattern:
