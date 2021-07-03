@@ -84,7 +84,7 @@ iam:
               - "arn:aws:securityhub:us-east-1::product/aqua-security/kube-bench"
               -
 managedNodeGroups:
-  - name: system-1201
+  - name: system-1202
     instanceType: "t4g.xlarge"
     desiredCapacity: 1
     minSize: 0
@@ -96,6 +96,10 @@ managedNodeGroups:
     privateNetworking: true
     amiFamily: Bottlerocket
     disableIMDSv1: true
+    securityGroups:
+      withLocal: false
+      attachIDs:
+        - sg-0e2468ff948c63a98
     iam:
       instanceRoleARN: arn:aws:iam::901688089596:role/EKS-Default-SSM-AD-Role
     labels:
@@ -109,7 +113,7 @@ managedNodeGroups:
       - key: CriticalAddonsOnly
         value: "true"
         effect: "NoSchedule"
-  - name: monitoring-1201
+  - name: monitoring-1202
     instanceType: r6g.xlarge
     desiredCapacity: 1
     minSize: 0
@@ -121,6 +125,10 @@ managedNodeGroups:
     privateNetworking: true
     amiFamily: Bottlerocket
     disableIMDSv1: true
+    securityGroups:
+      withLocal: false
+      attachIDs:
+        - sg-0e2468ff948c63a98
     iam:
       instanceRoleARN: arn:aws:iam::901688089596:role/EKS-Default-SSM-AD-Role
     labels:
@@ -134,7 +142,7 @@ managedNodeGroups:
       - key: monitoring
         value: "true"
         effect: "NoSchedule"
-  - name: general-compute-1201
+  - name: general-compute-1202
     instanceType: m5a.8xlarge
     desiredCapacity: 2
     minSize: 0
@@ -146,6 +154,10 @@ managedNodeGroups:
     privateNetworking: true
     amiFamily: Bottlerocket
     disableIMDSv1: true
+    securityGroups:
+      withLocal: false
+      attachIDs:
+        - sg-0e2468ff948c63a98
     iam:
       instanceRoleARN: arn:aws:iam::901688089596:role/EKS-Default-SSM-AD-Role
     labels:
@@ -155,7 +167,7 @@ managedNodeGroups:
       k8s.io/cluster-autoscaler/enabled: "true"
       k8s.io/cluster-autoscaler/prod: "owned"
       k8s.io/cluster-autoscaler/node-template/label/workload: general-compute
-  - name: gpu-compute-1201
+  - name: gpu-compute-1202
     instanceType: g4dn.12xlarge
     desiredCapacity: 1
     minSize: 0
@@ -165,6 +177,10 @@ managedNodeGroups:
     volumeEncrypted: true
     volumeKmsKeyID: ef15819c-c086-4aba-9430-d54af36d8b53
     privateNetworking: true
+    securityGroups:
+      withLocal: false
+      attachIDs:
+        - sg-0e2468ff948c63a98
     iam:
       instanceRoleARN: arn:aws:iam::901688089596:role/EKS-Default-SSM-AD-Role
     labels:
@@ -174,7 +190,7 @@ managedNodeGroups:
       k8s.io/cluster-autoscaler/enabled: "true"
       k8s.io/cluster-autoscaler/prod: "owned"
       k8s.io/cluster-autoscaler/node-template/label/workload: gpu-compute
-  - name: compute-intensive-1201
+  - name: compute-intensive-1202
     instanceType: c5a.4xlarge
     desiredCapacity: 0
     minSize: 0
@@ -186,6 +202,10 @@ managedNodeGroups:
     privateNetworking: true
     amiFamily: Bottlerocket
     disableIMDSv1: true
+    securityGroups:
+      withLocal: false
+      attachIDs:
+        - sg-0e2468ff948c63a98
     iam:
       instanceRoleARN: arn:aws:iam::901688089596:role/EKS-Default-SSM-AD-Role
     labels:
@@ -199,7 +219,7 @@ managedNodeGroups:
       - key: cpu-intensive
         value: "true"
         effect: "NoSchedule"
-  - name: memory-intensive-1201
+  - name: memory-intensive-1202
     instanceType: r5a.8xlarge
     desiredCapacity: 0
     minSize: 0
@@ -211,6 +231,10 @@ managedNodeGroups:
     privateNetworking: true
     amiFamily: Bottlerocket
     disableIMDSv1: true
+    securityGroups:
+      withLocal: false
+      attachIDs:
+        - sg-0e2468ff948c63a98
     iam:
       instanceRoleARN: arn:aws:iam::901688089596:role/EKS-Default-SSM-AD-Role
     labels:
