@@ -26,10 +26,10 @@ jobs:
           sed 's/_$//' | \
           head -n1)
           echo ::set-output name=NUMBER::${VERSION}
-#      - name: Patch version
-#        run: |
-#          export URL="https://raw.githubusercontent.com/kyverno/kyverno/${{ steps.version.outputs.NUMBER }}/definitions/release/install.yaml"
-#          yq e '.resources[0]=strenv(URL)' -i policy/kyverno/kustomization.yaml
+      - name: Patch version
+        run: |
+          export URL="https://raw.githubusercontent.com/kyverno/kyverno/${{ steps.version.outputs.NUMBER }}/definitions/release/install.yaml"
+          yq e '.resources[0]=strenv(URL)' -i policy/kyverno/kustomization.yaml
       - name: Check for flux updates
         id: update
         run: |
@@ -38,7 +38,6 @@ jobs:
           flux install --toleration-keys=CriticalAddonsOnly --components-extra=image-reflector-controller,image-automation-controller --export > ./clusters/services/us-east-1/flux-system/gotk-components.yaml
           VERSION="$(flux -v)"
           echo "::set-output name=flux_version::$VERSION"
-
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:

@@ -10,7 +10,7 @@
 CLUSTER=$1
 REGION=$2
 
-mkdir -p  ./clusters/$CLUSTER-$REGION
+mkdir -p  ./clusters/$CLUSTER/$REGION
 cp ./scripts/templates/clusters ./clusters/$CLUSTER/$REGION
 sed -i 's/{CLUSTER}/'$CLUSTER'/g' ./clusters/$CLUSTER/$REGION
 sed -i 's/{REGION}/'$REGION'/g' ./clusters/$CLUSTER/$REGION
