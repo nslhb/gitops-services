@@ -224,7 +224,7 @@ managedNodeGroups:
     instanceType: "t4g.xlarge"
     desiredCapacity: 1
     minSize: 0
-    maxSize: 1
+    maxSize: 2
     volumeType: gp3
     volumeSize: 10
     volumeEncrypted: true

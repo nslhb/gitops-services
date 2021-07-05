@@ -1,0 +1,351 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Hyperglance 6.8.28 250 Resources
+Parameters:
+  InstanceType:
+    Type: String
+    Default: t3.medium
+    AllowedValues:
+      - t2.medium
+      - t2.large
+      - t2.xlarge
+      - t2.2xlarge
+      - t3.medium
+      - t3.large
+      - t3.xlarge
+      - t3.2xlarge
+      - t3a.medium
+      - t3a.large
+      - t3a.xlarge
+      - t3a.2xlarge
+      - m4.large
+      - m4.xlarge
+      - m4.2xlarge
+      - m4.4xlarge
+      - m5.large
+      - m5.xlarge
+      - m5.2xlarge
+      - m5.4xlarge
+    ConstraintDescription: Must be a valid EC2 instance type.
+  KeyName:
+    Type: 'AWS::EC2::KeyPair::KeyName'
+    Description: >-
+      Name of an existing EC2 KeyPair. The Hyperglance instance will launch with
+      this KeyPair.
+  HyperglanceCIDR:
+    Description: >-
+      The IP range you are going to connect to Hyperglance from. Must be a valid
+      CIDR range of the form x.x.x.x/x
+    Type: String
+    MinLength: '9'
+    MaxLength: '18'
+    AllowedPattern: '(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/(\d{1,2})'
+    ConstraintDescription: 'Must be a valid CIDR range of the form x.x.x.x/x  '
+  SSHCIDR:
+    Description: >-
+      The IP range you are going to SSH to the Hyperglance Instance from. Must
+      be a valid CIDR range of the form x.x.x.x/x
+    Type: String
+    MinLength: '9'
+    MaxLength: '18'
+    AllowedPattern: '(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/(\d{1,2})'
+    ConstraintDescription: 'Must be a valid CIDR range of the form x.x.x.x/x '
+  AssignStaticIP:
+    Type: String
+    Default: 'false'
+    Description: Do you want to assign a Static Private IP?
+    AllowedValues:
+      - 'true'
+      - 'false'
+  PrivateStaticIP:
+    Description: >-
+      Enter in a static IP if wanted. Must be a valid IP range of the form
+      x.x.x.x and must be part of the selected subnet range
+    Type: String
+    Default: 10.0.0.1
+    MinLength: '7'
+    MaxLength: '15'
+    AllowedPattern: '(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})'
+    ConstraintDescription: Must be a valid IP of the form x.x.x.x
+  AssignPublicIP:
+    Type: String
+    Default: 'false'
+    Description: >-
+      Assign a Public IP? NOTE: Hyperglance needs to access the AWS API
+      endpoints in order to function.
+    AllowedValues:
+      - 'true'
+      - 'false'
+  Vpcid:
+    Type: 'AWS::EC2::VPC::Id'
+    Description: ID of your existing Virtual Private Cloud (VPC)
+    ConstraintDescription: Must be the VPC ID of an existing Virtual Private Cloud.
+  SubnetID:
+    Type: 'AWS::EC2::Subnet::Id'
+    Description: >-
+      ID of an existing subnet (for the primary network) in your Virtual Private
+      Cloud (VPC)
+    ConstraintDescription: Must be an existing subnet in the selected Virtual Private Cloud.
+Conditions:
+  WantToAssignPublicIP: !Equals
+    - !Ref AssignPublicIP
+    - 'true'
+  WantToAssignPrivateStaticIP: !Equals
+    - !Ref AssignStaticIP
+    - 'true'
+Metadata:
+  'AWS::CloudFormation::Interface':
+    ParameterGroups:
+      - Label:
+          default: Instance size
+        Parameters:
+          - InstanceType
+      - Label:
+          default: Security configuration
+        Parameters:
+          - KeyName
+          - HyperglanceCIDR
+          - SSHCIDR
+      - Label:
+          default: IP configuration
+        Parameters:
+          - AssignPublicIP
+          - AssignStaticIP
+          - PrivateStaticIP
+      - Label:
+          default: VPC configuration
+        Parameters:
+          - Vpcid
+          - SubnetID
+    ParameterLabels:
+      InstanceType:
+        default: Instance size.
+      KeyName:
+        default: Choose a SSH Key pair (REQUIRED).
+      HyperglanceCIDR:
+        default: >-
+          Initial security group entry for TCP port 443. The IP range that can
+          use Hyperglance.
+      SSHCIDR:
+        default: >-
+          Initial security group entry for TCP port 22. The IP range that can
+          SSH to the Hyperglance instance.
+      AssignPublicIP:
+        default: Assign Public IP?
+      AssignStaticIP:
+        default: Assign Static Private IP?
+      PrivateStaticIP:
+        default: Static Private IP
+      Vpcid:
+        default: VPC to use for the Hyperglance instance.
+      SubnetID:
+        default: Subnet to use for the Hyperglance instance.
+Mappings:
+  RegionMap:
+    us-east-1:
+      ImageIdent: ami-06b0c043f2f816748
+    us-east-2:
+      ImageIdent: ami-066103bb450df34ee
+    us-west-1:
+      ImageIdent: ami-07fa59f41c8ab665f
+    us-west-2:
+      ImageIdent: ami-0d18dad7681bf243d
+    ca-central-1:
+      ImageIdent: ami-0dc28914b650fb3ae
+    eu-west-1:
+      ImageIdent: ami-05edec661d7b9357e
+    eu-central-1:
+      ImageIdent: ami-047ceccd48dcf0448
+    eu-west-2:
+      ImageIdent: ami-017f679bf07c39caf
+    eu-west-3:
+      ImageIdent: ami-040a0b49433e7018b
+    eu-north-1:
+      ImageIdent: ami-00017d21ae3a7a135
+    ap-east-1:
+      ImageIdent: ami-0edd188640516a640
+    ap-northeast-1:
+      ImageIdent: ami-0e882762879732075
+    ap-northeast-2:
+      ImageIdent: ami-0a97d9bc2f6eeadc5
+    ap-southeast-1:
+      ImageIdent: ami-0d042ef3453c6ae8e
+    ap-southeast-2:
+      ImageIdent: ami-0cc855ee6732ebfba
+    ap-south-1:
+      ImageIdent: ami-06e5e8bfe52e5ca48
+    sa-east-1:
+      ImageIdent: ami-028079128ca435e8e
+    me-south-1:
+      ImageIdent: ami-0ac21796c0f07e927
+    us-gov-west-1:
+      ImageIdent: ami-02a1ebc39a0cc6f8e
+    us-gov-east-1:
+      ImageIdent: ami-0eb202f50f2651ef0
+    eu-south-1:
+      ImageIdent: ami-0947ff94e11b66219
+    af-south-1:
+      ImageIdent: ami-07539dfe57c97fa7b
+Resources:
+  HyperglanceInstance:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      ImageId: !FindInMap
+        - RegionMap
+        - !Ref 'AWS::Region'
+        - ImageIdent
+      KeyName: !Ref KeyName
+      InstanceType: !Ref InstanceType
+      IamInstanceProfile: !Ref HGInstanceProfile
+      NetworkInterfaces:
+        - AssociatePublicIpAddress: !Ref AssignPublicIP
+          PrivateIpAddress: !If
+            - WantToAssignPrivateStaticIP
+            - !Ref PrivateStaticIP
+            - !Ref 'AWS::NoValue'
+          DeviceIndex: '0'
+          GroupSet:
+            - !Ref HgSecurityGroup
+          SubnetId: !Ref SubnetID
+      BlockDeviceMappings:
+        - DeviceName: /dev/xvda
+          Ebs:
+            VolumeSize: '10'
+            VolumeType: gp2
+            Encrypted: true
+        - DeviceName: /dev/xvdf
+          Ebs:
+            VolumeSize: '10'
+            VolumeType: gp2
+            Encrypted: true
+  HgSecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: Hyperglance
+      VpcId: !Ref Vpcid
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: '443'
+          ToPort: '443'
+          CidrIp: !Ref HyperglanceCIDR
+        - IpProtocol: tcp
+          FromPort: '22'
+          ToPort: '22'
+          CidrIp: !Ref SSHCIDR
+  HGRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Path: /
+  RolePolicies:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyName: Hyperglance
+      PolicyDocument:
+        Statement:
+          - Effect: Allow
+            Action:
+              - 'apigateway:GET'
+              - 'autoscaling:Describe*'
+              - 'cloudwatch:Describe*'
+              - 'cloudwatch:Get*'
+              - 'cloudwatch:List*'
+              - 'cur:DescribeReportDefinitions'
+              - 'dax:Describe*'
+              - 'dax:List*'
+              - 'dynamodb:Describe*'
+              - 'dynamodb:List*'
+              - 'ec2:Describe*'
+              - 'ec2:Get*'
+              - 'ec2:Search*'
+              - 'ecs:Describe*'
+              - 'ecs:List*'
+              - 'eks:Describe*'
+              - 'eks:List*'
+              - 'elasticloadbalancing:Describe*'
+              - 'iam:GenerateCredentialReport'
+              - 'iam:Get*'
+              - 'iam:List*'
+              - 'lambda:Get*'
+              - 'lambda:List*'
+              - 'ram:Get*'
+              - 'rds:Describe*'
+              - 'rds:List*'
+              - 'redshift:Describe*'
+              - 'redshift:List*'
+              - 'route53:Get*'
+              - 'route53:List*'
+              - 's3:Get*'
+              - 's3:List*'
+              - 'sts:AssumeRole'
+              - 'sts:GetCallerIdentity'
+              - 'workspaces:Describe*'
+              - 'access-analyzer:ListAnalyzers'
+              - 'backup:ListProtectedResources'
+            Resource: '*'
+      Roles:
+        - !Ref HGRole
+  HGInstanceProfile:
+    Type: 'AWS::IAM::InstanceProfile'
+    Properties:
+      Path: /
+      Roles:
+        - !Ref HGRole
+Outputs:
+  InstanceName:
+    Value: !Ref HyperglanceInstance
+    Description: Hyperglance instance name
+  HyperglancePublicIP:
+    Value: !If
+      - WantToAssignPublicIP
+      - !Join
+        - ''
+        - - 'https://'
+          - !GetAtt
+            - HyperglanceInstance
+            - PublicIp
+      - '-'
+    Description: Public IP URL
+  HyperglancePublicDNS:
+    Value: !If
+      - WantToAssignPublicIP
+      - !Join
+        - ''
+        - - 'https://'
+          - !GetAtt
+            - HyperglanceInstance
+            - PublicDnsName
+      - '-'
+    Description: Public DNS URL
+  HyperglancePrivateIP:
+    Value: !Join
+      - ''
+      - - 'https://'
+        - !GetAtt
+          - HyperglanceInstance
+          - PrivateIp
+    Description: Private IP URL
+  HyperglancePrivateDNS:
+    Value: !Join
+      - ''
+      - - 'https://'
+        - !GetAtt
+          - HyperglanceInstance
+          - PrivateDnsName
+    Description: Private DNS URL
+  User:
+    Value: admin
+    Description: Default login user name
+  Password:
+    Value: !Join
+      - ''
+      - - '''    '
+        - !Ref HyperglanceInstance
+        - '    '''
+    Description: Initial admin password - do not copy quotes or spaces

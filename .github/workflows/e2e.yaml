@@ -1,45 +1,34 @@
 name: e2e
 
 on:
-  push:
-    branches-ignore:
-      - 'main'
-    tags-ignore:
-      - '*'
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - clusters/dev/ap-south-1/flux-system/*
+      - policy/kyverno/*
 
 jobs:
   kubernetes:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        runner: [ [ "ubuntu-latest" ], [ "self-hosted", "linux", "ARM64" ] ]
+    runs-on: ${{ matrix.runner }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Setup tools
-        uses: ./.github/actions/tools
       - name: Setup Flux
-        uses: fluxcd/flux2/action@main
+        uses: ./.github/actions/flux
       - name: Setup Kubernetes
-        uses: engineerd/setup-kind@v0.5.0
+        uses: nslhb/kind-action@main
       - name: Install Flux in Kubernetes Kind
-        run: flux install
-#      - name: Add cluster
-#        run: |
-#          ./scripts/add-cluster.sh test ap-south-1
-#      - name: Setup cluster reconciliation
-#        run: |
-#          flux create source git flux-system \
-#          --url=${{ github.event.repository.html_url }} \
-#          --branch=${GITHUB_REF#refs/heads/}
-#          flux create kustomization flux-system \
-#          --source=flux-system \
-#          --path=./clusters/test/ap-south-1
+        run: flux install --components-extra=image-reflector-controller,image-automation-controller
+      - run: |
+          flux create source git flux-system --url=${{ github.event.repository.html_url }} --branch=${{ github.head_ref }}
+          flux reconcile source git flux-system -n flux-system
+      - name: Setup kyverno reconciliation
+        run: flux create kustomization kyverno -n flux-system --source=flux-system --path=./policy/kyverno --health-check="Deployment/kyverno.kyverno"
       - name: Verify cluster reconciliation
-        run: |
-          kubectl -n flux-system wait kustomization/kyverno --for=condition=ready --timeout=1m
-          kubectl -n flux-system wait kustomization/kyverno-policies --for=condition=ready --timeout=1m
-          kubectl -n flux-system wait kustomization/tenants --for=condition=ready --timeout=1m
-      - name: Verify tenant reconciliation
-        run: |
-          kubectl -n apps wait helmrelease/podinfo --for=condition=ready --timeout=1m
+        run: kubectl -n flux-system wait kustomization/kyverno --for=condition=ready --timeout=1m
       - name: Debug failure
         if: failure()
         run: |
