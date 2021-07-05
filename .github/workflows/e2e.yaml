@@ -24,7 +24,7 @@ jobs:
         run: flux install --components-extra=image-reflector-controller,image-automation-controller
       - run: flux create source git flux-system --url=${{ github.event.repository.html_url }} --branch=${{ github.head_ref }}
       - name: Setup kyverno reconciliation
-        run: flux create kustomization flux-system --source=flux-system --path=./clusters/e2e
+        run: flux create kustomization flux-system --source=flux-system --path=./policy/kyverno --branch=${{ github.head_ref }}
       - name: Verify cluster reconciliation
         run: |
           kubectl -n flux-system wait kustomization/flux-system --for=condition=ready --timeout=1m
