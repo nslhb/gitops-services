@@ -17,15 +17,16 @@ vpc:
         id: "subnet-090c9cf2f159f2cd2"
       ap-south-1b:
         id: "subnet-0c1ee00495e8fa8e2"
-    #      ap-south-1c:
-    #        id: "subnet-014228877d6c932a6"
+      ap-south-1c:
+        id: "subnet-014228877d6c932a6"
     public:
       ap-south-1a:
         id: "subnet-03ad4d9406c822c9b"
       ap-south-1b:
         id: "subnet-0ea11e9a3ea1bf0a4"
-#      ap-south-1c:
-#        id: "subnet-0ca9b2d007b987baf"
+      ap-south-1c:
+        id: "subnet-0ca9b2d007b987baf"
+
 iam:
   withOIDC: true
   fargatePodExecutionRolePermissionsBoundary: arn:aws:iam::755502957828:policy/Default-Boundary-Policy
@@ -87,38 +88,9 @@ iam:
             Resource:
               - "arn:aws:securityhub:us-east-1::product/aqua-security/kube-bench"
 
-nodeGroups:
-  - name: system-120
+managedNodeGroups:
+  - name: system-1201
     instanceType: "a1.xlarge"
-    desiredCapacity: 1
-    minSize: 1
-    maxSize: 3
-    volumeType: gp3
-    volumeSize: 10
-    volumeEncrypted: true
-    volumeKmsKeyID: a3456af4-c4de-4938-837d-86d5615d75d7
-    privateNetworking: true
-    amiFamily: Bottlerocket
-    disableIMDSv1: true
-    iam:
-      instanceProfileARN: arn:aws:iam::755502957828:instance-profile/EKS-Default-SSM-AD-Role-ip
-      instanceRoleARN: arn:aws:iam::755502957828:role/EKS-Default-SSM-AD-Role
-    labels:
-      workload: system
-    securityGroups:
-      withLocal: false
-    tags:
-      k8s.io/cluster-autoscaler/enabled: "true"
-      k8s.io/cluster-autoscaler/dev: "owned"
-      k8s.io/cluster-autoscaler/node-template/label/workload: system
-      k8s.io/cluster-autoscaler/node-template/taint/CriticalAddonsOnly: NoSchedule
-    ssh:
-      allow: true
-      publicKeyName: bottlerocket
-    taints:
-      CriticalAddonsOnly: "true:NoSchedule"
-  - name: monitoring-120
-    instanceType: r6g.xlarge
     desiredCapacity: 1
     minSize: 0
     maxSize: 3
@@ -129,27 +101,85 @@ nodeGroups:
     privateNetworking: true
     amiFamily: Bottlerocket
     disableIMDSv1: true
+    securityGroups:
+      withLocal: false
     iam:
-      instanceProfileARN: arn:aws:iam::755502957828:instance-profile/EKS-Default-SSM-AD-Role-ip
+      instanceRoleARN: arn:aws:iam::755502957828:role/EKS-Default-SSM-AD-Role
+    labels:
+      workload: system
+    tags:
+      k8s.io/cluster-autoscaler/enabled: "true"
+      k8s.io/cluster-autoscaler/dev: "owned"
+      k8s.io/cluster-autoscaler/node-template/label/workload: system
+      k8s.io/cluster-autoscaler/node-template/taint/CriticalAddonsOnly: NoSchedule
+    taints:
+      - key: CriticalAddonsOnly
+        value: "true"
+        effect: "NoSchedule"
+    ssh:
+      allow: true
+      publicKeyName: bottlerocket
+  - name: monitoring-1201
+    spot: true
+    instanceType: r6g.large
+    availabilityZones:
+      - ap-south-1a
+    desiredCapacity: 1
+    minSize: 0
+    maxSize: 2
+    volumeType: gp3
+    volumeSize: 10
+    volumeEncrypted: true
+    volumeKmsKeyID: a3456af4-c4de-4938-837d-86d5615d75d7
+    privateNetworking: true
+    amiFamily: Bottlerocket
+    disableIMDSv1: true
+    securityGroups:
+      withLocal: false
+    iam:
       instanceRoleARN: arn:aws:iam::755502957828:role/EKS-Default-SSM-AD-Role
     labels:
       workload: monitoring
-    securityGroups:
-      withLocal: false
     tags:
       k8s.io/cluster-autoscaler/enabled: "true"
       k8s.io/cluster-autoscaler/dev: "owned"
       k8s.io/cluster-autoscaler/node-template/label/workload: monitoring
       k8s.io/cluster-autoscaler/node-template/taint/monitoring: NoSchedule
     taints:
-      monitoring: "true:NoSchedule"
-  - name: common-120
-    instancesDistribution:
-      maxPrice: 0.28
-      instanceTypes: [ "c4.4xlarge","c5.4xlarge", "c5a.4xlarge", "c5n.4xlarge", "m5a.4xlarge", "m5.4xlarge" ]
-      onDemandPercentageAboveBaseCapacity: 25
-      spotAllocationStrategy: "capacity-optimized-prioritized"
-    desiredCapacity: 3
+      - key: monitoring
+        value: "true"
+        effect: "NoSchedule"
+  - name: gpu-compute-1201
+    spot: true
+    instanceTypes: [ "g4dn.xlarge", "g4dn.2xlarge" ]
+    desiredCapacity: 0
+    minSize: 0
+    maxSize: 5
+    volumeType: gp3
+    volumeSize: 125
+    volumeEncrypted: true
+    volumeKmsKeyID: a3456af4-c4de-4938-837d-86d5615d75d7
+    privateNetworking: true
+    disableIMDSv1: true
+    iam:
+      instanceRoleARN: arn:aws:iam::755502957828:role/EKS-Default-SSM-AD-Role
+    labels:
+      compute: gpu
+    tags:
+      k8s.io/cluster-autoscaler/enabled: "true"
+      k8s.io/cluster-autoscaler/dev: "owned"
+      k8s.io/cluster-autoscaler/node-template/label/compute: gpu
+      k8s.io/cluster-autoscaler/node-template/taint/dld: NoSchedule
+    taints:
+      - key: dld
+        value: "true"
+        effect: "NoSchedule"
+  - name: common-1201
+    spot: true
+    instanceTypes: [ "c4.4xlarge","c5.4xlarge", "c5a.4xlarge", "c5n.4xlarge", "m5a.4xlarge", "m5.4xlarge" ]
+    availabilityZones:
+      - ap-south-1a
+    desiredCapacity: 1
     minSize: 0
     maxSize: 20
     volumeType: gp3
@@ -160,40 +190,16 @@ nodeGroups:
     amiFamily: Bottlerocket
     disableIMDSv1: true
     iam:
-      instanceProfileARN: arn:aws:iam::755502957828:instance-profile/EKS-Default-SSM-AD-Role-ip
       instanceRoleARN: arn:aws:iam::755502957828:role/EKS-Default-SSM-AD-Role
     labels:
       workload: public
-      eks.amazonaws.com/compute-type: ec2
+      falco: enabled
     securityGroups:
       withLocal: false
     tags:
       k8s.io/cluster-autoscaler/enabled: "true"
       k8s.io/cluster-autoscaler/dev: "owned"
       k8s.io/cluster-autoscaler/node-template/label/workload: public
-  - name: gpu-compute-121
-    instanceType: g4dn.xlarge
-    desiredCapacity: 3
-    minSize: 0
-    maxSize: 8
-    volumeType: gp3
-    volumeSize: 125
-    volumeEncrypted: true
-    volumeKmsKeyID: a3456af4-c4de-4938-837d-86d5615d75d7
-    privateNetworking: true
-    disableIMDSv1: true
-    iam:
-      instanceProfileARN: arn:aws:iam::755502957828:instance-profile/EKS-Default-SSM-AD-Role-ip
-      instanceRoleARN: arn:aws:iam::755502957828:role/EKS-Default-SSM-AD-Role
-    labels:
-      falco: enabled
-      compute: gpu
-    tags:
-      k8s.io/cluster-autoscaler/enabled: "true"
-      k8s.io/cluster-autoscaler/dev: "owned"
-      k8s.io/cluster-autoscaler/node-template/label/workload: gpu-compute
-    taints:
-      dld: "true:NoSchedule"
 
 cloudWatch:
   clusterLogging:

@@ -30,7 +30,7 @@ jobs:
           --branch=${GITHUB_REF#refs/heads/}
           flux create kustomization flux-system \
           --source=flux-system \
-          --path=./clusters/dev/ap-south-1
+          --path=./policy
       - name: Verify cluster reconciliation
         run: |
           kubectl -n flux-system wait kustomization/kyverno --for=condition=ready --timeout=1m
