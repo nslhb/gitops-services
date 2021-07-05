@@ -6,8 +6,16 @@ metadata:
 spec:
   template:
     spec:
-      nodeSelector:
-        workload: system
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              preference:
+                matchExpressions:
+                  - key: workload
+                    operator: In
+                    values:
+                      - system
       tolerations:
         - key: CriticalAddonsOnly
           operator: Exists

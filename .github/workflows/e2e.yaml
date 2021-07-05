@@ -21,15 +21,15 @@ jobs:
       - name: Setup Kubernetes
         uses: nslhb/kind-action@main
       - name: Install Flux in Kubernetes Kind
-        run: flux install
-      - run: flux create source git flux-system --url=${{ github.event.repository.html_url }} --branch=${GITHUB_REF#refs/heads/}
+        run: flux install --components-extra=image-reflector-controller,image-automation-controller
+      - run: flux create source git flux-system --url=${{ github.event.repository.html_url }} --branch=${{ github.head_ref }}
       - name: Setup kyverno reconciliation
         run: flux create kustomization flux-system --source=flux-system --path=./clusters/e2e
       - name: Verify cluster reconciliation
         run: |
+          kubectl -n flux-system wait kustomization/flux-system --for=condition=ready --timeout=1m
           kubectl -n flux-system wait kustomization/kyverno --for=condition=ready --timeout=1m
           kubectl -n flux-system wait kustomization/kyverno-policies --for=condition=ready --timeout=1m
-          kubectl -n flux-system wait kustomization/flux-system --for=condition=ready --timeout=1m
       - name: Debug failure
         if: failure()
         run: |
