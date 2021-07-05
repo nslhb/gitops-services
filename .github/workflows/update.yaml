@@ -34,6 +34,7 @@ jobs:
         id: update
         run: |
           flux install --toleration-keys=CriticalAddonsOnly --components-extra=image-reflector-controller,image-automation-controller --export > ./clusters/dev/ap-south-1/flux-system/gotk-components.yaml
+          flux install --toleration-keys=CriticalAddonsOnly --components-extra=image-reflector-controller,image-automation-controller --export > ./clusters/e2e/flux-system/gotk-components.yaml
           flux install --toleration-keys=CriticalAddonsOnly --components-extra=image-reflector-controller,image-automation-controller --export > ./clusters/services/ap-south-1/flux-system/gotk-components.yaml
           flux install --toleration-keys=CriticalAddonsOnly --components-extra=image-reflector-controller,image-automation-controller --export > ./clusters/services/us-east-1/flux-system/gotk-components.yaml
           VERSION="$(flux -v)"
