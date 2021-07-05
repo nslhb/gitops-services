@@ -22,15 +22,16 @@ jobs:
         uses: nslhb/kind-action@main
       - name: Install Flux in Kubernetes Kind
         run: flux install
-      - run: echo clusters/dev/tenants.yaml > .sourceignore
-      - name: Setup cluster reconciliation
-        run: |
+      - run: |
+          echo clusters/dev/tenants.yaml > .sourceignore
           flux create source git flux-system \
           --url=${{ github.event.repository.html_url }} \
           --branch=${GITHUB_REF#refs/heads/}
-          flux create kustomization flux-system \
-          --source=flux-system \
-          --path=./policy
+      - name: Setup kyverno reconciliation
+        run: |
+        flux create kustomization flux-system \
+        --source=flux-system \
+        --path=./clusters/dev/ap-south-1
       - name: Verify cluster reconciliation
         run: |
           kubectl -n flux-system wait kustomization/kyverno --for=condition=ready --timeout=1m
