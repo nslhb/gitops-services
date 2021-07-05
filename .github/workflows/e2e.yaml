@@ -26,9 +26,10 @@ jobs:
           flux create source git flux-system --url=${{ github.event.repository.html_url }} --branch=${{ github.head_ref }}
           flux reconcile source git flux-system -n flux-system
       - name: Setup kyverno reconciliation
-        run: flux create kustomization kyverno --source=flux-system --path=./policy/kyverno --health-check="Deployment/kyverno.kyverno"
+        run: flux create kustomization kyverno -n flux-system --source=flux-system --path=./policy/kyverno --health-check="Deployment/kyverno.kyverno"
       - name: Verify cluster reconciliation
         run: |
+          flux get ks -A
           kubectl -n flux-system wait kustomization/flux-system --for=condition=ready --timeout=1m
           kubectl -n flux-system wait kustomization/kyverno --for=condition=ready --timeout=1m
       - name: Debug failure
