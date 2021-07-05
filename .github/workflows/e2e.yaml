@@ -22,7 +22,9 @@ jobs:
         uses: nslhb/kind-action@main
       - name: Install Flux in Kubernetes Kind
         run: flux install --components-extra=image-reflector-controller,image-automation-controller
-      - run: flux create source git flux-system --url=${{ github.event.repository.html_url }} --branch=${{ github.head_ref }}
+      - run: |
+          flux create source git flux-system --url=${{ github.event.repository.html_url }} --branch=${{ github.head_ref }}
+          flux reconcile source git flux-system -n flux-system
       - name: Setup kyverno reconciliation
         run: flux create kustomization flux-system --source=flux-system --path=./policy/kyverno
       - name: Verify cluster reconciliation
