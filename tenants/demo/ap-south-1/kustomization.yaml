@@ -7,7 +7,6 @@ resources:
   - ../../teams/avanlg
   - ../../teams/taas
   - ../../teams/dld
-  - ecr-sync.yaml
 patchesStrategicMerge:
   - devops-patch.yaml
   - paas-patch.yaml
