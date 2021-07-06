@@ -18,6 +18,7 @@ spec:
       resources:
         namespaces:
           - monitoring
+          - observability
           - kube-system
     validate:
       message: "Use of hostNetwork is not allowed"
@@ -33,6 +34,7 @@ spec:
       resources:
         namespaces:
           - kube-system
+          - observability
     validate:
       message: "Use of hostPort is not allowed"
       pattern:
