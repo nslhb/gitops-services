@@ -149,7 +149,7 @@ managedNodeGroups:
       - key: monitoring
         value: "true"
         effect: "NoSchedule"
-  - name: gpu-compute-1201
+  - name: gpu-compute-1203
     spot: true
     instanceTypes: [ "g4dn.xlarge", "g4dn.2xlarge" ]
     desiredCapacity: 0
@@ -161,6 +161,10 @@ managedNodeGroups:
     volumeKmsKeyID: a3456af4-c4de-4938-837d-86d5615d75d7
     privateNetworking: true
     disableIMDSv1: true
+    securityGroups:
+      withLocal: false
+      attachIDs:
+        - sg-0f2067cc2e5c0240a
     iam:
       instanceRoleARN: arn:aws:iam::755502957828:role/EKS-Default-SSM-AD-Role
     labels:
@@ -174,7 +178,7 @@ managedNodeGroups:
       - key: dld
         value: "true"
         effect: "NoSchedule"
-  - name: common-1201
+  - name: common-1203
     spot: true
     instanceTypes: [ "c4.4xlarge","c5.4xlarge", "c5a.4xlarge", "c5n.4xlarge", "m5a.4xlarge", "m5.4xlarge" ]
     availabilityZones:
@@ -189,13 +193,15 @@ managedNodeGroups:
     privateNetworking: true
     amiFamily: Bottlerocket
     disableIMDSv1: true
+    securityGroups:
+      withLocal: false
+      attachIDs:
+        - sg-0f2067cc2e5c0240a
     iam:
       instanceRoleARN: arn:aws:iam::755502957828:role/EKS-Default-SSM-AD-Role
     labels:
       workload: public
       falco: enabled
-    securityGroups:
-      withLocal: false
     tags:
       k8s.io/cluster-autoscaler/enabled: "true"
       k8s.io/cluster-autoscaler/dev: "owned"
