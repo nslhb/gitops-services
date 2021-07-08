@@ -119,11 +119,11 @@ managedNodeGroups:
     ssh:
       allow: true
       publicKeyName: bottlerocket
-  - name: monitoring-1201
+  - name: monitoring-1203
     spot: true
-    instanceType: r6g.large
+    instanceTypes: [ "r6g.large", "m6g.large", "t4g.large" ]
     availabilityZones:
-      - ap-south-1a
+    - ap-south-1a
     desiredCapacity: 1
     minSize: 0
     maxSize: 2
