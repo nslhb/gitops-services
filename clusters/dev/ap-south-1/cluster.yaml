@@ -169,6 +169,7 @@ managedNodeGroups:
       instanceRoleARN: arn:aws:iam::755502957828:role/EKS-Default-SSM-AD-Role
     labels:
       compute: gpu
+      falco: enabled
     tags:
       k8s.io/cluster-autoscaler/enabled: "true"
       k8s.io/cluster-autoscaler/dev: "owned"
