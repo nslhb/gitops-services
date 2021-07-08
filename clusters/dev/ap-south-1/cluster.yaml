@@ -89,8 +89,8 @@ iam:
               - "arn:aws:securityhub:us-east-1::product/aqua-security/kube-bench"
 
 managedNodeGroups:
-  - name: system-1201
-    instanceType: "a1.xlarge"
+  - name: system-1202
+    instanceTypes: ["a1.xlarge", "m6g.xlarge"]
     desiredCapacity: 1
     minSize: 0
     maxSize: 3
@@ -121,7 +121,7 @@ managedNodeGroups:
       publicKeyName: bottlerocket
   - name: monitoring-1203
     spot: true
-    instanceTypes: [ "r6g.large", "m6g.large", "t4g.large" ]
+    instanceTypes: [ "r6g.large", "m6g.xlarge", "t4g.xlarge" ]
     availabilityZones:
     - ap-south-1a
     desiredCapacity: 1
@@ -136,6 +136,8 @@ managedNodeGroups:
     disableIMDSv1: true
     securityGroups:
       withLocal: false
+      attachIDs:
+        - sg-0f2067cc2e5c0240a
     iam:
       instanceRoleARN: arn:aws:iam::755502957828:role/EKS-Default-SSM-AD-Role
     labels:
