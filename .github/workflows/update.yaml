@@ -6,7 +6,7 @@ on:
     - cron: "0 0 * * *"
 
 jobs:
-  kyverno:
+  auto-update:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
