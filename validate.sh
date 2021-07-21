@@ -18,9 +18,9 @@ set -x
 set -o errexit
 
 echo "INFO - Downloading Flux OpenAPI schemas"
-apt-get update && apt-get install curl && n
+#apt-get update && apt-get install curl && n
 mkdir -p /tmp/flux-crd-schemas/master-standalone-strict
-curl -sL https://github.com/fluxcd/flux2/releases/latest/download/crd-schemas.tar.gz | tar zxf - -C /tmp/flux-crd-schemas/master-standalone-strict
+#curl -sL https://github.com/fluxcd/flux2/releases/latest/download/crd-schemas.tar.gz | tar zxf - -C /tmp/flux-crd-schemas/master-standalone-strict
 
 find . -type f -name '*.yaml' -print0 | while IFS= read -r -d $'\0' file;
   do
@@ -28,14 +28,14 @@ find . -type f -name '*.yaml' -print0 | while IFS= read -r -d $'\0' file;
     yq e 'true' "$file" > /dev/null
 done
 
-echo "INFO - Validating clusters"
-find ./clusters -type f -name '*.yaml' -maxdepth 3 -print0 | while IFS= read -r -d $'\0' file;
-  do
-    kubeval ${file} --skip-kinds ClusterConfig,CustomResourceDefinition --strict --ignore-missing-schemas --additional-schema-locations=file:///tmp/flux-crd-schemas
-    if [[ ${PIPESTATUS[0]} != 0 ]]; then
-      exit 1
-    fi
-done
+#echo "INFO - Validating clusters"
+#find ./clusters -type f -name '*.yaml' -maxdepth 3 -print0 | while IFS= read -r -d $'\0' file;
+#  do
+#    kubeval ${file} --skip-kinds ClusterConfig,CustomResourceDefinition --strict --ignore-missing-schemas --additional-schema-locations=file:///tmp/flux-crd-schemas
+#    if [[ ${PIPESTATUS[0]} != 0 ]]; then
+#      exit 1
+#    fi
+#done
 
 # mirror kustomize-controller build options
 #kustomize_flags="--enable_kyaml=false --allow_id_changes=false --load_restrictor=LoadRestrictionsNone"
