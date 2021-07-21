@@ -17,7 +17,7 @@
 set -o errexit
 
 echo "INFO - Downloading Flux OpenAPI schemas"
-apk --no-cache add curl
+apt-get update && apt-get install curl && Y
 mkdir -p /tmp/flux-crd-schemas/master-standalone-strict
 curl -sL https://github.com/fluxcd/flux2/releases/latest/download/crd-schemas.tar.gz | tar zxf - -C /tmp/flux-crd-schemas/master-standalone-strict
 
