@@ -1,3 +1,3 @@
 #!/usr/bin/env sh
 
-echo "test to be run"
+echo "test to be run by user"
