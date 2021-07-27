@@ -41,6 +41,5 @@ configMapGenerator:
       - cluster_name="demo"
 secretGenerator:
   - name: aws-environment
-    namespace: paas
     literals:
       - TEST=demo
