@@ -28,6 +28,7 @@ jobs:
         id: matrix
         run: |
           echo "::set-output name=test_matrix::false"  
+          exit 1
           mvn test         
           echo "::set-output name=test_matrix::true"  
          
@@ -35,7 +36,7 @@ jobs:
           
   githubaction-trigger-job:
     needs: [test-job] 
-    if: always()
+    if: ${{ needs.test-job.result != 'skipped' && always() }}
     runs-on: ubuntu-latest
     steps:
       - name: echo-jobs
