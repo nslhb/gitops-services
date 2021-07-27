@@ -12,6 +12,10 @@ kind: Kustomization
 metadata:
   name: paas
   namespace: paas
+secretGenerator:
+  - name: aws-environment
+    literals:
+      - TEST=demo1
 spec:
   postBuild:
     substitute:
