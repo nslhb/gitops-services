@@ -18,6 +18,6 @@ spec:
       cluster_region: "ap-south-1"
       account_id: "755502957828"
       env: "dev"
-    substituteFrom:
-      - kind: Secret
-        name: aws-environment
+    #substituteFrom:
+    #  - kind: Secret
+    #    name: aws-environment
