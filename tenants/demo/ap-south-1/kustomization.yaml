@@ -7,6 +7,7 @@ resources:
   - ../../teams/avanlg
   - ../../teams/taas
   - ../../teams/dld
+  - secrets.yaml
 patchesStrategicMerge:
   - devops-patch.yaml
   - paas-patch.yaml
@@ -35,6 +36,14 @@ configMapGenerator:
   - name: aws-environment
     namespace: istio-system
     literals:
+      - cluster_region="ap-south-1"
+      - account_id="415505189627"
+      - cluster_name="demo"
+secretGenerator:
+  - name: aws-environment
+    namespace: kube-system
+    literals:
+      - TEST=demo
       - cluster_region="ap-south-1"
       - account_id="415505189627"
       - cluster_name="demo"
