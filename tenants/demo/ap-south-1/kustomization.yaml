@@ -7,6 +7,7 @@ resources:
   - ../../teams/avanlg
   - ../../teams/taas
   - ../../teams/dld
+  - secrets.yaml
 patchesStrategicMerge:
   - devops-patch.yaml
   - paas-patch.yaml
@@ -38,3 +39,7 @@ configMapGenerator:
       - cluster_region="ap-south-1"
       - account_id="415505189627"
       - cluster_name="demo"
+secretGenerator:
+  - name: aws-environment
+    literals:
+      - TEST=demo
