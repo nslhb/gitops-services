@@ -7,7 +7,6 @@ resources:
   - ../../teams/avanlg
   - ../../teams/taas
   - ../../teams/dld
-  - secrets.yaml
 patchesStrategicMerge:
   - devops-patch.yaml
   - paas-patch.yaml
