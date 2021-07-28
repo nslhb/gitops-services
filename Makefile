@@ -22,7 +22,7 @@ ep:
 
 
 config:
-	@eksctl utils write-kubeconfig --cluster $(CLUSTER)
+	@eksctl utils write-kubeconfig --cluster $(CLUSTER) --region $(REGION)
 
 ng:
 	@eksctl --skip-outdated-addons-check=true create nodegroup --config-file=clusters/$(CLUSTER)/$(REGION)/cluster.yaml
