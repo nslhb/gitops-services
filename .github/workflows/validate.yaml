@@ -13,6 +13,163 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Setup tools
-        uses: ./.github/actions/tools
+        uses: ./.github/actions/tools 
       - name: Validate manifests
         run: ./.github/scripts/validate.sh
+      - name: adding label
+        uses: actions-ecosystem/action-add-labels@v1
+        if: ${{ github.event_name == 'pull_request' }} 
+        with:
+          labels: |
+            githubactions-approved       
+          github_token: '${{ secrets.NSLHB_TEST_TOKEN }}'         
+      - name: removing label
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: actions-ecosystem/action-remove-labels@v1
+        with:
+          labels: |
+            do-not-merge/githubaction-restiction
+          github_token: '${{ secrets.NSLHB_TEST_TOKEN }}'
+      - name: adding pass comments
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: mshick/add-pr-comment@v1
+        with:
+          message: |
+            Github-Action Tests Passed 
+          repo-token: ${{ secrets.NSLHB_TEST_TOKEN }}
+          repo-token-user-login: 'github-actions[bot]' 
+          allow-repeats: true    
+      - name: adding fialed comments
+        if: ${{ github.event_name == 'pull_request' && needs.test-job.result == 'failure' && always() }}
+        uses: mshick/add-pr-comment@v1
+        with:
+          message: |
+            Github-Action Tests Failed 
+          repo-token: ${{ secrets.NSLHB_TEST_TOKEN }}
+          repo-token-user-login: 'github-actions[bot]' 
+          allow-repeats: true
+        
+
+
+#name: PROW-Test 
+
+#on:
+#  issue_comment:
+#    types: [created, edited, deleted]
+
+#jobs:
+#  test-job:
+#    runs-on: ubuntu-latest
+#    if: contains(github.event.comment.html_url, '/pull/') && contains(github.event.comment.body, '/ok-to-test') 
+#    outputs:
+#      test: ${{ steps.matrix.outputs.test_matrix }}
+#    steps:
+#      - name: Step 1 - MainBranch Checkout
+#        uses: actions/checkout@v2
+     
+#      - name: Step 2 - JDK SETUP
+#        uses: actions/setup-java@v2
+#        with:
+#          java-version: '15'
+#          distribution: 'adopt'      
+      
+#      - name: Set up Maven
+#        uses: stCarolas/setup-maven@v4
+#        with:
+#            maven-version: 3.8.1     
+#      - name: Run Test 
+#        id: matrix
+#        run: |
+#          echo "::set-output name=test_matrix::false"  
+#          exit 1
+#          mvn test         
+#          echo "::set-output name=test_matrix::true"  
+         
+          
+          
+#  githubaction-trigger-job:
+#    needs: [test-job] 
+#    if: ${{ needs.test-job.result != 'skipped' && always() }}
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: echo-jobs
+#        run: |
+#          echo "testing"
+#          echo ${{ github.event.label.name == 'do-not-merge/hold' }}
+#          echo ${{ needs.test-job.outputs.test  == 'true' }}
+          
+#      - uses: mshick/add-pr-comment@v1
+#        if: ${{ needs.deploy.outputs.test  != 'true' }}
+#        with:
+#          message: |
+#            Maven Test Failed 
+#          repo-token: ${{ secrets.NSLHB_TEST_TOKEN }}
+#          repo-token-user-login: 'github-actions[bot]' # The user.login for temporary GitHub tokens
+#          allow-repeats: true
+      
+#      - uses: actions-ecosystem/action-add-labels@v1
+#        if: ${{ needs.deploy.outputs.test  != 'true' }}
+#        with:
+#          labels: |
+#            do-not-merge/githubaction-restiction
+#          github_token: '${{ secrets.NSLHB_TEST_TOKEN }}'
+          
+#      - uses: actions-ecosystem/action-remove-labels@v1
+#        if: ${{ needs.deploy.outputs.test  != 'true' }}
+#        with:
+#          labels: |
+#           githubactions-approved 
+#          github_token: '${{ secrets.NSLHB_TEST_TOKEN }}'    
+
+          
+#      - uses: mshick/add-pr-comment@v1
+#        if: ${{ needs.deploy.outputs.test  == 'true' }}
+#        with:
+#          message: |
+#            Github actions Test Passes 
+#          repo-token: ${{ secrets.NSLHB_TEST_TOKEN }}
+#          repo-token-user-login: 'github-actions[bot]' # The user.login for temporary GitHub tokens
+#          allow-repeats: true    
+      
+#      - uses: actions-ecosystem/action-add-labels@v1
+#        if: ${{ needs.deploy.outputs.test  == 'true' }}
+#        with:
+#          labels: |
+#            githubactions-approved
+#          github_token: '${{ secrets.NSLHB_TEST_TOKEN }}'
+          
+#      - uses: actions-ecosystem/action-remove-labels@v1
+#        if: ${{ needs.deploy.outputs.test  == 'true' }}
+#        with:
+#          labels: |
+#            do-not-merge/githubaction-restiction
+#          github_token: '${{ secrets.NSLHB_TEST_TOKEN }}'    
+
+#  cherry-pick:
+#    runs-on: ubuntu-latest  
+#    if: contains(github.event.comment.html_url, '/pull/') && contains(github.event.comment.body, '/cherry-pick-approved')
+#    steps:
+#      - uses: actions-ecosystem/action-add-labels@v1
+#        with:
+#          labels: |
+#            cherry-pick-approved
+#          github_token: '${{ secrets.NSLHB_TEST_TOKEN }}'
+          
+
+#  github-action-labler:
+#    runs-on: ubuntu-latest
+#    if: contains(github.event.comment.html_url, '/pull/') && contains(github.event.comment.body, '/remove-githubaction-restiction')
+#    steps:
+#      - uses: actions-ecosystem/action-add-labels@v1
+#        with:
+#          labels: |
+#            githubactions-approved
+#          github_token: '${{ secrets.NSLHB_TEST_TOKEN }}'
+#          
+#      - uses: actions-ecosystem/action-remove-labels@v1
+#        with:
+#          labels: |
+#            do-not-merge/githubaction-restiction
+#          github_token: '${{ secrets.NSLHB_TEST_TOKEN }}'  
+      
+
