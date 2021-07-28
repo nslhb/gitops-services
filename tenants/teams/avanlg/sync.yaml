@@ -25,3 +25,7 @@ spec:
     kind: GitRepository
     name: ava-nlg
   validation: client
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: aws-environment
