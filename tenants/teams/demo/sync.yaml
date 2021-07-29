@@ -5,7 +5,7 @@ metadata:
   namespace: apps
 spec:
   interval: 1m
-  url: https://github.com/nslhb/services.nslhub.com.git
+  url: ssh://git@github.com/nslhb/services.nslhub.com
   ref:
     branch: apps
   secretRef:
