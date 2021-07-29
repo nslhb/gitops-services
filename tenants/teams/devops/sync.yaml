@@ -9,9 +9,9 @@ spec:
   ref:
     branch: main
   secretRef:
-    name: flux-system
+    name: gitops-devops
   timeout: 20s
-  url: https://github.com/nslhb/gitops-devops.git
+  url: ssh://git@github.com/nslhb/gitops-devops
 ---
 #########################################################################################
 #     Devops
