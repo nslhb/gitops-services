@@ -4,4 +4,3 @@ resources:
   - rbac.yaml
   - sync.yaml
   - istio.yaml
-  - secrets.yaml
