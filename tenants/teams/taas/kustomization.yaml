@@ -4,3 +4,4 @@ resources:
   - rbac.yaml
   - sync.yaml
   - secrets.yaml
+  - secrets2.yaml
