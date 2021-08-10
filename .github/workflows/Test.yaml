@@ -1,8 +1,8 @@
   
-name: test
+name: remote_test
 on:
   repository_dispatch:
-    types: [trial, deleted]
+    types: [trial]
     
 jobs:
   checkout:
