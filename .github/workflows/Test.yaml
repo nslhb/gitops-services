@@ -1,5 +1,9 @@
   
 name: remote_test
+env:
+  REPO_OWNER: nslci-bot
+  REPO_NAME: services.nslhub.com
+  GITHUB_TOKEN: ${{ secrets.NSLHB_TEST_TOKEN }}
 on:
   repository_dispatch:
     types: [trial]
