@@ -6,7 +6,6 @@ env:
   GITHUB_TOKEN: ${{ secrets.NSLHB_TEST_TOKEN }}
 on:
   repository_dispatch:
-    types: [trial]
     
 jobs:
   checkout:
