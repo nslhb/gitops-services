@@ -1,0 +1,31 @@
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: GitRepository
+metadata:
+  name: t360
+  namespace: t360
+spec:
+  interval: 1m
+  ref:
+    branch: main
+  secretRef:
+    name: t360
+  url: https://github.com/nslhb/gitops-t360.git
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+kind: Kustomization
+metadata:
+  name: t360
+  namespace: t360
+spec:
+  interval: 1m
+  path: ./
+  prune: true
+  serviceAccountName: t360
+  sourceRef:
+    kind: GitRepository
+    name: t360
+  validation: client
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: aws-environment
