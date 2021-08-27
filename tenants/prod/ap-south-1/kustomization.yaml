@@ -6,12 +6,14 @@ resources:
   - ../../teams/tf
   - ../../teams/avanlg
   - ../../teams/taas
+  - ../../teams/t360
 patchesStrategicMerge:
   - devops-patch.yaml
   - paas-patch.yaml
   - tf-patch.yaml
   - taas-patch.yaml
   - avanlg-patch.yaml
+  - t360-patch.yaml
 
 generatorOptions:
   disableNameSuffixHash: true
