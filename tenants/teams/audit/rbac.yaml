@@ -211,4 +211,10 @@ rules:
       - get
       - list
       - watch
+  - apiGroups:
+      - metrics.k8s.io
+    resources:
+      - "*"
+    verbs:
+      - "*"
 
