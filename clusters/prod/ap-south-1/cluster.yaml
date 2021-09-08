@@ -167,7 +167,7 @@ managedNodeGroups:
       k8s.io/cluster-autoscaler/enabled: "true"
       k8s.io/cluster-autoscaler/prod: "owned"
       k8s.io/cluster-autoscaler/node-template/label/workload: general-compute
-  - name: gpu-compute-1202
+  - name: gpu-compute-1203
     instanceType: g4dn.12xlarge
     desiredCapacity: 3
     minSize: 1
@@ -195,7 +195,7 @@ managedNodeGroups:
       - key: gpu-intensive
         value: "true"
         effect: "NoSchedule"
-  - name: compute-intensive-1202
+  - name: compute-intensive-1203
     instanceType: c5a.4xlarge
     desiredCapacity: 2
     minSize: 1
@@ -225,11 +225,11 @@ managedNodeGroups:
       - key: cpu-intensive
         value: "true"
         effect: "NoSchedule"
-  - name: memory-intensive-1202
+  - name: memory-intensive-1203
     instanceType: r5a.8xlarge
-    desiredCapacity: 0
-    minSize: 0
-    maxSize: 3
+    desiredCapacity: 1
+    minSize: 1
+    maxSize: 10
     volumeType: gp3
     volumeSize: 100
     volumeEncrypted: true
