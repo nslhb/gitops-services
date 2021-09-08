@@ -87,8 +87,8 @@ managedNodeGroups:
   - name: system-1202
     instanceType: "t4g.xlarge"
     desiredCapacity: 1
-    minSize: 0
-    maxSize: 3
+    minSize: 1
+    maxSize: 10
     volumeType: gp3
     volumeSize: 25
     volumeEncrypted: true
@@ -116,8 +116,8 @@ managedNodeGroups:
   - name: monitoring-1202
     instanceType: r6g.xlarge
     desiredCapacity: 1
-    minSize: 0
-    maxSize: 3
+    minSize: 1
+    maxSize: 10
     volumeType: gp3
     volumeSize: 25
     volumeEncrypted: true
@@ -144,9 +144,9 @@ managedNodeGroups:
         effect: "NoSchedule"
   - name: general-compute-1202
     instanceType: m5a.8xlarge
-    desiredCapacity: 2
-    minSize: 0
-    maxSize: 5
+    desiredCapacity: 10
+    minSize: 1
+    maxSize: 10
     volumeType: gp3
     volumeSize: 100
     volumeEncrypted: true
@@ -169,9 +169,9 @@ managedNodeGroups:
       k8s.io/cluster-autoscaler/node-template/label/workload: general-compute
   - name: gpu-compute-1202
     instanceType: g4dn.12xlarge
-    desiredCapacity: 1
-    minSize: 0
-    maxSize: 3
+    desiredCapacity: 3
+    minSize: 1
+    maxSize: 10
     volumeType: gp3
     volumeSize: 100
     volumeEncrypted: true
@@ -190,11 +190,16 @@ managedNodeGroups:
       k8s.io/cluster-autoscaler/enabled: "true"
       k8s.io/cluster-autoscaler/prod: "owned"
       k8s.io/cluster-autoscaler/node-template/label/workload: gpu-compute
+      k8s.io/cluster-autoscaler/node-template/taint/gpu-intensive: NoSchedule
+    taints:
+      - key: gpu-intensive
+        value: "true"
+        effect: "NoSchedule"
   - name: compute-intensive-1202
     instanceType: c5a.4xlarge
-    desiredCapacity: 0
-    minSize: 0
-    maxSize: 3
+    desiredCapacity: 2
+    minSize: 1
+    maxSize: 10
     volumeType: gp3
     volumeSize: 100
     volumeEncrypted: true
@@ -215,6 +220,7 @@ managedNodeGroups:
       k8s.io/cluster-autoscaler/enabled: "true"
       k8s.io/cluster-autoscaler/prod: "owned"
       k8s.io/cluster-autoscaler/node-template/label/workload: compute-intensive
+      k8s.io/cluster-autoscaler/node-template/taint/cpu-intensive: NoSchedule
     taints:
       - key: cpu-intensive
         value: "true"
@@ -244,6 +250,7 @@ managedNodeGroups:
       k8s.io/cluster-autoscaler/enabled: "true"
       k8s.io/cluster-autoscaler/prod: "owned"
       k8s.io/cluster-autoscaler/node-template/label/workload: memory-intensive
+      k8s.io/cluster-autoscaler/node-template/taint/memory-intensive: NoSchedule
     taints:
       - key: memory-intensive
         value: "true"
