@@ -169,9 +169,9 @@ managedNodeGroups:
       k8s.io/cluster-autoscaler/node-template/label/workload: general-compute
   - name: gpu-compute-1203
     instanceType: g4dn.12xlarge
-    desiredCapacity: 3
-    minSize: 1
-    maxSize: 10
+    desiredCapacity: 1
+    minSize: 0
+    maxSize: 3
     volumeType: gp3
     volumeSize: 100
     volumeEncrypted: true
