@@ -74,3 +74,6 @@ coredns:
 	kubectl patch deployment coredns -n kube-system --type json \
         -p='[{"op": "add", "path": "/spec/template/metadata/annotations/eks.amazonaws.com~1compute-type"}]'
 	#kubectl annotate deployment coredns -n kube-system downscaler/downtime-replicas-
+
+ci:
+	kubectl create secret docker-registry regcred --docker-server=https://index.docker.io/v1/ --docker-username=$$(DOCKER_USER) --docker-password=$$(DOCKER_PASSWORD) --docker-email=$$(DOCKER_EMAIL)
