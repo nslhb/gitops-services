@@ -5,7 +5,7 @@ metadata:
   namespace: tf
 spec:
   ref:
-    branch: prod
+    branch: prod-int3
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
