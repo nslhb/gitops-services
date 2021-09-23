@@ -152,4 +152,7 @@ subjects:
     namespace: argo-rollouts
   - kind: ServiceAccount
     name: devops
+    namespace: argo-workflow
+  - kind: ServiceAccount
+    name: devops
     namespace: observability
