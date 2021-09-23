@@ -24,6 +24,7 @@ spec:
           - argo-rollouts
           - monitoring
           - paas
+          - argo-workflow
     validate:
       message: "Liveness and readiness probes are required"
       pattern:
