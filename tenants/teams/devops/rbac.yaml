@@ -81,27 +81,6 @@ metadata:
   name: devops
   namespace: argo-rollouts
 ---
-
-#########################################################################################
-#     Argo workflows
-#########################################################################################
-
-apiVersion: v1
-kind: Namespace
-metadata:
-  labels:
-    toolkit.fluxcd.io/tenant: devops
-  name: argo-workflow
-
----
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  labels:
-    toolkit.fluxcd.io/tenant: devops
-  name: devops
-  namespace: argo-workflow
----
 #########################################################################################
 #     Observability
 #########################################################################################
@@ -150,9 +129,6 @@ subjects:
   - kind: ServiceAccount
     name: devops
     namespace: argo-rollouts
-  - kind: ServiceAccount
-    name: devops
-    namespace: argo-workflow
   - kind: ServiceAccount
     name: devops
     namespace: observability
