@@ -1,0 +1,31 @@
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: GitRepository
+metadata:
+  name: ailabs
+  namespace: ailabs
+spec:
+  interval: 1m
+  ref:
+    branch: main
+  secretRef:
+    name: ailabs
+  url: https://github.com/nslhb/gitops-ailabs.git
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+kind: Kustomization
+metadata:
+  name: ailabs
+  namespace: ailabs
+spec:
+  interval: 1m
+  path: ./
+  prune: true
+  serviceAccountName: ailabs
+  sourceRef:
+    kind: GitRepository
+    name: ailabs
+  validation: client
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: aws-environment

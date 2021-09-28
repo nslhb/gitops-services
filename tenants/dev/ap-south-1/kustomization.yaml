@@ -7,6 +7,7 @@ resources:
   - ../../teams/avanlg
   - ../../teams/taas
   - ../../teams/dld
+  - ../../teams/ailabs
 patchesStrategicMerge:
   - devops-patch.yaml
   - paas-patch.yaml
@@ -14,6 +15,7 @@ patchesStrategicMerge:
   - taas-patch.yaml
   - avanlg-patch.yaml
   - dld-patch.yaml
+  - ailabs-patch.yaml
 
 generatorOptions:
   disableNameSuffixHash: true
