@@ -8,6 +8,7 @@ resources:
   - ../../teams/taas
   - ../../teams/t360
   - ../../teams/audit
+  - ../../teams/ailabs
 patchesStrategicMerge:
   - devops-patch.yaml
   - paas-patch.yaml
@@ -15,6 +16,7 @@ patchesStrategicMerge:
   - taas-patch.yaml
   - avanlg-patch.yaml
   - t360-patch.yaml
+  - ailabs-patch.yaml
 
 generatorOptions:
   disableNameSuffixHash: true
