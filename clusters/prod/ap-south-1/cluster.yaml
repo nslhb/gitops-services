@@ -84,7 +84,7 @@ iam:
               - "arn:aws:securityhub:us-east-1::product/aqua-security/kube-bench"
 
 managedNodeGroups:
-  - name: system-1202
+  - name: system-1203
     instanceType: "t4g.xlarge"
     desiredCapacity: 1
     minSize: 1
@@ -113,7 +113,7 @@ managedNodeGroups:
       - key: CriticalAddonsOnly
         value: "true"
         effect: "NoSchedule"
-  - name: monitoring-1202
+  - name: monitoring-1203
     instanceType: r6g.xlarge
     desiredCapacity: 1
     minSize: 1
@@ -142,7 +142,7 @@ managedNodeGroups:
       - key: monitoring
         value: "true"
         effect: "NoSchedule"
-  - name: general-compute-1202
+  - name: general-compute-1203
     instanceType: m5a.8xlarge
     desiredCapacity: 10
     minSize: 1
