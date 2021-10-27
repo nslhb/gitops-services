@@ -84,7 +84,7 @@ iam:
               - "arn:aws:securityhub:ap-south-1::product/aqua-security/kube-bench"
 managedNodeGroups:
   - name: system-120-2
-    instanceType: "a1.xlarge"
+    instanceType: ["a1.xlarge", "m6g.xlarge"]
     desiredCapacity: 1
     minSize: 1
     maxSize: 3
