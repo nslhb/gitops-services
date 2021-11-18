@@ -1,0 +1,20 @@
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: GitRepository
+metadata:
+  name: dld
+  namespace: dld
+spec:
+  ref:
+    branch: prod-int3
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+kind: Kustomization
+metadata:
+  name: dld
+  namespace: dld
+spec:
+  postBuild:
+    substitute:
+      cluster_region: "ap-south-1"
+      account_id: "901688089596"
+      env: "prod"
