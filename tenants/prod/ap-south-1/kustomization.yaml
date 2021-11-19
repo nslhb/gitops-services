@@ -9,6 +9,7 @@ resources:
   - ../../teams/t360
   - ../../teams/audit
   - ../../teams/ailabs
+  - ../../teams/dld
 patchesStrategicMerge:
   - devops-patch.yaml
   - paas-patch.yaml
@@ -17,6 +18,7 @@ patchesStrategicMerge:
   - avanlg-patch.yaml
   - t360-patch.yaml
   - ailabs-patch.yaml
+  - dld-patch.yaml
 
 generatorOptions:
   disableNameSuffixHash: true
