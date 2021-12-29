@@ -54,6 +54,7 @@ spec:
             - tf
             - apps
             - infra
+            - chatbot
       validate:
         message: "Privileged mode is not allowed. Set allowPrivilegeEscalation to false"
         pattern:
