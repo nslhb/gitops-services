@@ -59,6 +59,9 @@ spec:
             - key: "{{request.object.spec.chart.spec.sourceRef.namespace}}"
               operator: NotEquals
               value: "flux-system"
+            - key: "{{request.object.spec.chart.spec.sourceRef.namespace}}"
+              operator: NotEquals
+              value: "observability"
     - name: sourceRefNamespace
       exclude:
         resources:
