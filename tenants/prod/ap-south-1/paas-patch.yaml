@@ -34,3 +34,10 @@ metadata:
     istio-injection: disabled
   name: paas
 
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    istio-injection: disabled
+  name: keycloak
