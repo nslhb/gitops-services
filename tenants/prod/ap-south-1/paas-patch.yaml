@@ -27,17 +27,4 @@ metadata:
     istio-injection: disabled
   name: infra
 ---
-apiVersion: v1
-kind: Namespace
-metadata:
-  labels:
-    istio-injection: enabled
-  name: paas
 
----
-apiVersion: v1
-kind: Namespace
-metadata:
-  labels:
-    istio-injection: disabled
-  name: keycloak

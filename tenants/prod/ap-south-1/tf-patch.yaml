@@ -18,10 +18,3 @@ spec:
       cluster_region: "ap-south-1"
       account_id: "901688089596"
       env: "prod"
----
-apiVersion: v1
-kind: Namespace
-metadata:
-  labels:
-    istio-injection: disabled
-  name: tf
