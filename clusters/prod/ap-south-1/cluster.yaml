@@ -84,7 +84,7 @@ iam:
               - "arn:aws:securityhub:us-east-1::product/aqua-security/kube-bench"
 
 managedNodeGroups:
-  - name: system-1203
+  - name: system-1204
     instanceType: "t4g.xlarge"
     desiredCapacity: 1
     minSize: 1
@@ -113,7 +113,7 @@ managedNodeGroups:
       - key: CriticalAddonsOnly
         value: "true"
         effect: "NoSchedule"
-  - name: monitoring-1203
+  - name: monitoring-1204
     instanceType: r6g.xlarge
     desiredCapacity: 1
     minSize: 1
@@ -142,13 +142,13 @@ managedNodeGroups:
       - key: monitoring
         value: "true"
         effect: "NoSchedule"
-  - name: general-compute-1203
-    instanceType: m5a.8xlarge
-    desiredCapacity: 10
-    minSize: 1
-    maxSize: 10
+  - name: general-compute-1204
+    instanceType: c5a.8xlarge
+    desiredCapacity: 25
+    minSize: 25
+    maxSize: 25
     volumeType: gp3
-    volumeSize: 100
+    volumeSize: 150
     volumeEncrypted: true
     volumeKmsKeyID: ef15819c-c086-4aba-9430-d54af36d8b53
     privateNetworking: true
@@ -167,7 +167,7 @@ managedNodeGroups:
       k8s.io/cluster-autoscaler/enabled: "true"
       k8s.io/cluster-autoscaler/prod: "owned"
       k8s.io/cluster-autoscaler/node-template/label/workload: general-compute
-  - name: gpu-compute-1203
+  - name: gpu-compute-1204
     instanceType: g4dn.12xlarge
     desiredCapacity: 1
     minSize: 0
@@ -195,13 +195,13 @@ managedNodeGroups:
       - key: gpu-intensive
         value: "true"
         effect: "NoSchedule"
-  - name: compute-intensive-1203
+  - name: compute-intensive-1204
     instanceType: c5a.4xlarge
-    desiredCapacity: 2
-    minSize: 1
-    maxSize: 10
+    desiredCapacity: 5
+    minSize: 5
+    maxSize: 15
     volumeType: gp3
-    volumeSize: 100
+    volumeSize: 150
     volumeEncrypted: true
     volumeKmsKeyID: ef15819c-c086-4aba-9430-d54af36d8b53
     privateNetworking: true
@@ -225,13 +225,13 @@ managedNodeGroups:
       - key: cpu-intensive
         value: "true"
         effect: "NoSchedule"
-  - name: memory-intensive-1203
-    instanceType: r5a.8xlarge
-    desiredCapacity: 1
-    minSize: 1
-    maxSize: 10
+  - name: memory-intensive-1204
+    instanceType: m5a.4xlarge
+    desiredCapacity: 12
+    minSize: 12
+    maxSize: 12
     volumeType: gp3
-    volumeSize: 100
+    volumeSize: 150
     volumeEncrypted: true
     volumeKmsKeyID: ef15819c-c086-4aba-9430-d54af36d8b53
     privateNetworking: true
