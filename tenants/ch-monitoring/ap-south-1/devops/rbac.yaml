@@ -1,0 +1,156 @@
+#########################################################################################
+#     Flux-system
+#########################################################################################
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    toolkit.fluxcd.io/tenant: devops
+  name: devops
+  namespace: flux-system
+---
+#########################################################################################
+#     Kube-system
+#########################################################################################
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    toolkit.fluxcd.io/tenant: devops
+  name: devops
+  namespace: kube-system
+---
+#########################################################################################
+#     Monitoring
+#########################################################################################
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    toolkit.fluxcd.io/tenant: devops
+  name: monitoring
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    toolkit.fluxcd.io/tenant: devops
+  name: devops
+  namespace: monitoring
+
+---
+#########################################################################################
+#     Logging
+#########################################################################################
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    toolkit.fluxcd.io/tenant: devops
+  name: logging
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    toolkit.fluxcd.io/tenant: devops
+  name: devops
+  namespace: logging
+---
+#########################################################################################
+#     Argo Rollouts
+#########################################################################################
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    toolkit.fluxcd.io/tenant: devops
+  name: argo-rollouts
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    toolkit.fluxcd.io/tenant: devops
+  name: devops
+  namespace: argo-rollouts
+---
+#########################################################################################
+#     Observability
+#########################################################################################
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    toolkit.fluxcd.io/tenant: devops
+  name: observability
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    toolkit.fluxcd.io/tenant: devops
+  name: devops
+  namespace: observability
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    toolkit.fluxcd.io/tenant: devops
+  name: flux-reconciler
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+  - apiGroup: rbac.authorization.k8s.io
+    kind: User
+    name: gotk:devops:reconciler
+  - kind: ServiceAccount
+    name: devops
+    namespace: flux-system
+  - kind: ServiceAccount
+    name: devops
+    namespace: kube-system
+  - kind: ServiceAccount
+    name: devops
+    namespace: monitoring
+  - kind: ServiceAccount
+    name: devops
+    namespace: logging
+  - kind: ServiceAccount
+    name: devops
+    namespace: argo-rollouts
+  - kind: ServiceAccount
+    name: devops
+    namespace: observability
+  - kind: ServiceAccount
+    name: devops
+    namespace: ch-logging
+
+##########################
+# Testing for CallHealth #
+##########################
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    toolkit.fluxcd.io/tenant: devops
+  name: ch-logging
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    toolkit.fluxcd.io/tenant: devops
+  name: devops
+  namespace: ch-logging
