@@ -15,13 +15,13 @@ configMapGenerator:
     literals:
       - cluster_region="ap-south-1"
       - account_id="832807087073"
-      - cluster_name="ch-monitoring"
+      - cluster_name="ch-monitoring-eks"
   - name: aws-environment
     namespace: logging
     literals:
       - cluster_region="ap-south-1"
       - account_id="832807087073"
-      - cluster_name="ch-monitoring"
+      - cluster_name="ch-monitoring-eks"
       - log_bucket="true"
 
   - name: aws-environment
@@ -29,4 +29,4 @@ configMapGenerator:
     literals:
       - cluster_region="ap-south-1"
       - account_id="832807087073"
-      - cluster_name="ch-monitoring"
+      - cluster_name="ch-monitoring-eks"
