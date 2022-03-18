@@ -132,25 +132,4 @@ subjects:
   - kind: ServiceAccount
     name: devops
     namespace: observability
-  - kind: ServiceAccount
-    name: devops
-    namespace: ch-logging
 
-##########################
-# Testing for CallHealth #
-##########################
----
-apiVersion: v1
-kind: Namespace
-metadata:
-  labels:
-    toolkit.fluxcd.io/tenant: devops
-  name: ch-logging
----
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  labels:
-    toolkit.fluxcd.io/tenant: devops
-  name: devops
-  namespace: ch-logging
