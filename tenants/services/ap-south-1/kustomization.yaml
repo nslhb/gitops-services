@@ -37,3 +37,10 @@ configMapGenerator:
       - cluster_region="ap-south-1"
       - account_id="832807087073"
       - cluster_name="services"
+  - name: aws-environment
+    namespace: ch-logging
+    literals:
+      - cluster_region="ap-south-1"
+      - account_id="832807087073"
+      - cluster_name="services"
+      - log_bucket="true"
