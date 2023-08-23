@@ -3767,7 +3767,7 @@ spec:
     - jsonPath: .status.latestImage
       name: LatestImage
       type: string
-    name: v1beta1
+    name: v1alpha2
     schema:
       openAPIV3Schema:
         description: ImagePolicy is the Schema for the imagepolicies API
