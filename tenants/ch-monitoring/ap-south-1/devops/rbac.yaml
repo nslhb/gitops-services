@@ -81,6 +81,28 @@ metadata:
   name: devops
   namespace: argo-rollouts
 ---
+
+#########################################################################################
+#     Profiling
+#########################################################################################
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    toolkit.fluxcd.io/tenant: devops
+  name: profiling
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    toolkit.fluxcd.io/tenant: devops
+  name: devops
+  namespace: profiling
+---
+
 #########################################################################################
 #     Observability
 #########################################################################################
@@ -132,4 +154,6 @@ subjects:
   - kind: ServiceAccount
     name: devops
     namespace: observability
-
+  - kind: ServiceAccount
+    name: devops
+    namespace: profiling
