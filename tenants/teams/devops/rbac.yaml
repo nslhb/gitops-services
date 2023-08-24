@@ -61,6 +61,28 @@ metadata:
   name: devops
   namespace: logging
 ---
+
+#########################################################################################
+#     Profiling
+#########################################################################################
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    toolkit.fluxcd.io/tenant: devops
+  name: profiling
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    toolkit.fluxcd.io/tenant: devops
+  name: devops
+  namespace: profiling
+---
+
 #########################################################################################
 #     Argo Rollouts
 #########################################################################################
@@ -135,6 +157,9 @@ subjects:
   - kind: ServiceAccount
     name: devops
     namespace: ch-logging
+  - kind: ServiceAccount
+    name: devops
+    namespace: profiling
 
 ##########################
 # Testing for CallHealth #
