@@ -12,7 +12,7 @@ spec:
       color: "yellow"
       REGION: "ap-south-1"
 ---
-apiVersion: image.toolkit.fluxcd.io/v1alpha2
+apiVersion: image.toolkit.fluxcd.io/v1beta1
 kind: ImageUpdateAutomation
 metadata:
   name: flux-system
